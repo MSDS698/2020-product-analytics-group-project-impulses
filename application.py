@@ -8,7 +8,4 @@ def print_hello():
     return render_template('articles.html')
 
 if __name__ == '__main__':
-    application.jinja_env.auto_reload = True
-    application.config['TEMPLATES_AUTO_RELOAD'] = True
-    application.debug = True
-    application.run()
+    application.run(debug=True, port=5000)
