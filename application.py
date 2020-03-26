@@ -107,4 +107,4 @@ def dashboard():
 
 
 if __name__ == "__main__":
-    application.run(host='0.0.0.0', port=env.get('PORT', 3000))
+    application.run(debug=True, port=5000)  # host='0.0.0.0', port=env.get('PORT', 3000)
