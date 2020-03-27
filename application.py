@@ -4,7 +4,7 @@ application = Flask(__name__)
 
 @application.route("/")
 def print_hello():
-    """Show a list of article titles"""
+    """Use Jinja to display project description"""
     return render_template('articles.html')
 
 if __name__ == '__main__':
