@@ -1,7 +1,7 @@
 {
     "pipeline": {
         "name": "Impulses_script",
-        "roleArn": "arn:aws:iam::941468269564:role/service-role/AWSCodePipelineServiceRole-us-west-2-Impulses",
+        "roleArn": "arn:aws:iam::374226464461:role/service-role/AWSCodePipelineServiceRole-us-west- 2-MSDS603 Week1",
         "artifactStore": {
             "type": "S3",
             "location": "codepipeline-us-west-2-674950055712"
