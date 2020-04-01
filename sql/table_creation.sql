@@ -92,7 +92,7 @@ CREATE INDEX "fkIdx_132" ON "dw"."password"
 
 
 --*****************************************************
---"dw"."savings_history"
+--create table "dw"."savings_history"
 DROP TABLE IF EXISTS "dw"."savings_history";
 
 CREATE TABLE "dw"."savings_history"
@@ -114,7 +114,7 @@ CREATE INDEX "fkIdx_81" ON "dw"."savings_history"
 
 
 --*****************************************************
---"dw"."transaction"
+--create table "dw"."transaction"
 DROP TABLE IF EXISTS "dw"."transaction";
 
 CREATE TABLE "dw"."transaction"
