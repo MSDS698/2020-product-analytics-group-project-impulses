@@ -4,6 +4,11 @@ from functools import wraps
 import json
 from os import environ as env
 from werkzeug.exceptions import HTTPException
+from flask import Flask, render_template, request
+from plaid import Client
+from plaid.errors import ItemError
+from keys import PLAID_KEYS
+from plaid_methods.methods import get_accounts,get_transactions, token_exchange
 
 from dotenv import load_dotenv, find_dotenv
 from flask import Flask
@@ -14,8 +19,14 @@ from flask import session
 from flask import url_for
 from authlib.flask.client import OAuth
 from six.moves.urllib.parse import urlencode
-
 import constants
+
+client = Client(
+    PLAID_KEYS["PLAID_CLIENT_ID"],
+    PLAID_KEYS["PLAID_SECRET"],
+    PLAID_KEYS["PLAID_PUBLIC_KEY"],
+    PLAID_KEYS["PLAID_ENV"],
+)
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -136,7 +147,17 @@ def dashboard() -> render_template:
     return render_template('dashboard.html',
                            userinfo=session[constants.PROFILE_KEY],
                            userinfo_pretty=json.dumps(session[constants.JWT_PAYLOAD], indent=4))
-
+@application.route("/access_token", methods=["POST"])
+def access_token():
+    public_token = request.form["public_token"]
+    try:
+        response = token_exchange(client,public_token)
+    except ItemError as e:
+        outstring = f"Failure: {e.code}"
+        print(outstring)
+        return outstring
+    ## TODO: Need to write item_id and access tokens to database
+    return 'Success'
 
 if __name__ == "__main__":
     # testing local
