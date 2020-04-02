@@ -17,6 +17,7 @@ DROP TABLE IF EXISTS "dw"."user";
 CREATE TABLE "dw"."user"
 (
  "user_id"     bigserial NOT NULL,
+ "auth_id"     varchar NOT NULL,
  "first_name"  varchar NOT NULL,
  "last_name"   varchar NOT NULL,
  "email"       varchar NOT NULL,
