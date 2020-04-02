@@ -52,13 +52,13 @@ DROP TABLE IF EXISTS "dw"."accounts";
 
 CREATE TABLE "dw"."accounts"
 (
- "account_id"      bigserial NOT NULL,
- "user_id"         bigint NOT NULL,
- "plaid_id"        bigint NOT NULL,
- "account_uid"     varchar NOT NULL,
- "account_name"    varchar NOT NULL,
- "account_type"    varchar NOT NULL,
- "account_subtype" varchar NOT NULL,
+ "account_id"       bigserial NOT NULL,
+ "user_id"          bigint NOT NULL,
+ "plaid_id"         bigint NOT NULL,
+ "account_plaid_id" varchar NOT NULL,
+ "account_name"     varchar NOT NULL,
+ "account_type"     varchar NOT NULL,
+ "account_subtype"  varchar NOT NULL,
  CONSTRAINT "PK_accounts" PRIMARY KEY ( "account_id" ),
  CONSTRAINT "FK_138" FOREIGN KEY ( "user_id" ) REFERENCES "dw"."user" ( "user_id" ),
  CONSTRAINT "FK_162" FOREIGN KEY ( "plaid_id" ) REFERENCES "dw"."plaid_items" ( "plaid_id" )
