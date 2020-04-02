@@ -4,3 +4,7 @@ itsdangerous==1.1.0
 Jinja2==2.11.1
 MarkupSafe==1.1.1
 Werkzeug==1.0.0
+python-dotenv==0.12.0
+requests==2.23.0
+authlib==0.14.1
+six==1.14.0
