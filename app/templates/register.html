@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+</head>
+<body>
+    <div class="container">
+        <form method="POST">
+            <h2>Sign Up</h2>
+            {{ form.csrf_token }}
+            {{ form.first_name.label }} {{ form.first_name() }} <br />
+            {{ form.last_name.label }} {{ form.last_name() }} <br />
+            {{ form.email.label }} {{ form.email() }} <br />
+            {{ form.phone.label }} {{ form.phone() }} <br />
+            {{ form.password.label }} {{ form.password() }} <br />
+            {{ form.submit() }}
+        </form>
+    </div>
+    <p>Already have an account? <a href="{{url_for('login')}}">Log in</a></p>
+</body>
+</html>

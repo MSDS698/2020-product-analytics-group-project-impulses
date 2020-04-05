@@ -4,7 +4,7 @@
         "roleArn": "arn:aws:iam::374226464461:role/service-role/AWSCodePipelineServiceRole-us-west- 2-MSDS603 Week1",
         "artifactStore": {
             "type": "S3",
-            "location": "codepipeline-us-west-2-674950055712"
+            "location": "codepipeline-us-west-2-674950055712",
         },
         "stages": [
             {
@@ -16,7 +16,7 @@
                             "category": "Source",
                             "owner": "ThirdParty",
                             "provider": "GitHub",
-                            "version": "1"
+                            "version": "1",
                         },
                         "runOrder": 1,
                         "configuration": {
@@ -24,18 +24,14 @@
                             "OAuthToken": "bf724a4b24ba9764aa85f8621d2a9841f906221b",
                             "Owner": "esmeluo",
                             "PollForSourceChanges": "true",
-                            "Repo": "2020-product-analytics-group-project-impulses"
+                            "Repo": "2020-product-analytics-group-project-impulses",
                         },
-                        "outputArtifacts": [
-                            {
-                                "name": "SourceArtifact"
-                            }
-                        ],
+                        "outputArtifacts": [{"name": "SourceArtifact"}],
                         "inputArtifacts": [],
                         "region": "us-west-2",
-                        "namespace": "SourceVariables"
+                        "namespace": "SourceVariables",
                     }
-                ]
+                ],
             },
             {
                 "name": "Deploy",
@@ -46,25 +42,21 @@
                             "category": "Deploy",
                             "owner": "AWS",
                             "provider": "ElasticBeanstalk",
-                            "version": "1"
+                            "version": "1",
                         },
                         "runOrder": 1,
                         "configuration": {
                             "ApplicationName": "Impulses_script",
-                            "EnvironmentName": "imp-env-test"
+                            "EnvironmentName": "imp-env-test",
                         },
                         "outputArtifacts": [],
-                        "inputArtifacts": [
-                            {
-                                "name": "SourceArtifact"
-                            }
-                        ],
+                        "inputArtifacts": [{"name": "SourceArtifact"}],
                         "region": "us-west-2",
-                        "namespace": "DeployVariables"
+                        "namespace": "DeployVariables",
                     }
-                ]
-            }
+                ],
+            },
         ],
-        "version": 1
+        "version": 1,
     }
 }
