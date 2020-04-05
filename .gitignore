@@ -141,6 +141,7 @@ cython_debug/
 # static files generated from Django application using `collectstatic`
 media
 static
+!app/static
 
 .DS_Store
 
@@ -151,3 +152,6 @@ static
 test_ignore.txt
 
 !docs/build
+
+.vscode
+*.db
