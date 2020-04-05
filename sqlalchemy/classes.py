@@ -28,7 +28,6 @@ class User(db.Model, UserMixin):
     __table_args__ = {"schema": "dw"}
     __tablename__ = "user"
     user_id = db.Column(db.BigInteger, primary_key=True)
-    auth_id = db.Column(db.String)
     first_name = db.Column(db.String, nullable=False)
     last_name = db.Column(db.String, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
@@ -37,20 +36,21 @@ class User(db.Model, UserMixin):
     signup_date = db.Column(db.DateTime, nullable=False,
                             default=datetime.utcnow())
     status = db.Column(db.String, nullable=False, default="active")
+    auth_id = db.Column(db.String, default=None)
     # relationships
     plaid_items = db.relationship("PlaidItems", backref="user")
     accounts = db.relationship("Accounts", backref="user")
     transaction = db.relationship("Transaction", backref="user")
     savings_history = db.relationship("SavingsHistory", backref="user")
 
-    def __init__(self, auth_id, first_name, last_name,
-                 email, phone, password):
+    def __init__(self, first_name, last_name, email,
+                 phone, password, auth_id=None):
         """Initializes User class"""
-        self.auth_id = auth_id
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.phone = phone
+        self.auth_id = auth_id
         self.set_password(password)
 
     def set_password(self, password):
