@@ -15,4 +15,3 @@ login_manager.init_app(application)
 
 from app import routes
 from app import classes
-
