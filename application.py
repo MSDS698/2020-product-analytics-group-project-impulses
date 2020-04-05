@@ -8,7 +8,8 @@ from flask import Flask, render_template, request
 from plaid import Client
 from plaid.errors import ItemError
 from keys import PLAID_KEYS
-from plaid_methods.methods import get_accounts,get_transactions, token_exchange
+from plaid_methods.methods import (get_accounts, get_transactions,
+                                   token_exchange)
 
 from dotenv import load_dotenv, find_dotenv
 from flask import Flask
@@ -156,7 +157,7 @@ def access_token():
         outstring = f"Failure: {e.code}"
         print(outstring)
         return outstring
-    ## TODO: Need to write item_id and access tokens to database
+    # TODO: Need to write item_id and access tokens to database
     return 'Success'
 
 if __name__ == "__main__":

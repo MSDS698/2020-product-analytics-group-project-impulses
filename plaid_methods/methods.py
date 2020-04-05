@@ -14,12 +14,13 @@ def get_transactions(
     :param [client]: plaid client object that encapsulates plaid keys
     :type [client]: [plaid.Client]
 
-    :param [start_date]: string in the format "YYYY-MM-DD" that defines the start
-    date of the window to retrieve transactions from 
+    :param [start_date]: string in the format "YYYY-MM-DD"
+                         that defines the start
+    date of the window to retrieve transactions from
     :type [start_date]: [string]
 
     :param [end_date]: string in the format "YYYY-MM-DD" that defines the end
-    date of the window to retrieve transactions from 
+    date of the window to retrieve transactions from
     :type [end_date]: [string]
 
     :param [access_token]:  access token to use to retrieve transactions
@@ -61,7 +62,8 @@ def get_accounts(client: plaid.Client, access_token: str) -> List[dict]:
         return e.code
     return response["accounts"]
 
-def token_exchange(client: plaid.Client,public_token: str) -> dict:
+
+def token_exchange(client: plaid.Client, public_token: str) -> dict:
     '''
     Returns account information
         :param [client]: plaid client object that encapsulates plaid keys
@@ -76,4 +78,4 @@ def token_exchange(client: plaid.Client,public_token: str) -> dict:
         return e.code
 
     return response
-
+    
