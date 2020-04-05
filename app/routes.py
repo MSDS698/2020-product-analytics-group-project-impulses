@@ -31,6 +31,8 @@ def login():
 @application.route("/register", methods=["POST", "GET"])
 def register():
     registration_form = classes.RegistrationForm()
+    if current_user.is_authenticated:
+        return redirect(url_for("dashboard"))
     if registration_form.validate_on_submit():
         first_name = registration_form.first_name.data
         last_name = registration_form.last_name.data
