@@ -2,13 +2,16 @@
 SQLAlchemy Object Relational Mapper (ORM)
 
 Including classes for each table in the database:
-user, password, plaid_items, accounts, transaction, savings_history
+user, plaid_items, accounts, transaction, savings_history
 """
 
+from datetime import datetime
+from flask_login import UserMixin
+from werkzeug.security import check_password_hash, generate_password_hash
 from application import db
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     """Data model for dw.user table.
 
     Columns include:
@@ -17,42 +20,46 @@ class User(db.Model):
     first_name: user's first name; string
     last_name: user's last name; string
     email: user's email address; string; unique
-    phone: user's phone number; bigint; unique
+    phone: user's phone number; string; unique
+    password_hash: user's hashed password; string
     signup_date: user's signup date; date
     status: user's current status; string
     """
     __table_args__ = {"schema": "dw"}
     __tablename__ = "user"
-    user_id = db.Column("user_id", db.BigInteger, primary_key=True)
-    auth_id = db.Column("auth_id", db.String, nullable=False)
-    first_name = db.Column("first_name", db.String, nullable=False)
-    last_name = db.Column("last_name", db.String, nullable=False)
-    email = db.Column("email", db.String, unique=True, nullable=False)
-    phone = db.Column("phone", db.BigInteger, unique=True, nullable=False)
-    signup_date = db.Column("signup_date", db.Date, nullable=False)
-    status = db.Column("status", db.String, nullable=False)
+    user_id = db.Column(db.BigInteger, primary_key=True)
+    auth_id = db.Column(db.String)
+    first_name = db.Column(db.String, nullable=False)
+    last_name = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, unique=True, nullable=False)
+    phone = db.Column(db.String(10), unique=True, nullable=False)
+    password_hash = db.Column(db.String, nullable=False)
+    signup_date = db.Column(db.DateTime, nullable=False,
+                            default=datetime.utcnow())
+    status = db.Column(db.String, nullable=False, default="active")
     # relationships
-    password = db.relationship("Password", backref="user")
     plaid_items = db.relationship("PlaidItems", backref="user")
     accounts = db.relationship("Accounts", backref="user")
     transaction = db.relationship("Transaction", backref="user")
     savings_history = db.relationship("SavingsHistory", backref="user")
 
+    def __init__(self, auth_id, first_name, last_name,
+                 email, phone, password):
+        """Initializes User class"""
+        self.auth_id = auth_id
+        self.first_name = first_name
+        self.last_name = last_name
+        self.email = email
+        self.phone = phone
+        self.set_password(password)
 
-class Password(db.Model):
-    """Data model for dw.password table.
+    def set_password(self, password):
+        """Generates a hashed password"""
+        self.password_hash = generate_password_hash(password)
 
-    Columns include:
-    password_id: auto increment primary key; bigint
-    user_id: user id that the password is associated with; bigint
-    password: password hash; string
-    """
-    __table_args__ = {"schema": "dw"}
-    __tablename__ = "password"
-    password_id = db.Column("password_id", db.BigInteger, primary_key=True)
-    user_id = db.Column("user_id", db.BigInteger,
-                        db.ForeignKey("dw.user.user_id"))
-    password = db.Column("password", db.String, nullable=False)
+    def check_password(self, password):
+        """Check if the input password matches the actual password"""
+        return check_password_hash(self.password_hash, password)
 
 
 class PlaidItems(db.Model):
@@ -67,11 +74,10 @@ class PlaidItems(db.Model):
     """
     __table_args__ = {"schema": "dw"}
     __tablename__ = "plaid_items"
-    plaid_id = db.Column("plaid_id", db.BigInteger, primary_key=True)
-    user_id = db.Column("user_id", db.BigInteger,
-                        db.ForeignKey("dw.user.user_id"))
-    item_id = db.Column("item_id", db.String, nullable=False)
-    access_token = db.Column("access_token", db.String, nullable=False)
+    plaid_id = db.Column(db.BigInteger, primary_key=True)
+    user_id = db.Column(db.BigInteger, db.ForeignKey("dw.user.user_id"))
+    item_id = db.Column(db.String, nullable=False)
+    access_token = db.Column(db.String, nullable=False)
     # relationships
     accounts = db.relationship("Accounts", backref="plaid_item")
 
@@ -90,16 +96,14 @@ class Accounts(db.Model):
     """
     __table_args__ = {"schema": "dw"}
     __tablename__ = "accounts"
-    account_id = db.Column("account_id", db.BigInteger, primary_key=True)
-    user_id = db.Column("user_id", db.BigInteger,
-                        db.ForeignKey("dw.user.user_id"))
-    plaid_id = db.Column("plaid_id", db.BigInteger,
+    account_id = db.Column(db.BigInteger, primary_key=True)
+    user_id = db.Column(db.BigInteger, db.ForeignKey("dw.user.user_id"))
+    plaid_id = db.Column(db.BigInteger,
                          db.ForeignKey("dw.plaid_items.plaid_id"))
-    account_plaid_id = db.Column("account_plaid_id", db.String,
-                                 nullable=False)
-    account_name = db.Column("account_name", db.String)
-    account_type = db.Column("account_type", db.String)
-    account_subtype = db.Column("account_subtype", db.String)
+    account_plaid_id = db.Column(db.String, nullable=False)
+    account_name = db.Column(db.String)
+    account_type = db.Column(db.String)
+    account_subtype = db.Column(db.String)
     # relationships
     transaction = db.relationship("Transaction", backref="account")
 
@@ -128,26 +132,23 @@ class Transaction(db.Model):
     """
     __table_args__ = {"schema": "dw"}
     __tablename__ = "transaction"
-    transaction_id = db.Column("transaction_id", db.BigInteger,
-                               primary_key=True)
-    user_id = db.Column("user_id", db.BigInteger,
-                        db.ForeignKey("dw.user.user_id"))
-    account_id = db.Column("account_id", db.BigInteger,
+    transaction_id = db.Column(db.BigInteger, primary_key=True)
+    user_id = db.Column(db.BigInteger, db.ForeignKey("dw.user.user_id"))
+    account_id = db.Column(db.BigInteger,
                            db.ForeignKey("dw.accounts.account_id"))
-    trans_amount = db.Column("trans_amount", db.Numeric(10, 2),
-                             nullable=False)
-    category_id = db.Column("category_id", db.BigInteger, nullable=False)
-    is_preferred_saving = db.Column("is_preferred_saving", db.String)
-    trans_date = db.Column("trans_date", db.Date, nullable=False)
-    post_date = db.Column("post_date", db.Date)
-    merchant_category = db.Column("merchant_category", db.String)
-    merchant_address = db.Column("merchant_address", db.String)
-    merchant_city = db.Column("merchant_city", db.String)
-    merchant_state = db.Column("merchant_state", db.String)
-    merchant_country = db.Column("merchant_country", db.String)
-    merchant_postal_code = db.Column("merchant_postal_code", db.String)
-    merchant_longitude = db.Column("merchant_longitude", db.String)
-    merchant_latitude = db.Column("merchant_latitude", db.String)
+    trans_amount = db.Column(db.Numeric(10, 2), nullable=False)
+    category_id = db.Column(db.BigInteger)
+    is_preferred_saving = db.Column(db.String)
+    trans_date = db.Column(db.Date, nullable=False)
+    post_date = db.Column(db.Date)
+    merchant_category = db.Column(db.String)
+    merchant_address = db.Column(db.String)
+    merchant_city = db.Column(db.String)
+    merchant_state = db.Column(db.String)
+    merchant_country = db.Column(db.String)
+    merchant_postal_code = db.Column(db.String)
+    merchant_longitude = db.Column(db.String)
+    merchant_latitude = db.Column(db.String)
 
 
 class SavingsHistory(db.Model):
@@ -165,16 +166,13 @@ class SavingsHistory(db.Model):
     """
     __table_args__ = {"schema": "dw"}
     __tablename__ = "savings_history"
-    savings_id = db.Column("savings_id", db.BigInteger, primary_key=True)
-    user_id = db.Column("user_id", db.BigInteger,
-                        db.ForeignKey("dw.user.user_id"))
-    savings_amount = db.Column("savings_amount", db.Numeric(10, 2),
-                               nullable=False)
-    total_savings = db.Column("total_savings", db.Numeric(10, 2),
-                              nullable=False)
-    predicted_savings = db.Column("predicted_savings", db.Numeric(10, 2))
-    transfer_date = db.Column("transfer_date", db.Date, nullable=False)
-    update_date = db.Column("update_date", db.Date, nullable=False)
+    savings_id = db.Column(db.BigInteger, primary_key=True)
+    user_id = db.Column(db.BigInteger, db.ForeignKey("dw.user.user_id"))
+    savings_amount = db.Column(db.Numeric(10, 2), nullable=False)
+    total_savings = db.Column(db.Numeric(10, 2), nullable=False)
+    predicted_savings = db.Column(db.Numeric(10, 2))
+    transfer_date = db.Column(db.Date, nullable=False)
+    update_date = db.Column(db.Date, nullable=False)
 
 
 db.create_all()
