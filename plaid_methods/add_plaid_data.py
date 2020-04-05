@@ -2,26 +2,24 @@ import ast
 from sqlalchemy import create_engine, MetaData, select
 
 
-def parse_file(file_name):
+def parse_plaid_data(plaid_data):
     """
-    Parse a file from plaid into python object
-    :param file_name: name of the file (str)
+    Parse a string from plaid into python object
+    :param plaid_data: name of the file (str)
     :return: list of dictionary
     """
-    with open(file_name, encoding='utf-8') as f:
-        string = f.read()
-        string = string.replace('\n', '')
-        data = ast.literal_eval(string)
-        return data
+    plaid_data = plaid_data.replace('\n', '')
+    data = ast.literal_eval(plaid_data)
+    return data
 
 
-def add_accounts(accounts_file, user_id):
+def add_accounts(accounts_data, user_id):
     """
     Add account information to the database
-    :param accounts_file: path to file with account information from Plaid (str)
+    :param accounts_data: data with account information from Plaid (str)
     :param user_id: user id associated to the account (int)
     """
-    accounts = parse_file(accounts_file)
+    accounts = parse_plaid_data(accounts_data)
     connection = "postgres://masteruser:productimpulses@maindb.cuwtgivgs05r.us-west-1.rds.amazonaws.com:5432/postgres"
     db = create_engine(connection)
 
@@ -41,12 +39,12 @@ def add_accounts(accounts_file, user_id):
             conn.execute(insert_statement)
 
 
-def add_transactions(transactions_file):
+def add_transactions(transactions_data):
     """
     Add account information to the database
-    :param transactions_file: path to file with transactions information from Plaid (str)
+    :param transactions_data: data with transactions information from Plaid (str)
     """
-    transactions = parse_file(transactions_file)
+    transactions = parse_plaid_data(transactions_data)
     connection = "postgres://masteruser:productimpulses@maindb.cuwtgivgs05r.us-west-1.rds.amazonaws.com:5432/postgres"
     db = create_engine(connection)
 
