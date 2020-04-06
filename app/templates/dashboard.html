@@ -23,6 +23,12 @@
                         data-product={{plaid_products}}
                         data-env={{plaid_environment}}>
                     </script>
+                    <h3>Transaction Data</h3>
+                    <ul>
+                        {% for transaction in transactions %}
+                        <li>{{ transaction.name }}</li>
+                        {% endfor %}
+                    </ul>
                     <a id="qsLogoutBtn" class="btn btn-primary btn-lg btn-logout btn-block" href="{{url_for('logout')}}">Logout</a>
                 </div>
             </div>

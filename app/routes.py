@@ -61,8 +61,28 @@ def register():
 @application.route("/dashboard")
 @login_required
 def dashboard():
+    # default transactions
+    transactions = 'no transaction data'
+
+    # get user session
+    user_id = current_user.id
+
+    # check if signed up in plaid
+    plaid_obj = PlaidItems.query.filter_by(user_id=user_id)
+    plaid_dict = plaid_obj.first()
+    if plaid_dict:  # if signed up in plaid
+        print('dashboard: already signed up plaid')
+        item_id = plaid_dict.item_id
+        access_token = plaid_dict.access_token
+        print('dashboard: item_id: ', item_id)
+        print('dashboard: access_token: ', access_token)
+
+        # get transaction data
+        transactions = get_transactions(config.client, '2019-10-01', '2019-11-01', access_token)
+
     return render_template("dashboard.html",
                            user=current_user,
+                           transactions=transactions,
                            plaid_public_key=config.client.public_key,
                            plaid_environment=config.client.environment,
                            plaid_products=config.ENV_VARS.get("PLAID_PRODUCTS", "transactions"),
@@ -79,9 +99,6 @@ def logout():
 @application.route("/access_plaid_token", methods=["POST"])
 def access_plaid_token():
     try:
-        # get the public token from form
-        public_token = request.form["public_token"]
-
         # get user session
         user_id = current_user.id
 
@@ -89,14 +106,15 @@ def access_plaid_token():
         plaid_obj = PlaidItems.query.filter_by(user_id=user_id)
         plaid_dict = plaid_obj.first()
         if plaid_dict:  # if signed up in plaid
-            print('already signed up plaid')
+            print('access_plaid_token: already signed up plaid')
             item_id = plaid_dict.item_id
             access_token = plaid_dict.access_token
-            print('item_id: ', item_id)
-            print('access_token: ', access_token)
+            print('access_plaid_token: item_id: ', item_id)
+            print('access_plaid_token: access_token: ', access_token)
 
         else:  # if haven't signed up in plaid
             # get the plaid token response
+            public_token = request.form["public_token"]
             response = token_exchange(config.client, public_token)
             item_id = response['item_id']
             access_token = response['access_token']
@@ -120,3 +138,4 @@ def access_plaid_token():
                            plaid_products=config.ENV_VARS.get("PLAID_PRODUCTS", "transactions"),
                            plaid_country_codes=config.ENV_VARS.get("PLAID_COUNTRY_CODES", "US")
                            )
+
