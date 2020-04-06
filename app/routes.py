@@ -131,8 +131,12 @@ def access_plaid_token():
         print(outstring)
         return outstring
 
+    # get transaction data
+    transactions = get_transactions(config.client, '2019-10-01', '2019-11-01', access_token)
+
     return render_template("dashboard.html",
                            user=current_user,
+                           transactions=transactions,
                            plaid_public_key=config.client.public_key,
                            plaid_environment=config.client.environment,
                            plaid_products=config.ENV_VARS.get("PLAID_PRODUCTS", "transactions"),
