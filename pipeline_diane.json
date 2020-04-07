@@ -1,17 +1,14 @@
 {
     "pipeline": {
         "name": "Impulses_diane",
-<<<<<<< HEAD
         "roleArn": "arn:aws:iam::374226464461:role/service-role/AWSCodePipelineServiceRole-us-west-2-MSDS603_Week1",
         "artifactStore": {
             "type": "S3",
-            "location": "codepipeline-msds603-week1"
-=======
+            "location": "codepipeline-msds603-week1",
         "roleArn": "arn:aws:iam::374226464461:role/service-role/AWSCodePipelineServiceRole-us-west-2-MSDS603 Week1",
         "artifactStore": {
             "type": "S3",
             "location": "codepipeline-us-west-2-674950055712"
->>>>>>> cc3df872f3ff6eb7eef5c4949ebffefa99a96c3a
         },
         "stages": [
             {
@@ -57,11 +54,9 @@
                         },
                         "runOrder": 1,
                         "configuration": {
-<<<<<<< HEAD
+
                             "ApplicationName": "Impulses",
-=======
                             "ApplicationName": "Impulses-Diane",
->>>>>>> cc3df872f3ff6eb7eef5c4949ebffefa99a96c3a
                             "EnvironmentName": "impulse-diane"
                         },
                         "outputArtifacts": [],

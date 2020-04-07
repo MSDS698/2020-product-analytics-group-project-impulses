@@ -7,11 +7,8 @@
 #						   pipeline names are not the same as exisinting
 #						   application/environment/pipelines
 
-<<<<<<< HEAD
+
 application_name=Impulses-Master
-=======
-application_name="Impulses-Master"
->>>>>>> cc3df872f3ff6eb7eef5c4949ebffefa99a96c3a
 environment_name=impulse-master
 #pipeline_name=Impulses_deploy_master
 jsonfile=file://pipeline_master.json
