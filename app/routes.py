@@ -83,8 +83,7 @@ def dashboard():
     user_id = current_user.id
 
     # check if signed up in plaid
-    plaid_obj = classes.PlaidItems.query.filter_by(user_id=user_id)
-    plaid_dict = plaid_obj.first()
+    plaid_dict = classes.PlaidItems.query.filter_by(user_id=user_id).first()
     if plaid_dict:  # if signed up in plaid
         print('dashboard: already signed up plaid')
         item_id = plaid_dict.item_id
@@ -118,8 +117,7 @@ def access_plaid_token():
         user_id = current_user.id
 
         # check if signed up in plaid
-        plaid_obj = classes.PlaidItems.query.filter_by(user_id=user_id)
-        plaid_dict = plaid_obj.first()
+        plaid_dict = classes.PlaidItems.query.filter_by(user_id=user_id).first()
         if plaid_dict:  # if signed up in plaid
             print('access_plaid_token: already signed up plaid')
             item_id = plaid_dict.item_id
