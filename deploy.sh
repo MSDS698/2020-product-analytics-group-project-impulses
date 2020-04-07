@@ -7,7 +7,6 @@
 #						   pipeline names are not the same as exisinting
 #						   application/environment/pipelines
 
-
 application_name=Impulses
 environment_name=impulse-diane
 #pipeline_name=Impulses_deploy 
