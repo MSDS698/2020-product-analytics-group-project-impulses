@@ -1,8 +1,26 @@
+import os
 from app import application, classes, db
 from flask import redirect, render_template, url_for, request
 from flask_login import current_user, login_user, login_required, logout_user
 from plaid.errors import ItemError
 from plaid_methods.methods import get_accounts, get_transactions, token_exchange
+from plaid import Client
+
+
+ENV_VARS = {
+    "PLAID_CLIENT_ID": os.environ["PLAID_CLIENT_ID"],
+    "PLAID_PUBLIC_KEY": os.environ["PLAID_PUBLIC_KEY"],
+    "PLAID_SECRET": os.environ["PLAID_SECRET"],
+    "PLAID_ENV": os.environ["PLAID_ENV"]
+}
+
+# setup plaid client
+client = Client(
+    ENV_VARS["PLAID_CLIENT_ID"],
+    ENV_VARS["PLAID_SECRET"],
+    ENV_VARS["PLAID_PUBLIC_KEY"],
+    ENV_VARS["PLAID_ENV"],
+)
 
 
 @application.route("/index")
@@ -75,15 +93,15 @@ def dashboard():
         print('dashboard: access_token: ', access_token)
 
         # get transaction data
-        transactions = get_transactions(application.config.client, '2019-10-01', '2019-11-01', access_token)
+        transactions = get_transactions(client, '2019-10-01', '2019-11-01', access_token)
 
     return render_template("dashboard.html",
                            user=current_user,
                            transactions=transactions,
-                           plaid_public_key=application.config.client.public_key,
-                           plaid_environment=application.config.client.environment,
-                           plaid_products=application.config.ENV_VARS.get("PLAID_PRODUCTS", "transactions"),
-                           plaid_country_codes=application.config.ENV_VARS.get("PLAID_COUNTRY_CODES", "US")
+                           plaid_public_key=client.public_key,
+                           plaid_environment=client.environment,
+                           plaid_products=ENV_VARS.get("PLAID_PRODUCTS", "transactions"),
+                           plaid_country_codes=ENV_VARS.get("PLAID_COUNTRY_CODES", "US")
                            )
 
 
@@ -112,7 +130,7 @@ def access_plaid_token():
         else:  # if haven't signed up in plaid
             # get the plaid token response
             public_token = request.form["public_token"]
-            response = token_exchange(config.client, public_token)
+            response = token_exchange(client, public_token)
             item_id = response['item_id']
             access_token = response['access_token']
             print('item_id: ', item_id)
@@ -129,14 +147,14 @@ def access_plaid_token():
         return outstring
 
     # get transaction data
-    transactions = get_transactions(config.client, '2019-10-01', '2019-11-01', access_token)
+    transactions = get_transactions(client, '2019-10-01', '2019-11-01', access_token)
 
     return render_template("dashboard.html",
                            user=current_user,
                            transactions=transactions,
-                           plaid_public_key=config.client.public_key,
-                           plaid_environment=config.client.environment,
-                           plaid_products=config.ENV_VARS.get("PLAID_PRODUCTS", "transactions"),
-                           plaid_country_codes=config.ENV_VARS.get("PLAID_COUNTRY_CODES", "US")
+                           plaid_public_key=client.public_key,
+                           plaid_environment=client.environment,
+                           plaid_products=ENV_VARS.get("PLAID_PRODUCTS", "transactions"),
+                           plaid_country_codes=ENV_VARS.get("PLAID_COUNTRY_CODES", "US")
                            )
 
