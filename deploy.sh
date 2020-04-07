@@ -7,7 +7,7 @@
 #						   pipeline names are not the same as exisinting
 #						   application/environment/pipelines
 
-application_name="Impulses-Diane"
+application_name=Impulses
 environment_name=impulse-diane
 #pipeline_name=Impulses_deploy 
 jsonfile=file://pipeline_diane.json
@@ -34,7 +34,7 @@ aws codepipeline create-pipeline --cli-input-json $jsonfile
 #### Terminate #### 
 #				terminate ebs application environment (EC2 instance)
 #				environment has to be terminated before deleting application
-#eb terminate
+# eb terminate
 
 # 				delete ebs application
 # aws elasticbeanstalk delete-application --application-name Impulses-test
