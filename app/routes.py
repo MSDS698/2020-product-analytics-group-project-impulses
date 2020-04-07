@@ -4,9 +4,6 @@ from flask_login import current_user, login_user, login_required, logout_user
 from plaid.errors import ItemError
 from plaid_methods.methods import get_accounts, get_transactions, token_exchange
 
-import config
-from app.classes import *
-
 
 @application.route("/index")
 @application.route("/")
@@ -68,7 +65,7 @@ def dashboard():
     user_id = current_user.id
 
     # check if signed up in plaid
-    plaid_obj = PlaidItems.query.filter_by(user_id=user_id)
+    plaid_obj = classes.PlaidItems.query.filter_by(user_id=user_id)
     plaid_dict = plaid_obj.first()
     if plaid_dict:  # if signed up in plaid
         print('dashboard: already signed up plaid')
@@ -78,15 +75,15 @@ def dashboard():
         print('dashboard: access_token: ', access_token)
 
         # get transaction data
-        transactions = get_transactions(config.client, '2019-10-01', '2019-11-01', access_token)
+        transactions = get_transactions(application.config.client, '2019-10-01', '2019-11-01', access_token)
 
     return render_template("dashboard.html",
                            user=current_user,
                            transactions=transactions,
-                           plaid_public_key=config.client.public_key,
-                           plaid_environment=config.client.environment,
-                           plaid_products=config.ENV_VARS.get("PLAID_PRODUCTS", "transactions"),
-                           plaid_country_codes=config.ENV_VARS.get("PLAID_COUNTRY_CODES", "US")
+                           plaid_public_key=application.config.client.public_key,
+                           plaid_environment=application.config.client.environment,
+                           plaid_products=application.config.ENV_VARS.get("PLAID_PRODUCTS", "transactions"),
+                           plaid_country_codes=application.config.ENV_VARS.get("PLAID_COUNTRY_CODES", "US")
                            )
 
 
@@ -103,7 +100,7 @@ def access_plaid_token():
         user_id = current_user.id
 
         # check if signed up in plaid
-        plaid_obj = PlaidItems.query.filter_by(user_id=user_id)
+        plaid_obj = classes.PlaidItems.query.filter_by(user_id=user_id)
         plaid_dict = plaid_obj.first()
         if plaid_dict:  # if signed up in plaid
             print('access_plaid_token: already signed up plaid')
