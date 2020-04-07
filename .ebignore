@@ -1,4 +1,4 @@
-test_ignore.txt
-test_ignore.txt
 deploy.sh
-pipeline.json
+deploy_master.sh
+pipeline_master.json
+pipeline_diane.json
