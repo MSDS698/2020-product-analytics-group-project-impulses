@@ -7,10 +7,10 @@
 #						   pipeline names are not the same as exisinting
 #						   application/environment/pipelines
 
-application_name="Impulses-Diane"
-environment_name=impulse-diane
-#pipeline_name=Impulses_deploy 
-jsonfile=file://pipeline_diane.json
+application_name="Impulses-Master"
+environment_name=impulse-master
+#pipeline_name=Impulses_deploy_master
+jsonfile=file://pipeline_master.json
 
 #### Initializing EBS ####
 #				User needs to have awsebcli installed
