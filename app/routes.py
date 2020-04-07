@@ -88,8 +88,6 @@ def dashboard():
         print('dashboard: already signed up plaid')
         item_id = plaid_dict.item_id
         access_token = plaid_dict.access_token
-        print('dashboard: item_id: ', item_id)
-        print('dashboard: access_token: ', access_token)
 
         # get transaction data
         transactions = get_transactions(client, '2019-10-01', '2019-11-01', access_token)
@@ -122,8 +120,6 @@ def access_plaid_token():
             print('access_plaid_token: already signed up plaid')
             item_id = plaid_dict.item_id
             access_token = plaid_dict.access_token
-            print('access_plaid_token: item_id: ', item_id)
-            print('access_plaid_token: access_token: ', access_token)
 
         else:  # if haven't signed up in plaid
             # get the plaid token response
@@ -131,11 +127,9 @@ def access_plaid_token():
             response = token_exchange(client, public_token)
             item_id = response['item_id']
             access_token = response['access_token']
-            print('item_id: ', item_id)
-            print('access_token: ', access_token)
 
             # add plaid items
-            plaid = classes.PlaidItems(user_id=user_id, item_id=response['item_id'], access_token=response['access_token'])
+            plaid = classes.PlaidItems(user_id=user_id, item_id=item_id, access_token=access_token)
             db.session.add(plaid)
             db.session.commit()
 
