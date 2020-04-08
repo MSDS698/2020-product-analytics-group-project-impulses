@@ -1,10 +1,10 @@
 {
     "pipeline": {
-        "name": "Impulses_script",
-        "roleArn": "arn:aws:iam::374226464461:role/service-role/AWSCodePipelineServiceRole-us-west- 2-MSDS603 Week1",
+        "name": "Impulses_deploy_master",
+        "roleArn": "arn:aws:iam::941468269564:role/service-role/AWSCodePipelineServiceRole-us-west-2-Impulses",
         "artifactStore": {
             "type": "S3",
-            "location": "codepipeline-us-west-2-674950055712",
+            "location": "codepipeline-us-west-2-674950055712"
         },
         "stages": [
             {
@@ -16,22 +16,26 @@
                             "category": "Source",
                             "owner": "ThirdParty",
                             "provider": "GitHub",
-                            "version": "1",
+                            "version": "1"
                         },
                         "runOrder": 1,
                         "configuration": {
                             "Branch": "master",
                             "OAuthToken": "bf724a4b24ba9764aa85f8621d2a9841f906221b",
-                            "Owner": "esmeluo",
+                            "Owner": "MSDS698",
                             "PollForSourceChanges": "true",
-                            "Repo": "2020-product-analytics-group-project-impulses",
+                            "Repo": "2020-product-analytics-group-project-impulses"
                         },
-                        "outputArtifacts": [{"name": "SourceArtifact"}],
+                        "outputArtifacts": [
+                            {
+                                "name": "SourceArtifact"
+                            }
+                        ],
                         "inputArtifacts": [],
                         "region": "us-west-2",
-                        "namespace": "SourceVariables",
+                        "namespace": "SourceVariables"
                     }
-                ],
+                ]
             },
             {
                 "name": "Deploy",
@@ -42,21 +46,25 @@
                             "category": "Deploy",
                             "owner": "AWS",
                             "provider": "ElasticBeanstalk",
-                            "version": "1",
+                            "version": "1"
                         },
                         "runOrder": 1,
                         "configuration": {
-                            "ApplicationName": "Impulses_script",
-                            "EnvironmentName": "imp-env-test",
+                            "ApplicationName": "Impulses-Master",
+                            "EnvironmentName": "impulse-master"
                         },
                         "outputArtifacts": [],
-                        "inputArtifacts": [{"name": "SourceArtifact"}],
+                        "inputArtifacts": [
+                            {
+                                "name": "SourceArtifact"
+                            }
+                        ],
                         "region": "us-west-2",
-                        "namespace": "DeployVariables",
+                        "namespace": "DeployVariables"
                     }
-                ],
-            },
+                ]
+            }
         ],
-        "version": 1,
+        "version": 1
     }
 }
