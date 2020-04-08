@@ -8,6 +8,9 @@ Test branch url: http://imp-env-test-3.eba-ri85ihii.us-west-2.elasticbeanstalk.c
 
 AWS Codepipeline: https://aws.amazon.com/codepipeline/
 
+## Testing Branch Usage Guidelines:
+* Test branch should not be held for more than 20 minutes.
+
 ## How to test changes and deploy your branch?
 * __Notify the team (@channel in #we_need_a_name) that test branch will be in use__
 * sign-in to AWS console using your IAM account (sign in to console)
