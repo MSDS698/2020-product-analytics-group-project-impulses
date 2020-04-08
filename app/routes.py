@@ -80,15 +80,18 @@ def add_habit():
     user_id = current_user.id
 
     habit_form = classes.HabitForm()
+    print(habit_form.validate_on_submit())
     if habit_form.validate_on_submit():
         habit_name = habit_form.habit_name.data
         habit_category = habit_form.habit_category.data
         time_minute = habit_form.time_minute.data
         time_hour = habit_form.time_hour.data
-        habit = classes.Habit(user_id, habit_name, habit_category, time_minute, time_hour)
+        # time_day_of_week = habit_form.time_day_of_week.data
+        # habit = classes.Habits(user_id, habit_name, habit_category, time_minute, time_hour, time_day_of_week)
+        habit = classes.Habits(user_id, habit_name, habit_category, time_minute, time_hour)
         db.session.add(habit)
         db.session.commit()
-        return redirect(url_for("login"))
+        return redirect(url_for("dashboard"))
     return render_template("habits.html", form=habit_form)
 
 

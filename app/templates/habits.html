@@ -8,8 +8,13 @@
 <body>
     <div class="container">
         <form method="POST">
-            <h2>Habit</h2>
+            <h2>Add a new habit</h2>
             {{ form.csrf_token }}
+
+            {% if form.errors %}
+            {{ form.errors }}
+            {% endif %}
+
             {{ form.habit_name.label }} {{ form.habit_name() }} <br />
             {{ form.habit_category.label }} {{ form.habit_category() }} <br />
             {{ form.time_minute.label }} {{ form.time_minute() }} <br />

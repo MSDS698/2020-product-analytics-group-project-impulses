@@ -29,11 +29,12 @@
                         <li>{{ transaction.name }}</li>
                         {% endfor %}
                     </ul>
+                    <h3>Saving Habits</h3>
                     <ul>
-                        {{habits}}
                         {% for habit in habits %}
-                        <li>{{ habit.habit_name }} </li>
-                        <li> {{ habit.habit_category}}</li>
+                        <li>Habit Name: {{ habit.habit_name }} </li>
+                        <li>Habit Category: {{ habit.habit_category}}</li>
+                        <br>
                         {% endfor %}
                     </ul>
                     <a id="qsLogoutBtn" class="btn btn-primary btn-lg btn-logout btn-block" href="{{url_for('logout')}}">Logout</a>
