@@ -31,8 +31,8 @@ class User(db.Model, UserMixin):
     status: user's current status; string
     auth_id: unique user id from OAuth if available; string
     """
-    __tablename__ = "user"
-    id = db.Column("user_id", db.BigInteger, primary_key=True)
+    __tablename__ = 'user'
+    id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String, nullable=False)
     last_name = db.Column(db.String, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
@@ -77,9 +77,9 @@ class PlaidItems(db.Model):
     access_token: token that is associated to user account information
                   for retrieval in plaid; string
     """
-    __tablename__ = "plaid_items"
-    id = db.Column("plaid_id", db.BigInteger, primary_key=True)
-    user_id = db.Column(db.BigInteger, db.ForeignKey("user.user_id"))
+    __tablename__ = 'plaid_items'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     item_id = db.Column(db.String, nullable=False)
     access_token = db.Column(db.String, nullable=False)
     # relationships
@@ -99,10 +99,10 @@ class Accounts(db.Model):
     account_subtype: account subtype, ex. 401k/checking/credit card; string
     """
     __tablename__ = "accounts"
-    id = db.Column("account_id", db.BigInteger, primary_key=True)
-    user_id = db.Column(db.BigInteger, db.ForeignKey("user.user_id"))
-    plaid_id = db.Column(db.BigInteger,
-                         db.ForeignKey("plaid_items.plaid_id"))
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    plaid_id = db.Column(db.Integer,
+                         db.ForeignKey("plaid_items.id"))
     account_plaid_id = db.Column(db.String, nullable=False)
     account_name = db.Column(db.String)
     account_type = db.Column(db.String)
@@ -134,12 +134,12 @@ class Transaction(db.Model):
     merchant_latitude: merchant latitude; string
     """
     __tablename__ = "transaction"
-    id = db.Column("transaction_id", db.BigInteger, primary_key=True)
-    user_id = db.Column(db.BigInteger, db.ForeignKey("user.user_id"))
-    account_id = db.Column(db.BigInteger,
-                           db.ForeignKey("accounts.account_id"))
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    account_id = db.Column(db.Integer,
+                           db.ForeignKey("accounts.id"))
     trans_amount = db.Column(db.Numeric(10, 2), nullable=False)
-    category_id = db.Column(db.BigInteger)
+    category_id = db.Column(db.Integer)
     is_preferred_saving = db.Column(db.String)
     trans_date = db.Column(db.Date, nullable=False)
     post_date = db.Column(db.Date)
@@ -167,8 +167,8 @@ class SavingsHistory(db.Model):
     update_date: date when the savings entry is updated in the system; date
     """
     __tablename__ = "savings_history"
-    id = db.Column("savings_id", db.BigInteger, primary_key=True)
-    user_id = db.Column(db.BigInteger, db.ForeignKey("user.user_id"))
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     savings_amount = db.Column(db.Numeric(10, 2), nullable=False)
     total_savings = db.Column(db.Numeric(10, 2), nullable=False)
     predicted_savings = db.Column(db.Numeric(10, 2))
