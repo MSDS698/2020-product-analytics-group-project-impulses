@@ -1,6 +1,26 @@
+import os
 from app import application, classes, db
-from flask import redirect, render_template, url_for
+from flask import redirect, render_template, url_for, request
 from flask_login import current_user, login_user, login_required, logout_user
+from plaid.errors import ItemError
+from plaid_methods.methods import get_accounts, get_transactions, token_exchange
+from plaid import Client
+
+
+ENV_VARS = {
+    "PLAID_CLIENT_ID": os.environ["PLAID_CLIENT_ID"],
+    "PLAID_PUBLIC_KEY": os.environ["PLAID_PUBLIC_KEY"],
+    "PLAID_SECRET": os.environ["PLAID_SECRET"],
+    "PLAID_ENV": os.environ["PLAID_ENV"]
+}
+
+# setup plaid client
+client = Client(
+    ENV_VARS["PLAID_CLIENT_ID"],
+    ENV_VARS["PLAID_SECRET"],
+    ENV_VARS["PLAID_PUBLIC_KEY"],
+    ENV_VARS["PLAID_ENV"],
+)
 
 
 @application.route("/index")
@@ -56,10 +76,77 @@ def register():
 @application.route("/dashboard")
 @login_required
 def dashboard():
-    return render_template("dashboard.html", user=current_user)
+    # default transactions
+    transactions = 'no transaction data'
+
+    # get user session
+    user_id = current_user.id
+
+    # check if signed up in plaid
+    plaid_dict = classes.PlaidItems.query.filter_by(user_id=user_id).first()
+    if plaid_dict:  # if signed up in plaid
+        print('dashboard: already signed up plaid')
+        item_id = plaid_dict.item_id
+        access_token = plaid_dict.access_token
+
+        # get transaction data
+        transactions = get_transactions(client, '2019-10-01', '2019-11-01', access_token)
+
+    return render_template("dashboard.html",
+                           user=current_user,
+                           transactions=transactions,
+                           plaid_public_key=client.public_key,
+                           plaid_environment=client.environment,
+                           plaid_products=ENV_VARS.get("PLAID_PRODUCTS", "transactions"),
+                           plaid_country_codes=ENV_VARS.get("PLAID_COUNTRY_CODES", "US")
+                           )
 
 
 @application.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for("index"))
+
+
+@application.route("/access_plaid_token", methods=["POST"])
+def access_plaid_token():
+    try:
+        # get user session
+        user_id = current_user.id
+
+        # check if signed up in plaid
+        plaid_dict = classes.PlaidItems.query.filter_by(user_id=user_id).first()
+        if plaid_dict:  # if signed up in plaid
+            print('access_plaid_token: already signed up plaid')
+            item_id = plaid_dict.item_id
+            access_token = plaid_dict.access_token
+
+        else:  # if haven't signed up in plaid
+            # get the plaid token response
+            public_token = request.form["public_token"]
+            response = token_exchange(client, public_token)
+            item_id = response['item_id']
+            access_token = response['access_token']
+
+            # add plaid items
+            plaid = classes.PlaidItems(user_id=user_id, item_id=item_id, access_token=access_token)
+            db.session.add(plaid)
+            db.session.commit()
+
+    except ItemError as e:
+        outstring = f"Failure: {e.code}"
+        print(outstring)
+        return outstring
+
+    # get transaction data
+    transactions = get_transactions(client, '2019-10-01', '2019-11-01', access_token)
+
+    return render_template("dashboard.html",
+                           user=current_user,
+                           transactions=transactions,
+                           plaid_public_key=client.public_key,
+                           plaid_environment=client.environment,
+                           plaid_products=ENV_VARS.get("PLAID_PRODUCTS", "transactions"),
+                           plaid_country_codes=ENV_VARS.get("PLAID_COUNTRY_CODES", "US")
+                           )
+
