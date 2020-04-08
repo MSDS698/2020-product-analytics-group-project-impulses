@@ -9,6 +9,7 @@ Test branch url: http://imp-env-test-3.eba-ri85ihii.us-west-2.elasticbeanstalk.c
 AWS Codepipeline: https://aws.amazon.com/codepipeline/
 
 ## How to test changes and deploy your branch?
+* __Notify the team (@channel in #we_need_a_name) that test branch will be in use__
 * sign-in to AWS console using your IAM account (sign in to console)
 * go to `CodePipeline` service
 * click on Impulse_test CodePipeline
@@ -17,4 +18,5 @@ AWS Codepipeline: https://aws.amazon.com/codepipeline/
 * `save` the changes
 * once changes are saved click on `Release Change` (This is important because CodePipeline only detect changes when something is being commited, changing source will not be automatically deployed)
 * once `deploy` is finished, you should be able to view changes in the `Test branch url` linked above
+* __Notify the team (@channel in #we_need_a_name) that test branch will NOT be in use__ 
 
