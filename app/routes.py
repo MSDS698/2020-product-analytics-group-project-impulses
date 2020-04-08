@@ -73,6 +73,25 @@ def register():
     return render_template("register.html", form=registration_form)
 
 
+@application.route("/add_habit", methods=["POST", "GET"])
+@login_required
+def add_habit():
+    # get user session
+    user_id = current_user.id
+
+    habit_form = classes.HabitForm()
+    if habit_form.validate_on_submit():
+        habit_name = habit_form.habit_name.data
+        habit_category = habit_form.habit_category.data
+        time_minute = habit_form.time_minute.data
+        time_hour = habit_form.time_hour.data
+        habit = classes.Habit(user_id, habit_name, habit_category, time_minute, time_hour)
+        db.session.add(habit)
+        db.session.commit()
+        return redirect(url_for("login"))
+    return render_template("habits.html", form=habit_form)
+
+
 @application.route("/dashboard")
 @login_required
 def dashboard():
@@ -84,6 +103,7 @@ def dashboard():
 
     # check if signed up in plaid
     plaid_dict = classes.PlaidItems.query.filter_by(user_id=user_id).first()
+
     if plaid_dict:  # if signed up in plaid
         print('dashboard: already signed up plaid')
         item_id = plaid_dict.item_id
@@ -92,13 +112,17 @@ def dashboard():
         # get transaction data
         transactions = get_transactions(client, '2019-10-01', '2019-11-01', access_token)
 
+    # find user habit
+    habits = classes.Habits.query.filter_by(user_id=user_id).all()
+
     return render_template("dashboard.html",
                            user=current_user,
                            transactions=transactions,
                            plaid_public_key=client.public_key,
                            plaid_environment=client.environment,
                            plaid_products=ENV_VARS.get("PLAID_PRODUCTS", "transactions"),
-                           plaid_country_codes=ENV_VARS.get("PLAID_COUNTRY_CODES", "US")
+                           plaid_country_codes=ENV_VARS.get("PLAID_COUNTRY_CODES", "US"),
+                           habits=habits
                            )
 
 
@@ -149,4 +173,5 @@ def access_plaid_token():
                            plaid_products=ENV_VARS.get("PLAID_PRODUCTS", "transactions"),
                            plaid_country_codes=ENV_VARS.get("PLAID_COUNTRY_CODES", "US")
                            )
+
 
