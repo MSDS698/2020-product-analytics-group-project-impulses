@@ -78,4 +78,3 @@ def token_exchange(client: plaid.Client, public_token: str) -> dict:
         return e.code
 
     return response
-    
