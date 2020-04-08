@@ -13,6 +13,22 @@
                 <div class="logged-in-box auth0-box logged-in">
                     <!-- <h1 id="logo"><img src="//cdn.auth0.com/samples/auth0_logo_final_blue_RGB.png" /></h1> -->
                     <h2>Welcome {{user.first_name}}</h2>
+                    <form id='plaid-link-form' action={{url_for('access_plaid_token')}} method="post">
+                    </form>
+                    <script
+                        src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"
+                        data-client-name="My App"
+                        data-form-id="plaid-link-form"
+                        data-key={{plaid_public_key}}
+                        data-product={{plaid_products}}
+                        data-env={{plaid_environment}}>
+                    </script>
+                    <h3>Transaction Data</h3>
+                    <ul>
+                        {% for transaction in transactions %}
+                        <li>{{ transaction.name }}</li>
+                        {% endfor %}
+                    </ul>
                     <a id="qsLogoutBtn" class="btn btn-primary btn-lg btn-logout btn-block" href="{{url_for('logout')}}">Logout</a>
                 </div>
             </div>
