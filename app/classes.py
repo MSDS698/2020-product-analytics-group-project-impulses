@@ -32,7 +32,7 @@ class User(db.Model, UserMixin):
     auth_id: unique user id from OAuth if available; string
     """
     __tablename__ = 'user'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column('user_id', db.Integer, primary_key=True)
     first_name = db.Column(db.String, nullable=False)
     last_name = db.Column(db.String, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
@@ -72,15 +72,15 @@ class PlaidItems(db.Model):
     """Data model for plaid_items table.
 
     Columns include:
-    plaid_id: auto increment primary key; bigint
+    plaid_item_id: auto increment primary key; bigint
     user_id: user id that the plaid item is associated with; bigint
     item_id: plaid item id; string
     access_token: token that is associated to user account information
                   for retrieval in plaid; string
     """
     __tablename__ = 'plaid_items'
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    id = db.Column('plaid_item_id',db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
     item_id = db.Column(db.String, nullable=False)
     access_token = db.Column(db.String, nullable=False)
     # relationships
@@ -100,10 +100,10 @@ class Accounts(db.Model):
     account_subtype: account subtype, ex. 401k/checking/credit card; string
     """
     __tablename__ = "accounts"
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    id = db.Column('account_id', db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
     plaid_id = db.Column(db.Integer,
-                         db.ForeignKey("plaid_items.id"))
+                         db.ForeignKey("plaid_items.plaid_item_id"))
     account_plaid_id = db.Column(db.String, nullable=False)
     account_name = db.Column(db.String)
     account_type = db.Column(db.String)
@@ -135,10 +135,10 @@ class Transaction(db.Model):
     merchant_latitude: merchant latitude; string
     """
     __tablename__ = "transaction"
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    id = db.Column('transaction_id', db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
     account_id = db.Column(db.Integer,
-                           db.ForeignKey("accounts.id"))
+                           db.ForeignKey("accounts.account_id"))
     trans_amount = db.Column(db.Numeric(10, 2), nullable=False)
     category_id = db.Column(db.Integer)
     is_preferred_saving = db.Column(db.String)
@@ -168,8 +168,8 @@ class SavingsHistory(db.Model):
     update_date: date when the savings entry is updated in the system; date
     """
     __tablename__ = "savings_history"
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    id = db.Column('savings_id', db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
     savings_amount = db.Column(db.Numeric(10, 2), nullable=False)
     total_savings = db.Column(db.Numeric(10, 2), nullable=False)
     predicted_savings = db.Column(db.Numeric(10, 2))
@@ -224,9 +224,9 @@ class LogInForm(FlaskForm):
 class HabitForm(FlaskForm):
     """Class for habit formation form"""
     habit_name = StringField("Habit Name:", validators=[DataRequired()])
-    habit_category = SelectField("Habit Category:", choices=[('coffee', 'coffee2'), ('lunch', 'lunch 2')])
-    time_minute = SelectField("Minute:", choices=[(8,9),(10,11)])
-    time_hour = SelectField("Hour:", choices=[(1,1),(2,2)])
+    habit_category = SelectField("Habit Category:", choices=[('coffee', 'coffee'), ('lunch', 'lunch')])
+    time_minute = SelectField("Minute:", choices=[(8, 8), (10, 10)])
+    time_hour = SelectField("Hour:", choices=[(1, 1), (2, 2)])
     submit = SubmitField("Submit")
 
 
