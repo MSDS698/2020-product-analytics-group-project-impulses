@@ -1,5 +1,5 @@
 import ast
-from sqlalchemy import create_engine, MetaData, select
+from sqlalchemy import MetaData, select
 
 
 def parse_plaid_data(plaid_data):
@@ -13,20 +13,18 @@ def parse_plaid_data(plaid_data):
     return data
 
 
-def add_accounts(accounts_data, user_id):
+def add_accounts(db, accounts_data, user_id):
     """
     Add account information to the database
+    :param db: database connection
     :param accounts_data: data with account information from Plaid (str)
     :param user_id: user id associated to the account (int)
     """
     accounts = parse_plaid_data(accounts_data)
-    connection = "postgres://masteruser:productimpulses@maindb.cuwtgivgs05r." \
-                 "us-west-1.rds.amazonaws.com:5432/postgres"
-    db = create_engine(connection)
 
-    meta = MetaData(bind=db, reflect=True, schema='dw')
+    meta = MetaData(bind=db, reflect=True)
     with db.connect() as conn:
-        select_statement = select([meta.tables['dw.plaid_items'].c.plaid_id]) \
+        select_statement = select([meta.tables['dw.plaid_items'].c.plaid_item_id]) \
             .where(meta.tables['dw.plaid_items'].c.user_id == user_id)
         result_set = conn.execute(select_statement)
         for r in result_set:
@@ -41,18 +39,16 @@ def add_accounts(accounts_data, user_id):
             conn.execute(insert_statement)
 
 
-def add_transactions(transactions_data):
+def add_transactions(db, transactions_data):
     """
     Add account information to the database
+    :param db: database connection
     :param transactions_data: data with transactions information
     from Plaid (str)
     """
     transactions = parse_plaid_data(transactions_data)
-    connection = "postgres://masteruser:productimpulses@maindb.cuwtgivgs05r." \
-                 "us-west-1.rds.amazonaws.com:5432/postgres"
-    db = create_engine(connection)
 
-    meta = MetaData(bind=db, reflect=True, schema='dw')
+    meta = MetaData(bind=db, reflect=True)
     with db.connect() as conn:
         for transaction in transactions:
             select_statement = select(
