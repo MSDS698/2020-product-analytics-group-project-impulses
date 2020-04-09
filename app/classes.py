@@ -241,9 +241,9 @@ class HabitForm(FlaskForm):
                                               for i in range(24)],
                             validators=[DataRequired()])
     time_day_of_week = SelectField("Day Of Week:",
-                                   choices=[('0', 'Weekdays'),
-                                            ('1', 'Weekends'),
-                                            ('2', 'Everyday')],
+                                   choices=[('1-5', 'Monday-Friday'),
+                                            ('0,6', 'Weekends'),
+                                            ('*', 'Everyday')],
                                    validators=[DataRequired()])
     submit = SubmitField("Submit")
 
