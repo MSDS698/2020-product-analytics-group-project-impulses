@@ -19,8 +19,10 @@ sys.path.insert(0, os.path.abspath("../../"))
 # -- Project information -----------------------------------------------------
 
 project = "Impulses"
-copyright = "2020, Andrew Youg, Esme Luo, Esther Liu, Kevin Loftis, Lea Genuit, Xu Liu, Zhentao Hou"
-author = ("Andrew Youg, Esme Luo, Esther Liu, Kevin Loftis, Lea Genuit, Xu Liu, Zhentao Hou")
+copyright = "2020, Andrew Youg, Esme Luo, Esther Liu, Kevin Loftis, " \
+            "Lea Genuit, Xu Liu, Zhentao Hou"
+author = "Andrew Youg, Esme Luo, Esther Liu, Kevin Loftis, Lea Genuit, " \
+         "Xu Liu, Zhentao Hou"
 
 # The full version, including alpha/beta/rc tags
 release = "0"

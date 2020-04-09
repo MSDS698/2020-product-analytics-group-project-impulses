@@ -10,7 +10,7 @@ from flask_login import UserMixin
 from flask_wtf import FlaskForm
 
 from werkzeug.security import check_password_hash, generate_password_hash
-from wtforms import PasswordField, StringField, SubmitField
+from wtforms import PasswordField, StringField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Optional
 from datetime import datetime
 
@@ -47,6 +47,7 @@ class User(db.Model, UserMixin):
     accounts = db.relationship("Accounts", backref="user")
     transaction = db.relationship("Transaction", backref="user")
     savings_history = db.relationship("SavingsHistory", backref="user")
+    habits = db.relationship("Habits", backref="user")
 
     def __init__(self, first_name, last_name, email,
                  phone, password, auth_id=None):
@@ -78,7 +79,7 @@ class PlaidItems(db.Model):
                   for retrieval in plaid; string
     """
     __tablename__ = 'plaid_items'
-    id = db.Column('plaid_item_id',db.Integer, primary_key=True)
+    id = db.Column('plaid_item_id', db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
     item_id = db.Column(db.String, nullable=False)
     access_token = db.Column(db.String, nullable=False)
@@ -176,6 +177,37 @@ class SavingsHistory(db.Model):
     update_date = db.Column(db.Date, nullable=False)
 
 
+class Habits(db.Model):
+    """Data model for habits table.
+
+    Columns include:
+    habits_id: auto increment primary key; bigint
+    user_id: id of the user that made the habit; bigint
+    habit_name: name of the habit user created; string
+    habit_category: category of the habit; string
+    time_minute: minute of the reminder; bigint (0-59)
+    time_hour: hour of the reminder; bigint(0-23)
+    """
+    __tablename__ = "habits"
+    id = db.Column("habits_id", db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
+    habit_name = db.Column(db.String, nullable=False)
+    habit_category = db.Column(db.String, nullable=False)
+    time_minute = db.Column(db.String, nullable=False)
+    time_hour = db.Column(db.String, nullable=False)
+
+    # time_day_of_week = db.Column(db.String, nullable=False)
+
+    def __init__(self, user_id, habit_name, habit_category, time_minute,
+                 time_hour):
+        self.user_id = user_id
+        self.habit_name = habit_name
+        self.habit_category = habit_category
+        self.time_minute = time_minute
+        self.time_hour = time_hour
+        # self.time_day_of_week = time_day_of_week
+
+
 class RegistrationForm(FlaskForm):
     """Class for registration form"""
     first_name = StringField("First Name:", validators=[DataRequired()])
@@ -190,6 +222,25 @@ class LogInForm(FlaskForm):
     """Class for login form"""
     email = StringField("Email:", validators=[DataRequired()])
     password = PasswordField("Password:", validators=[DataRequired()])
+    submit = SubmitField("Submit")
+
+
+class HabitForm(FlaskForm):
+    """Class for habit formation form"""
+    habit_name = StringField("Habit Name:", validators=[DataRequired()])
+    habit_category = SelectField("Habit Category:",
+                                 choices=[('coffee', 'coffee'),
+                                          ('lunch', 'lunch')],
+                                 validators=[DataRequired()])
+    time_minute = SelectField("Minute:",
+                              choices=[('8', '8'), ('10', '10')],
+                              validators=[DataRequired()])
+    time_hour = SelectField("Hour:", choices=[('1', '1'), ('2', '2')],
+                            validators=[DataRequired()])
+    # time_day_of_week = SelectField("Day Of Week:",
+    # choices=[('0', 'Weekdays'),
+    # ('1', 'Weekends'), ('2', 'Everyday')],
+    #                                validators=[DataRequired()])
     submit = SubmitField("Submit")
 
 
