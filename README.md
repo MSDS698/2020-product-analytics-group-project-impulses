@@ -1,5 +1,10 @@
 # 2020-product-analytics-group-project-impulses
 
+## Pycodestyle
+* pep8 test is now integrated as a part of github workflow and python code with style errors will not be able to merge into master
+* `./app/__init__.py` is removed from pep8 test on the github workflow as import statement in this file cannot be at the top of the file
+* re-run `pycodestyle ./app/__init__.py` locally if any changes made to this file to make sure no other pycodestyle erro exists other than 2 `E402 module level import not at top of file` errors before pushing any changes
+
 ## Deployment Resources
 
 Master branch url: http://impulse-master.eba-2mxduspm.us-west-2.elasticbeanstalk.com/
