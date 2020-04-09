@@ -3,7 +3,8 @@ from app import application, classes, db
 from flask import redirect, render_template, url_for, request
 from flask_login import current_user, login_user, login_required, logout_user
 from plaid.errors import ItemError
-from plaid_methods.methods import get_accounts, get_transactions, token_exchange
+from plaid_methods.methods import get_accounts, get_transactions, \
+    token_exchange
 from plaid import Client
 
 
@@ -73,6 +74,30 @@ def register():
     return render_template("register.html", form=registration_form)
 
 
+@application.route("/add_habit", methods=["POST", "GET"])
+@login_required
+def add_habit():
+    # get user session
+    user_id = current_user.id
+
+    habit_form = classes.HabitForm()
+    print(habit_form.validate_on_submit())
+    if habit_form.validate_on_submit():
+        habit_name = habit_form.habit_name.data
+        habit_category = habit_form.habit_category.data
+        time_minute = habit_form.time_minute.data
+        time_hour = habit_form.time_hour.data
+        # time_day_of_week = habit_form.time_day_of_week.data
+        # habit = classes.Habits(user_id, habit_name, habit_category,
+        # time_minute, time_hour, time_day_of_week)
+        habit = classes.Habits(user_id, habit_name, habit_category,
+                               time_minute, time_hour)
+        db.session.add(habit)
+        db.session.commit()
+        return redirect(url_for("dashboard"))
+    return render_template("habits.html", form=habit_form)
+
+
 @application.route("/dashboard")
 @login_required
 def dashboard():
@@ -84,21 +109,29 @@ def dashboard():
 
     # check if signed up in plaid
     plaid_dict = classes.PlaidItems.query.filter_by(user_id=user_id).first()
+
     if plaid_dict:  # if signed up in plaid
         print('dashboard: already signed up plaid')
         item_id = plaid_dict.item_id
         access_token = plaid_dict.access_token
 
         # get transaction data
-        transactions = get_transactions(client, '2019-10-01', '2019-11-01', access_token)
+        transactions = get_transactions(client, '2019-10-01', '2019-11-01',
+                                        access_token)
+
+    # find user habit
+    habits = classes.Habits.query.filter_by(user_id=user_id).all()
 
     return render_template("dashboard.html",
                            user=current_user,
                            transactions=transactions,
                            plaid_public_key=client.public_key,
                            plaid_environment=client.environment,
-                           plaid_products=ENV_VARS.get("PLAID_PRODUCTS", "transactions"),
-                           plaid_country_codes=ENV_VARS.get("PLAID_COUNTRY_CODES", "US")
+                           plaid_products=ENV_VARS.get("PLAID_PRODUCTS",
+                                                       "transactions"),
+                           plaid_country_codes=ENV_VARS.
+                           get("PLAID_COUNTRY_CODES", "US"),
+                           habits=habits
                            )
 
 
@@ -115,7 +148,8 @@ def access_plaid_token():
         user_id = current_user.id
 
         # check if signed up in plaid
-        plaid_dict = classes.PlaidItems.query.filter_by(user_id=user_id).first()
+        plaid_dict = classes.PlaidItems.query.\
+            filter_by(user_id=user_id).first()
         if plaid_dict:  # if signed up in plaid
             print('access_plaid_token: already signed up plaid')
             item_id = plaid_dict.item_id
@@ -129,7 +163,8 @@ def access_plaid_token():
             access_token = response['access_token']
 
             # add plaid items
-            plaid = classes.PlaidItems(user_id=user_id, item_id=item_id, access_token=access_token)
+            plaid = classes.PlaidItems(user_id=user_id, item_id=item_id,
+                                       access_token=access_token)
             db.session.add(plaid)
             db.session.commit()
 
@@ -139,14 +174,16 @@ def access_plaid_token():
         return outstring
 
     # get transaction data
-    transactions = get_transactions(client, '2019-10-01', '2019-11-01', access_token)
+    transactions = get_transactions(client, '2019-10-01', '2019-11-01',
+                                    access_token)
 
     return render_template("dashboard.html",
                            user=current_user,
                            transactions=transactions,
                            plaid_public_key=client.public_key,
                            plaid_environment=client.environment,
-                           plaid_products=ENV_VARS.get("PLAID_PRODUCTS", "transactions"),
-                           plaid_country_codes=ENV_VARS.get("PLAID_COUNTRY_CODES", "US")
+                           plaid_products=ENV_VARS.get("PLAID_PRODUCTS",
+                                                       "transactions"),
+                           plaid_country_codes=ENV_VARS.
+                           get("PLAID_COUNTRY_CODES", "US")
                            )
-
