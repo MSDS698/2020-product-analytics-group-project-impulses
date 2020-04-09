@@ -74,15 +74,35 @@ def register():
     return render_template("register.html", form=registration_form)
 
 
-@application.route("/add_habit", methods=["POST", "GET"])
+@application.route("/dashboard", methods=["POST", "GET"])
 @login_required
-def add_habit():
+def dashboard():
+    # default transactions
+    transactions = ''
+
+    # get user session
+    user_id = current_user.id
+
+    # check if signed up in plaid
+    plaid_dict = classes.PlaidItems.query.filter_by(
+        user_id=user_id).first()
+
+    if plaid_dict:  # if signed up in plaid
+        print('dashboard: already signed up plaid')
+        item_id = plaid_dict.item_id
+        access_token = plaid_dict.access_token
+
+        # get transaction data
+        transactions = get_transactions(client, '2019-10-01', '2019-11-01',
+                                        access_token)
+
     # get user session
     user_id = current_user.id
 
     habit_form = classes.HabitForm()
     print(habit_form.validate_on_submit())
     if habit_form.validate_on_submit():
+        print('a')
         habit_name = habit_form.habit_name.data
         habit_category = habit_form.habit_category.data
         time_minute = habit_form.time_minute.data
@@ -95,29 +115,6 @@ def add_habit():
         db.session.add(habit)
         db.session.commit()
         return redirect(url_for("dashboard"))
-    return render_template("habits.html", form=habit_form)
-
-
-@application.route("/dashboard")
-@login_required
-def dashboard():
-    # default transactions
-    transactions = ''
-
-    # get user session
-    user_id = current_user.id
-
-    # check if signed up in plaid
-    plaid_dict = classes.PlaidItems.query.filter_by(user_id=user_id).first()
-
-    if plaid_dict:  # if signed up in plaid
-        print('dashboard: already signed up plaid')
-        item_id = plaid_dict.item_id
-        access_token = plaid_dict.access_token
-
-        # get transaction data
-        transactions = get_transactions(client, '2019-10-01', '2019-11-01',
-                                        access_token)
 
     # find user habit
     habits = classes.Habits.query.filter_by(user_id=user_id).all()
@@ -125,13 +122,14 @@ def dashboard():
     return render_template("dashboard.html",
                            user=current_user,
                            transactions=transactions,
+                           habits=habits,
+                           form=habit_form,
                            plaid_public_key=client.public_key,
                            plaid_environment=client.environment,
                            plaid_products=ENV_VARS.get("PLAID_PRODUCTS",
                                                        "transactions"),
                            plaid_country_codes=ENV_VARS.
-                           get("PLAID_COUNTRY_CODES", "US"),
-                           habits=habits
+                           get("PLAID_COUNTRY_CODES", "US")
                            )
 
 
@@ -143,6 +141,7 @@ def logout():
 
 @application.route("/access_plaid_token", methods=["POST"])
 def access_plaid_token():
+
     try:
         # get user session
         user_id = current_user.id
@@ -173,17 +172,4 @@ def access_plaid_token():
         print(outstring)
         return outstring
 
-    # get transaction data
-    transactions = get_transactions(client, '2019-10-01', '2019-11-01',
-                                    access_token)
-
-    return render_template("dashboard.html",
-                           user=current_user,
-                           transactions=transactions,
-                           plaid_public_key=client.public_key,
-                           plaid_environment=client.environment,
-                           plaid_products=ENV_VARS.get("PLAID_PRODUCTS",
-                                                       "transactions"),
-                           plaid_country_codes=ENV_VARS.
-                           get("PLAID_COUNTRY_CODES", "US")
-                           )
+    return redirect(url_for("dashboard"))

@@ -52,3 +52,30 @@
 .ui-tabs .ui-tabs-hide {
   display: none;
 }
+
+.jumbotron {
+/*
+  background-image: url(../img/pexels-photo-3531895.jpeg);
+  background-size: cover;
+  background-color: rgba(0,0,0,0.5);
+  height: 50%;
+*/
+  margin-bottom: 0;
+}
+
+
+.bottom {
+/*
+  background-image: url(../img/pexels-photo-1939485.jpeg);
+  background-size: cover;
+  background-color: rgba(0,0,0,0.5);
+*/
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+
+.scroll {
+  height: calc(100vh - 110px);
+  overflow-y: scroll;
+}
