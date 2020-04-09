@@ -16,7 +16,6 @@ ENV_VARS = {
     "PLAID_CLIENT_ID": os.environ["PLAID_CLIENT_ID"],
     "PLAID_PUBLIC_KEY": os.environ["PLAID_PUBLIC_KEY"],
     "PLAID_SECRET": os.environ["PLAID_SECRET"],
-    "PLAID_ENV": os.environ["PLAID_ENV"]
 }
 
 INSTITUTION_ID = 'ins_109508'
@@ -68,7 +67,7 @@ class TestSetup(unittest.TestCase):
             ENV_VARS["PLAID_CLIENT_ID"],
             ENV_VARS["PLAID_SECRET"],
             ENV_VARS["PLAID_PUBLIC_KEY"],
-            ENV_VARS["PLAID_ENV"],
+            "sandbox"
         )
         self.public_token = sandbox.PublicToken(self.client)
         db.drop_all()
@@ -116,11 +115,4 @@ class TestSetup(unittest.TestCase):
         response = methods.token_exchange(self.client, 
                                           response['public_token'])
         return response['access_token']
-
-
-
-    
-
-
-
- 
+        

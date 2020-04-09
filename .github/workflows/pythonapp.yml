@@ -25,8 +25,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Test with unittest
+      env:
+        PLAID_CLIENT_ID: ${{ secrets.PLAID_CLIENT_ID }}
+        PLAID_PUBLIC_KEY: ${{ secrets.PLAID_PUBLIC_KEY }}
+        PLAID_SECRET: ${{ secrets.PLAID_SECRET_SANDBOX }}
+        PLAID_ENV: sandbox
       run: |
-        source .env
         python -m unittest discover tests
     - name: Python Style Checker
       run: |
