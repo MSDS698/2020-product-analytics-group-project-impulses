@@ -76,17 +76,18 @@ class PlaidItems(db.Model):
     """Data model for plaid_items table.
 
     Columns include:
-    plaid_item_id: auto increment primary key; bigint
-    user_id: user id that the plaid item is associated with; bigint
+    plaid_item_id: auto increment primary key; int
+    user_id: user id that the plaid item is associated with; int
     item_id: plaid item id; string
     access_token: token that is associated to user account information
                   for retrieval in plaid; string
     """
-    __tablename__ = 'plaid_items'
-    id = db.Column('plaid_item_id', db.Integer, primary_key=True)
+    __tablename__ = "plaid_items"
+    id = db.Column("plaid_item_id", db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
     item_id = db.Column(db.String, nullable=False)
     access_token = db.Column(db.String, nullable=False)
+
     # relationships
     accounts = db.relationship("Accounts", backref="plaid_item")
 
@@ -95,16 +96,16 @@ class Accounts(db.Model):
     """Data model for accounts table.
 
     Columns include:
-    account_id: auto increment primary key; bigint
-    user_id: user id that the account is associated with; bigint
-    plaid_id: plaid id that the account is associated with; bigint
+    account_id: auto increment primary key; int
+    user_id: user id that the account is associated with; int
+    plaid_id: plaid id that the account is associated with; int
     account_plaid_id: unique id for identification in plaid; string
     account_name: account name; string
     account_type: account type, ex. investment/depository/credit; string
     account_subtype: account subtype, ex. 401k/checking/credit card; string
     """
     __tablename__ = "accounts"
-    id = db.Column('account_id', db.Integer, primary_key=True)
+    id = db.Column("account_id", db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
     plaid_id = db.Column(db.Integer,
                          db.ForeignKey("plaid_items.plaid_item_id"))
@@ -112,6 +113,7 @@ class Accounts(db.Model):
     account_name = db.Column(db.String)
     account_type = db.Column(db.String)
     account_subtype = db.Column(db.String)
+
     # relationships
     transaction = db.relationship("Transaction", backref="account")
 
@@ -120,11 +122,11 @@ class Transaction(db.Model):
     """Data model for transaction table.
 
     Columns include:
-    transaction_id: auto increment primary key; bigint
-    user_id: user id that the transaction is associated with; bigint
-    account_id: account id that the transaction is associated with; bigint
+    transaction_id: auto increment primary key; int
+    user_id: user id that the transaction is associated with; int
+    account_id: account id that the transaction is associated with; int
     trans_amount: transaction amount; decimal(10, 2)
-    category_id: category id in plaid; bigint
+    category_id: category id in plaid; int
     is_preferred_saving: whether the transaction is a preferred saving
                          category; string
     trans_date: date of the transaction; date
@@ -139,7 +141,7 @@ class Transaction(db.Model):
     merchant_latitude: merchant latitude; string
     """
     __tablename__ = "transaction"
-    id = db.Column('transaction_id', db.Integer, primary_key=True)
+    id = db.Column("transaction_id", db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
     account_id = db.Column(db.Integer,
                            db.ForeignKey("accounts.account_id"))
@@ -162,8 +164,8 @@ class SavingsHistory(db.Model):
     """Data model for savings_history table.
 
     Columns include:
-    savings_id: auto increment primary key; bigint
-    user_id: id of the user that made the saving; bigint
+    savings_id: auto increment primary key; int
+    user_id: id of the user that made the saving; int
     savings_amount: savings amount; decimal(10, 2)
     total_savings: total savings the user has made so far; decimal(10, 2)
     predicted_savings: predicted savings the user will make; decimal(10, 2)
@@ -172,7 +174,7 @@ class SavingsHistory(db.Model):
     update_date: date when the savings entry is updated in the system; date
     """
     __tablename__ = "savings_history"
-    id = db.Column('savings_id', db.Integer, primary_key=True)
+    id = db.Column("savings_id", db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
     savings_amount = db.Column(db.Numeric(10, 2), nullable=False)
     total_savings = db.Column(db.Numeric(10, 2), nullable=False)
@@ -185,12 +187,12 @@ class Habits(db.Model):
     """Data model for habits table.
 
     Columns include:
-    habits_id: auto increment primary key; bigint
-    user_id: id of the user that made the habit; bigint
+    habits_id: auto increment primary key; int
+    user_id: id of the user that made the habit; int
     habit_name: name of the habit user created; string
     habit_category: category of the habit; string
-    time_minute: minute of the reminder; bigint (0-59)
-    time_hour: hour of the reminder; bigint(0-23)
+    time_minute: minute of the reminder; string (0-59)
+    time_hour: hour of the reminder; string (0-23)
     """
     __tablename__ = "habits"
     id = db.Column("habits_id", db.Integer, primary_key=True)
