@@ -7,8 +7,8 @@ from plaid.api import sandbox
 
 TEST_DB = 'test.db'
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
-os.environ['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
-    os.path.join(BASEDIR, TEST_DB)
+os.environ['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' \
+                                        + os.path.join(BASEDIR, TEST_DB)
 
 from app import application, classes, db
 from plaid.errors import PlaidError
@@ -21,10 +21,9 @@ ENV_VARS = {
 
 INSTITUTION_ID = 'ins_109508'
 INITIAL_PRODUCTS = ['transactions']
-TEST_OPTION_TRANSACTION =  \
-        {
+TEST_OPTION_TRANSACTION = {
             "override_username": "user_custom",
-            "override_password": \
+            "override_password":
             """{
                 "override_accounts": [
                     {
@@ -54,13 +53,16 @@ TEST_OPTION_TRANSACTION =  \
 
 
 class TestPlaidMethods(unittest.TestCase):
-        # executed prior to each test
+    """Class for testing the plaid methods"""
+
     def setUp(self):
+        """Initialization for the test cases
+
+        This is executed prior to each test.
+        """
         application.config['TESTING'] = True
         application.config['WTF_CSRF_ENABLED'] = False
         application.config['DEBUG'] = False
-        application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
-            os.path.join(BASEDIR, TEST_DB)
         self.app = application.test_client()
         # setup plaid client
         self.client = Client(
@@ -72,47 +74,54 @@ class TestPlaidMethods(unittest.TestCase):
         self.public_token = sandbox.PublicToken(self.client)
         db.drop_all()
         db.create_all()
- 
-    # executed after each test
+
     def tearDown(self):
+        """Clean-up for the test cases
+
+        This is executed after each test.
+        """
         db.session.remove()
-        os.remove(os.path.join(BASEDIR,TEST_DB))
+        os.remove(os.path.join(BASEDIR, TEST_DB))
 
+    ####################################################################
+    # Plaid Method Tests
+    ####################################################################
     def test_token_exchange(self):
-        response = self.public_token.create(INSTITUTION_ID, 
-                                                INITIAL_PRODUCTS,
-                                                TEST_OPTION_TRANSACTION)
+        response = self.public_token.create(INSTITUTION_ID,
+                                            INITIAL_PRODUCTS,
+                                            TEST_OPTION_TRANSACTION)
 
-        response = methods.token_exchange(self.client, response['public_token'])
+        response = methods.token_exchange(self.client,
+                                          response['public_token'])
         self.assertIn('access_token', response.keys())
         self.assertIn('item_id', response.keys())
         self.assertIn('request_id', response.keys())
 
     def test_invalid_token_exchange(self):
-        response = methods.token_exchange(self.client, "public-sandbox-23a61cc6-be12-4434-a775-b75b1ebc2776")
-        self.assertEqual(response,'INVALID_PUBLIC_TOKEN')
+        response = methods.token_exchange(
+            self.client,
+            "public-sandbox-23a61cc6-be12-4434-a775-b75b1ebc2776"
+        )
+        self.assertEqual(response, 'INVALID_PUBLIC_TOKEN')
 
     def test_get_accounts(self):
         start_date = "2019-10-01"
         end_date = "2020-11-01"
         access_token = self.get_access_token(None)
-        response = methods.get_transactions(self.client, 
-                                            start_date, 
+        response = methods.get_transactions(self.client,
+                                            start_date,
                                             end_date,
                                             access_token)
-        self.assertEqual(type(response),list)
-
-    def test_get_accounts(self):
-        access_token = self.get_access_token(None)
-        response = methods.get_accounts(self.client, access_token)
-
-        self.assertEqual(type(response),list)
-
+        self.assertEqual(type(response), list)
 
     def get_access_token(self, options=TEST_OPTION_TRANSACTION):
-        response = self.public_token.create(INSTITUTION_ID, 
+        response = self.public_token.create(INSTITUTION_ID,
                                             INITIAL_PRODUCTS,
                                             options)
-        response = methods.token_exchange(self.client, 
+        response = methods.token_exchange(self.client,
                                           response['public_token'])
         return response['access_token']
+
+
+if __name__ == "__main__":
+    unittest.main()

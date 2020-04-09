@@ -32,6 +32,9 @@ class TestDB(unittest.TestCase):
         db.session.remove()
         os.remove(os.path.join(BASEDIR, TEST_DB))
 
+    ####################################################################
+    # Database Tests
+    ####################################################################
     def test_insertion(self):
         """Test if new records can be correctly inserted to each table
 
