@@ -6,8 +6,42 @@
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="/public/app.css" rel="stylesheet">
+
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="https://jqueryui.com/latest/ui/ui.tabs.js">
+        <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='login/vendor/daterangepicker/daterangepicker.css')}}">
+
+
+
+
     </head>
     <body class="home">
+
+        <!--for tabs -->
+        <script type="text/javascript">
+          $(document).ready(function(){
+            $(".ui-tabs").tabs();
+          });
+        </script>
+
+        <div class="ui-tabs">
+          <ul class="ui-tabs-nav">
+            <li><a href="#tabs-1">Tab One</a></li>
+            <li><a href="#tabs-2">Tab Two</a></li>
+            <li><a href="#tabs-3">Tab Three</a></li>
+          </ul>
+          <div id="tabs-1" class="ui-tabs-panel">
+            <p>Content one.</p>
+          </div>
+          <div id="tabs-2" class="ui-tabs-panel">
+            <p>Content two.</p>
+          </div>
+          <div id="tabs-3" class="ui-tabs-panel">
+            <p>Content three.</p>
+          </div>
+        </div>
+
         <div class="container">
             <div class="login-page clearfix">
                 <div class="logged-in-box auth0-box logged-in">
