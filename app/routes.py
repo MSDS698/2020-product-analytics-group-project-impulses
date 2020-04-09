@@ -102,7 +102,7 @@ def add_habit():
 @login_required
 def dashboard():
     # default transactions
-    transactions = 'no transaction data'
+    transactions = ''
 
     # get user session
     user_id = current_user.id

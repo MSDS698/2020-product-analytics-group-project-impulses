@@ -7,38 +7,54 @@
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="/public/app.css" rel="stylesheet">
 
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="https://jqueryui.com/latest/ui/ui.tabs.js">
-        <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='login/vendor/daterangepicker/daterangepicker.css')}}">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-
-
+        <script>
+          $( function() {
+            $( "#tabs" ).tabs();
+          } );
+        </script>
 
     </head>
     <body class="home">
+        <h2>Welcome {{user.first_name}}</h2>
 
-        <!--for tabs -->
-        <script type="text/javascript">
-          $(document).ready(function(){
-            $(".ui-tabs").tabs();
-          });
-        </script>
+        <form id='plaid-link-form' action={{url_for('access_plaid_token')}} method="post">
+            </form>
+            <script
+                src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"
+                data-client-name="My App"
+                data-form-id="plaid-link-form"
+                data-key={{plaid_public_key}}
+                data-product={{plaid_products}}
+                data-env={{plaid_environment}}>
+            </script>
 
-        <div class="ui-tabs">
-          <ul class="ui-tabs-nav">
-            <li><a href="#tabs-1">Tab One</a></li>
-            <li><a href="#tabs-2">Tab Two</a></li>
-            <li><a href="#tabs-3">Tab Three</a></li>
+        <div id="tabs">
+          <ul>
+            <li><a href="#tabs-1">Dashboard</a></li>
+            <li><a href="#tabs-2">Habits</a></li>
+            <li><a href="#tabs-3">Account</a></li>
           </ul>
-          <div id="tabs-1" class="ui-tabs-panel">
-            <p>Content one.</p>
+          <div id="tabs-1">
+            <h3>Transaction Data</h3>
+                <ul>
+                    {% for transaction in transactions %}
+                    <li>{{ transaction.name }}</li>
+                    {% endfor %}
+                </ul>
           </div>
-          <div id="tabs-2" class="ui-tabs-panel">
-            <p>Content two.</p>
+          <div id="tabs-2">
+            <p>habits stuff</p>
           </div>
-          <div id="tabs-3" class="ui-tabs-panel">
-            <p>Content three.</p>
+          <div id="tabs-3">
+              <p>First Name: {{user.first_name}}</p>
+              <p>Last Name: {{user.last_name}}</p>
+              <p>Email: {{user.email}}</p>
+              <p>Phone: {{user.phone}}</p>
           </div>
         </div>
 
@@ -46,23 +62,6 @@
             <div class="login-page clearfix">
                 <div class="logged-in-box auth0-box logged-in">
                     <!-- <h1 id="logo"><img src="//cdn.auth0.com/samples/auth0_logo_final_blue_RGB.png" /></h1> -->
-                    <h2>Welcome {{user.first_name}}</h2>
-                    <form id='plaid-link-form' action={{url_for('access_plaid_token')}} method="post">
-                    </form>
-                    <script
-                        src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"
-                        data-client-name="My App"
-                        data-form-id="plaid-link-form"
-                        data-key={{plaid_public_key}}
-                        data-product={{plaid_products}}
-                        data-env={{plaid_environment}}>
-                    </script>
-                    <h3>Transaction Data</h3>
-                    <ul>
-                        {% for transaction in transactions %}
-                        <li>{{ transaction.name }}</li>
-                        {% endfor %}
-                    </ul>
                     <h3>Saving Habits</h3>
                     <ul>
                         {% for habit in habits %}
