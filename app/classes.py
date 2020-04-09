@@ -1,9 +1,12 @@
 """
 SQLAlchemy Object Relational Mapper (ORM) and Flask-WTForms
 
-Including classes for each table in the database:
-user, plaid_items, accounts, transaction, savings_history
-and RegistrationForm and LogInForm
+Including:
+Classes for each table in the database -
+user, plaid_items, accounts, transaction, savings_history, and habits
+
+WTForms -
+RegistrationForm, LogInForm, and HabitForm
 """
 
 from flask_login import UserMixin
@@ -21,7 +24,7 @@ class User(db.Model, UserMixin):
     """Data model for user table.
 
     Columns include:
-    user_id: auto increment primary key; bigint
+    user_id: auto increment primary key; int
     first_name: user's first name; string
     last_name: user's last name; string
     email: user's email address; string; unique
@@ -31,17 +34,18 @@ class User(db.Model, UserMixin):
     status: user's current status; string
     auth_id: unique user id from OAuth if available; string
     """
-    __tablename__ = 'user'
-    id = db.Column('user_id', db.Integer, primary_key=True)
+    __tablename__ = "user"
+    id = db.Column("user_id", db.Integer, primary_key=True)
     first_name = db.Column(db.String, nullable=False)
     last_name = db.Column(db.String, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
     phone = db.Column(db.String(10), unique=True, nullable=False)
     password_hash = db.Column(db.String, nullable=False)
     signup_date = db.Column(db.DateTime, nullable=False,
-                            default=datetime.utcnow())
+                            default=datetime.now())
     status = db.Column(db.String, nullable=False, default="active")
     auth_id = db.Column(db.String, default=None)
+
     # relationships
     plaid_items = db.relationship("PlaidItems", backref="user")
     accounts = db.relationship("Accounts", backref="user")
