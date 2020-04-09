@@ -1,5 +1,5 @@
 import plaid
-from plaid.errors import APIError, ItemError
+from plaid.errors import APIError, ItemError, PlaidError
 import requests
 
 import os
@@ -36,8 +36,8 @@ def get_transactions(
         while len(transactions) < response["total_transactions"]:
             response = client.Transactions.get(
                 access_token,
-                start_date="2019-10-01",
-                end_date="2019-11-01",
+                start_date=start_date,
+                end_date=end_date,
                 offset=len(transactions),
             )
             transactions.extend(response["transactions"])
@@ -74,7 +74,7 @@ def token_exchange(client: plaid.Client, public_token: str) -> dict:
     '''
     try:
         response = client.Item.public_token.exchange(public_token)
-    except ItemError as e:
+    except PlaidError as e:
         return e.code
 
     return response
