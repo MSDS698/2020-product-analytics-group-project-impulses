@@ -31,4 +31,4 @@ jobs:
 
     - name: Python Style Checker
       run: |
-        pycodestyle . --exclude="./app/__init__.py"
+        pycodestyle . --exclude="./app/__init__.py" --show-source
