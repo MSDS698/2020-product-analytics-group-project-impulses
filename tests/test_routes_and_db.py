@@ -1,43 +1,55 @@
 import os
 import unittest
 import flask
-from test_setup import TestSetup
 from app import classes, db
 
-# TEST_DB = 'test.db'
-# BASEDIR = os.path.abspath(os.path.dirname(__file__))
-# os.environ['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
-#     os.path.join(BASEDIR, TEST_DB)
+TEST_DB = 'test.db'
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
+os.environ['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
+    os.path.join(BASEDIR, TEST_DB)
 
-# from app import application, classes, db
-
-
+from app import application, classes, db
  
+class TestDatabase(unittest.TestCase):
 
-
+    # executed prior to each test
+    def setUp(self):
+        application.config['TESTING'] = True
+        application.config['WTF_CSRF_ENABLED'] = False
+        application.config['DEBUG'] = False
+        application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
+            os.path.join(BASEDIR, TEST_DB)
+        self.app = application.test_client()
+        db.drop_all()
+        db.create_all()
  
-class TestRoutes(TestSetup):
-
-    # # executed prior to each test
-    # def setUp(self):
-    #     application.config['TESTING'] = True
-    #     application.config['WTF_CSRF_ENABLED'] = False
-    #     application.config['DEBUG'] = False
-    #     application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
-    #         os.path.join(BASEDIR, TEST_DB)
-    #     self.app = application.test_client()
-    #     db.drop_all()
-    #     db.create_all()
- 
-    # # executed after each test
-    # def tearDown(self):
-    #     os.remove(os.path.join(BASEDIR,TEST_DB))
+    # executed after each test
+    @classmethod
+    def tearDownClass(cls):
+        os.remove(os.path.join(BASEDIR,TEST_DB))
  
  
-###############
-#### tests ####
-###############
+####################################################################
+# Database tests
+####################################################################
  
+    def test_add_user(self):
+        """Test if the user class is functioning"""
+        test_user = classes.User("first", "last", "xxx@gmail.com",
+                                 "1234789213", "password")
+        db.session.add(test_user)
+        db.session.commit()
+
+        user = classes.User.query.first()
+        self.assertEqual(user.first_name, "first", msg="check first name")
+        self.assertEqual(user.last_name, "last", msg="check last name")
+        self.assertEqual(user.email, "xxx@gmail.com", msg="check email")
+        self.assertEqual(user.phone, "1234789213", msg="check phone number")
+        self.assertTrue(user.check_password, msg="check password")
+
+####################################################################
+# Route Tests
+####################################################################
     def test_main_page_not_logged_in(self):
         response = self.app.get('/', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
