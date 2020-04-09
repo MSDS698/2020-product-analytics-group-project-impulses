@@ -1,0 +1,101 @@
+.ui-tabs {
+  zoom: 1;
+}
+
+.ui-tabs .ui-tabs-nav {
+  list-style: none;
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+
+.ui-tabs .ui-tabs-nav li {
+  position: relative;
+  float: left;
+  margin: 0 3px -2px 0;
+  padding: 0;
+}
+
+.ui-tabs .ui-tabs-nav li a {
+  display: block;
+  padding: 10px 20px;
+  background: #f0f0f0;
+  border: 2px #ccc solid;
+  border-bottom-color: #ccc;
+  outline: none;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a {
+  padding: 10px 20px 12px 20px;
+  background: #fff;
+  border-bottom-style: none;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a,
+.ui-tabs .ui-tabs-nav li.ui-state-disabled a,
+.ui-tabs .ui-tabs-nav li.ui-state-processing a {
+  cursor: default;
+}
+
+.ui-tabs .ui-tabs-nav li a,
+.ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a {
+  cursor: pointer;
+}
+
+.ui-tabs .ui-tabs-panel {
+  display: block;
+  clear: both;
+  border: 2px #ccc solid;
+  padding: 10px;
+}
+
+.ui-tabs .ui-tabs-hide {
+  display: none;
+}
+
+.jumbotron {
+/*
+  background-image: url(../img/pexels-photo-3531895.jpeg);
+  background-size: cover;
+  background-color: rgba(0,0,0,0.5);
+  height: 50%;
+*/
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+
+.bottom {
+/*
+  background-image: url(../img/pexels-photo-1939485.jpeg);
+  background-size: cover;
+  background-color: rgba(0,0,0,0.5);
+*/
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+
+.scroll {
+  height: calc(100vh - 110px);
+  overflow-y: scroll;
+}
+
+
+.nav-link {
+  font-size: medium;
+}
+
+.nav {
+  font-size: large;
+}
+
+.content {
+  font-size: large;
+}
+
+.navbar {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
