@@ -1,3 +1,0 @@
-a = "abc"
-
-import math
