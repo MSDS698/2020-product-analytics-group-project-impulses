@@ -18,20 +18,28 @@
 </head>
 
 <body class="home">
-    <div id="app" class="container">
-        <nav class="navbar navbar-light bg-faded">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a class="nav-link" href="index">Home</a>
                 </li>
             </ul>
-            <ul class="navbar-nav">
+        </div>
+        <div class="mx-auto order-0">
+            <a class="navbar-brand mx-auto" href="#">Navbar 2</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="logout">Logout</a>
                 </li>
             </ul>
-        </nav>
-    </div>
+        </div>
+    </nav>
 
     <div class="jumbotron text-center">
         <h1>Welcome {{user.first_name}}</h1>
