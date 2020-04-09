@@ -79,3 +79,16 @@
   height: calc(100vh - 110px);
   overflow-y: scroll;
 }
+
+
+.nav-link {
+  font-size: medium;
+}
+
+.nav {
+  font-size: large;
+}
+
+.content {
+  font-size: large;
+}

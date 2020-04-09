@@ -107,11 +107,11 @@ def dashboard():
         habit_category = habit_form.habit_category.data
         time_minute = habit_form.time_minute.data
         time_hour = habit_form.time_hour.data
-        # time_day_of_week = habit_form.time_day_of_week.data
+        time_day_of_week = habit_form.time_day_of_week.data
         # habit = classes.Habits(user_id, habit_name, habit_category,
         # time_minute, time_hour, time_day_of_week)
         habit = classes.Habits(user_id, habit_name, habit_category,
-                               time_minute, time_hour)
+                               time_minute, time_hour, time_day_of_week)
         db.session.add(habit)
         db.session.commit()
         return redirect(url_for("dashboard"))
