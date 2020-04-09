@@ -1,118 +1,122 @@
 <html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- font awesome from BootstrapCDN -->
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-        <link href="/public/app.css" rel="stylesheet">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-        <link rel="stylesheet" href="/resources/demos/style.css">
-        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- font awesome from BootstrapCDN -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/public/app.css" rel="stylesheet">
 
-        <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='dashboard/css/dashboard.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='dashboard/css/dashboard.css')}}">
 
-        <script>
-          $( function() {
-            $( "#tabs" ).tabs();
-          } );
-        </script>
+    <!-- Bootstrap links -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
 
-    </head>
-    <body class="home">
+<body class="home">
+    <div id="app" class="container">
+        <nav class="navbar navbar-light bg-faded">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index">Home</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="logout">Logout</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 
-        <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="jumbotron text-center">
+        <h1>Welcome {{user.first_name}}</h1>
+        <p>Let Impulses use Machine Learning to help you save money today!</p>
+    </div>
+
+    <ul class="nav nav-tabs nav-fill md-tabs" id="myTabMD" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="home-tab-md" data-toggle="tab" href="#home-md" role="tab" aria-controls="home-md" aria-selected="true">Dashboard</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="profile-tab-md" data-toggle="tab" href="#profile-md" role="tab" aria-controls="profile-md" aria-selected="false">Habits</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="contact-tab-md" data-toggle="tab" href="#contact-md" role="tab" aria-controls="contact-md" aria-selected="false">Account</a>
+        </li>
+    </ul>
+    <div class="tab-content card pt-5" id="myTabContentMD">
+        <div class="tab-pane fade show active" id="home-md" role="tabpanel" aria-labelledby="home-tab-md">
             <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="{{url_for('index')}}">Home</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="{{url_for('logout')}}">Logout</a>
-                        </li>
-                    </ul>
+                <div class="row">
+                    <div class="col-sm"></div>
+                    <div class="col-sm">
+                        <h3>Transaction Data</h3>
+                        <ul class="content">
+                            {% for transaction in transactions %}
+                            <li>{{ transaction.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col-sm"></div>
                 </div>
             </div>
-        </nav>
-
-        <div class="jumbotron text-center" >
-          <h1>Welcome {{user.first_name}}</h1>
-          <p>Let Impulses use Machine Learning to help you save money today!</p>
         </div>
-
-        <div class="bottom">
-            <div id="tabs">
-              <ul>
-                <li><a href="#tabs-1">Dashboard</a></li>
-                <li><a href="#tabs-2">Habits</a></li>
-                <li><a href="#tabs-3">Account</a></li>
-              </ul>
-
-              <div id="tabs-1" class="scroll">
-                <h3>Transaction Data</h3>
-                    <ul>
-                        {% for transaction in transactions %}
-                        <li>{{ transaction.name }}</li>
-                        {% endfor %}
-                    </ul>
-              </div>
-              <div id="tabs-2" class="overflow-auto">
-                  <div class="container">
-                  <div class="row">
-                    <div class="col-sm-6">
-                        <form method="POST">
-                            <h2>Add a new habit</h2>
-                            {{ form.csrf_token }}
-
-                            {% if form.errors %}
-                            {{ form.errors }}
-                            {% endif %}
-
-                            {{ form.habit_name.label }} {{ form.habit_name() }} <br />
-                            {{ form.habit_category.label }} {{ form.habit_category() }} <br />
-                            {{ form.time_minute.label }} {{ form.time_minute() }} <br />
-                            {{ form.time_hour.label }} {{ form.time_hour() }} <br />
-                            {{ form.submit() }}
+        <div class="tab-pane fade" id="profile-md" role="tabpanel" aria-labelledby="profile-tab-md">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">
+                        <form method="POST" class="content">
+                            <h2>Add a new habit</h2> {{ form.csrf_token }} {% if form.errors %} {{ form.errors }} {% endif %} {{ form.habit_name.label }} {{ form.habit_name() }}
+                            <br /> {{ form.habit_category.label }} {{ form.habit_category() }}
+                            <br /> {{ form.time_minute.label }} {{ form.time_minute() }}
+                            <br /> {{ form.time_hour.label }} {{ form.time_hour() }}
+                            <br /> {{ form.time_day_of_week.label }} {{ form.time_day_of_week() }}
+                            <br /> {{ form.submit() }}
                         </form>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm">
                         <h2>All habits</h2>
-                        <ul>
+                        <ul class="content">
                             {% for habit in habits %}
                             <li>{{ habit.habit_name }}</li>
                             <ul>
                                 <li>Category: {{ habit.habit_category}}</li>
+                                <li>Day of Week: {{ habit.time_day_of_week}}</li>
                                 <li>Hour: {{ habit.time_hour}}</li>
                                 <li>Minute: {{ habit.time_minute}}</li>
                             </ul>
                             {% endfor %}
                         </ul>
                     </div>
-                  </div>
                 </div>
-              </div>
-              <div id="tabs-3" class="overflow-auto">
-                  <form id='plaid-link-form' action={{url_for('access_plaid_token')}} method="post">
-                  </form>
-                    <script
-                        src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"
-                        data-client-name="My App"
-                        data-form-id="plaid-link-form"
-                        data-key={{plaid_public_key}}
-                        data-product={{plaid_products}}
-                        data-env={{plaid_environment}}>
-                    </script>
-
-                  <p>First Name: {{user.first_name}}</p>
-                  <p>Last Name: {{user.last_name}}</p>
-                  <p>Email: {{user.email}}</p>
-                  <p>Phone: {{user.phone}}</p>
-
-              </div>
             </div>
         </div>
-    </body>
+        <div class="tab-pane fade" id="contact-md" role="tabpanel" aria-labelledby="contact-tab-md">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm"></div>
+                    <div class="col-sm">
+                        <form id='plaid-link-form' action={{url_for( 'access_plaid_token')}} method="post">
+                        </form>
+                        <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js" data-client-name="My App" data-form-id="plaid-link-form" data-key={{plaid_public_key}} data-product={{plaid_products}} data-env={{plaid_environment}}>
+                        </script>
+
+                        <p class="content">First Name: {{user.first_name}}</p>
+                        <p class="content">Last Name: {{user.last_name}}</p>
+                        <p class="content">Email: {{user.email}}</p>
+                        <p class="content">Phone: {{user.phone}}</p>
+                    </div>
+                    <div class="col-sm"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
 </html>
