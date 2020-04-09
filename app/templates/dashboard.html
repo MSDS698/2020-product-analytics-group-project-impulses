@@ -20,18 +20,31 @@
 
     </head>
     <body class="home">
-        <h2>Welcome {{user.first_name}}</h2>
 
-        <form id='plaid-link-form' action={{url_for('access_plaid_token')}} method="post">
-            </form>
-            <script
-                src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"
-                data-client-name="My App"
-                data-form-id="plaid-link-form"
-                data-key={{plaid_public_key}}
-                data-product={{plaid_products}}
-                data-env={{plaid_environment}}>
-            </script>
+        <div class="jumbotron text-center">
+          <h1>Welcome {{user.first_name}}</h1>
+          <p>Let Impulses use Machine Learning to help you save money today!</p>
+        </div>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6">
+              <form id='plaid-link-form' action={{url_for('access_plaid_token')}} method="post">
+              </form>
+                <script
+                    src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"
+                    data-client-name="My App"
+                    data-form-id="plaid-link-form"
+                    data-key={{plaid_public_key}}
+                    data-product={{plaid_products}}
+                    data-env={{plaid_environment}}>
+                </script>
+            </div>
+            <div class="col-sm-6">
+              <a id="qsLogoutBtn" class="btn btn-primary btn-lg btn-logout btn-block" href="{{url_for('logout')}}">Logout</a>
+            </div>
+          </div>
+        </div>
 
         <div id="tabs">
           <ul>
@@ -39,6 +52,7 @@
             <li><a href="#tabs-2">Habits</a></li>
             <li><a href="#tabs-3">Account</a></li>
           </ul>
+
           <div id="tabs-1">
             <h3>Transaction Data</h3>
                 <ul>
@@ -49,6 +63,16 @@
           </div>
           <div id="tabs-2">
             <p>habits stuff</p>
+              <div class="container">
+              <div class="row">
+                <div class="col-sm-6">
+
+                </div>
+                <div class="col-sm-6">
+                  <a id="qsLogoutBtn" class="btn btn-primary btn-lg btn-logout btn-block" href="{{url_for('logout')}}">Logout</a>
+                </div>
+              </div>
+            </div>
           </div>
           <div id="tabs-3">
               <p>First Name: {{user.first_name}}</p>
@@ -70,7 +94,7 @@
                         <br>
                         {% endfor %}
                     </ul>
-                    <a id="qsLogoutBtn" class="btn btn-primary btn-lg btn-logout btn-block" href="{{url_for('logout')}}">Logout</a>
+
                 </div>
             </div>
         </div>
