@@ -12,6 +12,7 @@ os.environ['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
 
 from app import application, classes, db
 from plaid.errors import PlaidError
+
 ENV_VARS = {
     "PLAID_CLIENT_ID": os.environ["PLAID_CLIENT_ID"],
     "PLAID_PUBLIC_KEY": os.environ["PLAID_PUBLIC_KEY"],
@@ -52,9 +53,8 @@ TEST_OPTION_TRANSACTION =  \
         }
 
 
-class TestSetup(unittest.TestCase):
-
-    # executed prior to each test
+class TestPlaidMethods(unittest.TestCase):
+        # executed prior to each test
     def setUp(self):
         application.config['TESTING'] = True
         application.config['WTF_CSRF_ENABLED'] = False
@@ -75,6 +75,7 @@ class TestSetup(unittest.TestCase):
  
     # executed after each test
     def tearDown(self):
+        db.session.remove()
         os.remove(os.path.join(BASEDIR,TEST_DB))
 
     def test_token_exchange(self):
@@ -115,4 +116,3 @@ class TestSetup(unittest.TestCase):
         response = methods.token_exchange(self.client, 
                                           response['public_token'])
         return response['access_token']
-        
