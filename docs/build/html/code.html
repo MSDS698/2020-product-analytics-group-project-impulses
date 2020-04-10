@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
     <title>Auto generated code documentation &#8212; Impulses 0 documentation</title>
@@ -31,12 +31,679 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="module-application">
-<span id="auto-generated-code-documentation"></span><h1>Auto generated code documentation<a class="headerlink" href="#module-application" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
-<dt id="application.print_hello">
-<code class="sig-prename descclassname">application.</code><code class="sig-name descname">print_hello</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#application.print_hello" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use Jinja to display project description</p>
+  <div class="section" id="module-app.routes">
+<span id="auto-generated-code-documentation"></span><h1>Auto generated code documentation<a class="headerlink" href="#module-app.routes" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="app.routes.access_plaid_token">
+<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">access_plaid_token</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.access_plaid_token" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="app.routes.dashboard">
+<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">dashboard</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.dashboard" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="app.routes.index">
+<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">index</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="app.routes.login">
+<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">login</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.login" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="app.routes.logout">
+<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">logout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.logout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="app.routes.register">
+<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">register</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.register" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<span class="target" id="module-app.classes"></span><p>SQLAlchemy Object Relational Mapper (ORM) and Flask-WTForms</p>
+<p>Including classes for each table in the database:
+user, plaid_items, accounts, transaction, savings_history
+and RegistrationForm and LogInForm</p>
+<dl class="py class">
+<dt id="app.classes.Accounts">
+<em class="property">class </em><code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">Accounts</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.Accounts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data model for accounts table.</p>
+<p>Columns include:
+account_id: auto increment primary key; bigint
+user_id: user id that the account is associated with; bigint
+plaid_id: plaid id that the account is associated with; bigint
+account_plaid_id: unique id for identification in plaid; string
+account_name: account name; string
+account_type: account type, ex. investment/depository/credit; string
+account_subtype: account subtype, ex. 401k/checking/credit card; string</p>
+<dl class="py attribute">
+<dt id="app.classes.Accounts.account_name">
+<code class="sig-name descname">account_name</code><a class="headerlink" href="#app.classes.Accounts.account_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Accounts.account_plaid_id">
+<code class="sig-name descname">account_plaid_id</code><a class="headerlink" href="#app.classes.Accounts.account_plaid_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Accounts.account_subtype">
+<code class="sig-name descname">account_subtype</code><a class="headerlink" href="#app.classes.Accounts.account_subtype" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Accounts.account_type">
+<code class="sig-name descname">account_type</code><a class="headerlink" href="#app.classes.Accounts.account_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Accounts.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#app.classes.Accounts.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Accounts.plaid_id">
+<code class="sig-name descname">plaid_id</code><a class="headerlink" href="#app.classes.Accounts.plaid_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Accounts.transaction">
+<code class="sig-name descname">transaction</code><a class="headerlink" href="#app.classes.Accounts.transaction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Accounts.user_id">
+<code class="sig-name descname">user_id</code><a class="headerlink" href="#app.classes.Accounts.user_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="app.classes.HabitForm">
+<em class="property">class </em><code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">HabitForm</code><span class="sig-paren">(</span><em class="sig-param">formdata=&lt;object object&gt;</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.HabitForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for habit formation form</p>
+<dl class="py attribute">
+<dt id="app.classes.HabitForm.habit_category">
+<code class="sig-name descname">habit_category</code><em class="property"> = &lt;UnboundField(SelectField, ('Habit Category:',), {'choices': [('Coffee', 'Coffee'), ('Lunch', 'Lunch'), ('Transportation', 'Transportation')], 'validators': [&lt;wtforms.validators.DataRequired object&gt;]})&gt;</em><a class="headerlink" href="#app.classes.HabitForm.habit_category" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.HabitForm.habit_name">
+<code class="sig-name descname">habit_name</code><em class="property"> = &lt;UnboundField(StringField, ('Habit Name:',), {'validators': [&lt;wtforms.validators.DataRequired object&gt;]})&gt;</em><a class="headerlink" href="#app.classes.HabitForm.habit_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.HabitForm.submit">
+<code class="sig-name descname">submit</code><em class="property"> = &lt;UnboundField(SubmitField, ('Submit',), {})&gt;</em><a class="headerlink" href="#app.classes.HabitForm.submit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.HabitForm.time_day_of_week">
+<code class="sig-name descname">time_day_of_week</code><em class="property"> = &lt;UnboundField(SelectField, ('Day Of Week:',), {'choices': [('1-5', 'Monday-Friday'), ('0,6', 'Weekends'), ('*', 'Everyday')], 'validators': [&lt;wtforms.validators.DataRequired object&gt;]})&gt;</em><a class="headerlink" href="#app.classes.HabitForm.time_day_of_week" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.HabitForm.time_hour">
+<code class="sig-name descname">time_hour</code><em class="property"> = &lt;UnboundField(SelectField, ('Hour:',), {'choices': [('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8'), ('9', '9'), ('10', '10'), ('11', '11'), ('12', '12'), ('13', '13'), ('14', '14'), ('15', '15'), ('16', '16'), ('17', '17'), ('18', '18'), ('19', '19'), ('20', '20'), ('21', '21'), ('22', '22'), ('23', '23')], 'validators': [&lt;wtforms.validators.DataRequired object&gt;]})&gt;</em><a class="headerlink" href="#app.classes.HabitForm.time_hour" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.HabitForm.time_minute">
+<code class="sig-name descname">time_minute</code><em class="property"> = &lt;UnboundField(SelectField, ('Minute:',), {'choices': [('0', '0'), ('15', '15'), ('30', '30'), ('45', '45')], 'validators': [&lt;wtforms.validators.DataRequired object&gt;]})&gt;</em><a class="headerlink" href="#app.classes.HabitForm.time_minute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="app.classes.Habits">
+<em class="property">class </em><code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">Habits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em>, <em class="sig-param"><span class="n">habit_name</span></em>, <em class="sig-param"><span class="n">habit_category</span></em>, <em class="sig-param"><span class="n">time_minute</span></em>, <em class="sig-param"><span class="n">time_hour</span></em>, <em class="sig-param"><span class="n">time_day_of_week</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.Habits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data model for habits table.</p>
+<p>Columns include:
+habits_id: auto increment primary key; bigint
+user_id: id of the user that made the habit; bigint
+habit_name: name of the habit user created; string
+habit_category: category of the habit; string
+time_minute: minute of the reminder; bigint (0-59)
+time_hour: hour of the reminder; bigint(0-23)</p>
+<dl class="py attribute">
+<dt id="app.classes.Habits.habit_category">
+<code class="sig-name descname">habit_category</code><a class="headerlink" href="#app.classes.Habits.habit_category" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Habits.habit_name">
+<code class="sig-name descname">habit_name</code><a class="headerlink" href="#app.classes.Habits.habit_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Habits.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#app.classes.Habits.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Habits.time_day_of_week">
+<code class="sig-name descname">time_day_of_week</code><a class="headerlink" href="#app.classes.Habits.time_day_of_week" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Habits.time_hour">
+<code class="sig-name descname">time_hour</code><a class="headerlink" href="#app.classes.Habits.time_hour" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Habits.time_minute">
+<code class="sig-name descname">time_minute</code><a class="headerlink" href="#app.classes.Habits.time_minute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Habits.user">
+<code class="sig-name descname">user</code><a class="headerlink" href="#app.classes.Habits.user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Habits.user_id">
+<code class="sig-name descname">user_id</code><a class="headerlink" href="#app.classes.Habits.user_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="app.classes.LogInForm">
+<em class="property">class </em><code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">LogInForm</code><span class="sig-paren">(</span><em class="sig-param">formdata=&lt;object object&gt;</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.LogInForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for login form</p>
+<dl class="py attribute">
+<dt id="app.classes.LogInForm.email">
+<code class="sig-name descname">email</code><em class="property"> = &lt;UnboundField(StringField, ('Email:',), {'validators': [&lt;wtforms.validators.DataRequired object&gt;]})&gt;</em><a class="headerlink" href="#app.classes.LogInForm.email" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.LogInForm.password">
+<code class="sig-name descname">password</code><em class="property"> = &lt;UnboundField(PasswordField, ('Password:',), {'validators': [&lt;wtforms.validators.DataRequired object&gt;]})&gt;</em><a class="headerlink" href="#app.classes.LogInForm.password" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.LogInForm.submit">
+<code class="sig-name descname">submit</code><em class="property"> = &lt;UnboundField(SubmitField, ('Submit',), {})&gt;</em><a class="headerlink" href="#app.classes.LogInForm.submit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="app.classes.PlaidItems">
+<em class="property">class </em><code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">PlaidItems</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.PlaidItems" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data model for plaid_items table.</p>
+<p>Columns include:
+plaid_item_id: auto increment primary key; bigint
+user_id: user id that the plaid item is associated with; bigint
+item_id: plaid item id; string
+access_token: token that is associated to user account information</p>
+<blockquote>
+<div><p>for retrieval in plaid; string</p>
+</div></blockquote>
+<dl class="py attribute">
+<dt id="app.classes.PlaidItems.access_token">
+<code class="sig-name descname">access_token</code><a class="headerlink" href="#app.classes.PlaidItems.access_token" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.PlaidItems.accounts">
+<code class="sig-name descname">accounts</code><a class="headerlink" href="#app.classes.PlaidItems.accounts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.PlaidItems.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#app.classes.PlaidItems.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.PlaidItems.item_id">
+<code class="sig-name descname">item_id</code><a class="headerlink" href="#app.classes.PlaidItems.item_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.PlaidItems.user">
+<code class="sig-name descname">user</code><a class="headerlink" href="#app.classes.PlaidItems.user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.PlaidItems.user_id">
+<code class="sig-name descname">user_id</code><a class="headerlink" href="#app.classes.PlaidItems.user_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="app.classes.RegistrationForm">
+<em class="property">class </em><code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">RegistrationForm</code><span class="sig-paren">(</span><em class="sig-param">formdata=&lt;object object&gt;</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.RegistrationForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for registration form</p>
+<dl class="py attribute">
+<dt id="app.classes.RegistrationForm.email">
+<code class="sig-name descname">email</code><em class="property"> = &lt;UnboundField(StringField, ('Email Address:',), {'validators': [&lt;wtforms.validators.DataRequired object&gt;]})&gt;</em><a class="headerlink" href="#app.classes.RegistrationForm.email" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.RegistrationForm.first_name">
+<code class="sig-name descname">first_name</code><em class="property"> = &lt;UnboundField(StringField, ('First Name:',), {'validators': [&lt;wtforms.validators.DataRequired object&gt;]})&gt;</em><a class="headerlink" href="#app.classes.RegistrationForm.first_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.RegistrationForm.last_name">
+<code class="sig-name descname">last_name</code><em class="property"> = &lt;UnboundField(StringField, ('Last Name:',), {'validators': [&lt;wtforms.validators.DataRequired object&gt;]})&gt;</em><a class="headerlink" href="#app.classes.RegistrationForm.last_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.RegistrationForm.password">
+<code class="sig-name descname">password</code><em class="property"> = &lt;UnboundField(PasswordField, ('Create a Password:',), {'validators': [&lt;wtforms.validators.DataRequired object&gt;]})&gt;</em><a class="headerlink" href="#app.classes.RegistrationForm.password" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.RegistrationForm.phone">
+<code class="sig-name descname">phone</code><em class="property"> = &lt;UnboundField(StringField, ('Phone Number:',), {'validators': [&lt;wtforms.validators.Length object&gt;]})&gt;</em><a class="headerlink" href="#app.classes.RegistrationForm.phone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.RegistrationForm.submit">
+<code class="sig-name descname">submit</code><em class="property"> = &lt;UnboundField(SubmitField, ('Submit',), {})&gt;</em><a class="headerlink" href="#app.classes.RegistrationForm.submit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="app.classes.SavingsHistory">
+<em class="property">class </em><code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">SavingsHistory</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.SavingsHistory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data model for savings_history table.</p>
+<p>Columns include:
+savings_id: auto increment primary key; bigint
+user_id: id of the user that made the saving; bigint
+savings_amount: savings amount; decimal(10, 2)
+total_savings: total savings the user has made so far; decimal(10, 2)
+predicted_savings: predicted savings the user will make; decimal(10, 2)
+transfer_date: date when the savings are transferred to a</p>
+<blockquote>
+<div><p>savings/investment account; date</p>
+</div></blockquote>
+<p>update_date: date when the savings entry is updated in the system; date</p>
+<dl class="py attribute">
+<dt id="app.classes.SavingsHistory.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#app.classes.SavingsHistory.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.SavingsHistory.predicted_savings">
+<code class="sig-name descname">predicted_savings</code><a class="headerlink" href="#app.classes.SavingsHistory.predicted_savings" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.SavingsHistory.savings_amount">
+<code class="sig-name descname">savings_amount</code><a class="headerlink" href="#app.classes.SavingsHistory.savings_amount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.SavingsHistory.total_savings">
+<code class="sig-name descname">total_savings</code><a class="headerlink" href="#app.classes.SavingsHistory.total_savings" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.SavingsHistory.transfer_date">
+<code class="sig-name descname">transfer_date</code><a class="headerlink" href="#app.classes.SavingsHistory.transfer_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.SavingsHistory.update_date">
+<code class="sig-name descname">update_date</code><a class="headerlink" href="#app.classes.SavingsHistory.update_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.SavingsHistory.user">
+<code class="sig-name descname">user</code><a class="headerlink" href="#app.classes.SavingsHistory.user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.SavingsHistory.user_id">
+<code class="sig-name descname">user_id</code><a class="headerlink" href="#app.classes.SavingsHistory.user_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="app.classes.Transaction">
+<em class="property">class </em><code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">Transaction</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.Transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data model for transaction table.</p>
+<p>Columns include:
+transaction_id: auto increment primary key; bigint
+user_id: user id that the transaction is associated with; bigint
+account_id: account id that the transaction is associated with; bigint
+trans_amount: transaction amount; decimal(10, 2)
+category_id: category id in plaid; bigint
+is_preferred_saving: whether the transaction is a preferred saving</p>
+<blockquote>
+<div><p>category; string</p>
+</div></blockquote>
+<p>trans_date: date of the transaction; date
+post_date: date when the transaction is posted on user’s account; date
+merchant_category: multiple categories possible; string
+merchant_address: merchant address; string
+merchant_city: merchant city; string
+merchant_state: merchant state; string
+merchant_country: merchant country; string
+merchant_postal_code: merchant postal code; string
+merchant_longitude: merchant longitude; string
+merchant_latitude: merchant latitude; string</p>
+<dl class="py attribute">
+<dt id="app.classes.Transaction.account">
+<code class="sig-name descname">account</code><a class="headerlink" href="#app.classes.Transaction.account" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Transaction.account_id">
+<code class="sig-name descname">account_id</code><a class="headerlink" href="#app.classes.Transaction.account_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Transaction.category_id">
+<code class="sig-name descname">category_id</code><a class="headerlink" href="#app.classes.Transaction.category_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Transaction.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#app.classes.Transaction.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Transaction.is_preferred_saving">
+<code class="sig-name descname">is_preferred_saving</code><a class="headerlink" href="#app.classes.Transaction.is_preferred_saving" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Transaction.merchant_address">
+<code class="sig-name descname">merchant_address</code><a class="headerlink" href="#app.classes.Transaction.merchant_address" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Transaction.merchant_category">
+<code class="sig-name descname">merchant_category</code><a class="headerlink" href="#app.classes.Transaction.merchant_category" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Transaction.merchant_city">
+<code class="sig-name descname">merchant_city</code><a class="headerlink" href="#app.classes.Transaction.merchant_city" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Transaction.merchant_country">
+<code class="sig-name descname">merchant_country</code><a class="headerlink" href="#app.classes.Transaction.merchant_country" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Transaction.merchant_latitude">
+<code class="sig-name descname">merchant_latitude</code><a class="headerlink" href="#app.classes.Transaction.merchant_latitude" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Transaction.merchant_longitude">
+<code class="sig-name descname">merchant_longitude</code><a class="headerlink" href="#app.classes.Transaction.merchant_longitude" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Transaction.merchant_postal_code">
+<code class="sig-name descname">merchant_postal_code</code><a class="headerlink" href="#app.classes.Transaction.merchant_postal_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Transaction.merchant_state">
+<code class="sig-name descname">merchant_state</code><a class="headerlink" href="#app.classes.Transaction.merchant_state" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Transaction.post_date">
+<code class="sig-name descname">post_date</code><a class="headerlink" href="#app.classes.Transaction.post_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Transaction.trans_amount">
+<code class="sig-name descname">trans_amount</code><a class="headerlink" href="#app.classes.Transaction.trans_amount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Transaction.trans_date">
+<code class="sig-name descname">trans_date</code><a class="headerlink" href="#app.classes.Transaction.trans_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Transaction.user">
+<code class="sig-name descname">user</code><a class="headerlink" href="#app.classes.Transaction.user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Transaction.user_id">
+<code class="sig-name descname">user_id</code><a class="headerlink" href="#app.classes.Transaction.user_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="app.classes.User">
+<em class="property">class </em><code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">User</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">first_name</span></em>, <em class="sig-param"><span class="n">last_name</span></em>, <em class="sig-param"><span class="n">email</span></em>, <em class="sig-param"><span class="n">phone</span></em>, <em class="sig-param"><span class="n">password</span></em>, <em class="sig-param"><span class="n">auth_id</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.User" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data model for user table.</p>
+<p>Columns include:
+user_id: auto increment primary key; bigint
+first_name: user’s first name; string
+last_name: user’s last name; string
+email: user’s email address; string; unique
+phone: user’s phone number; string; unique
+password_hash: user’s hashed password; string
+signup_date: user’s signup date; date
+status: user’s current status; string
+auth_id: unique user id from OAuth if available; string</p>
+<dl class="py attribute">
+<dt id="app.classes.User.accounts">
+<code class="sig-name descname">accounts</code><a class="headerlink" href="#app.classes.User.accounts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.User.auth_id">
+<code class="sig-name descname">auth_id</code><a class="headerlink" href="#app.classes.User.auth_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="app.classes.User.check_password">
+<code class="sig-name descname">check_password</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">password</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.User.check_password" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the input password matches the actual password</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.User.email">
+<code class="sig-name descname">email</code><a class="headerlink" href="#app.classes.User.email" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.User.first_name">
+<code class="sig-name descname">first_name</code><a class="headerlink" href="#app.classes.User.first_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.User.habits">
+<code class="sig-name descname">habits</code><a class="headerlink" href="#app.classes.User.habits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.User.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#app.classes.User.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.User.last_name">
+<code class="sig-name descname">last_name</code><a class="headerlink" href="#app.classes.User.last_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.User.password_hash">
+<code class="sig-name descname">password_hash</code><a class="headerlink" href="#app.classes.User.password_hash" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.User.phone">
+<code class="sig-name descname">phone</code><a class="headerlink" href="#app.classes.User.phone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.User.plaid_items">
+<code class="sig-name descname">plaid_items</code><a class="headerlink" href="#app.classes.User.plaid_items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.User.savings_history">
+<code class="sig-name descname">savings_history</code><a class="headerlink" href="#app.classes.User.savings_history" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="app.classes.User.set_password">
+<code class="sig-name descname">set_password</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">password</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.User.set_password" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a hashed password</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.User.signup_date">
+<code class="sig-name descname">signup_date</code><a class="headerlink" href="#app.classes.User.signup_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.User.status">
+<code class="sig-name descname">status</code><a class="headerlink" href="#app.classes.User.status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.User.transaction">
+<code class="sig-name descname">transaction</code><a class="headerlink" href="#app.classes.User.transaction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="app.classes.load_user">
+<code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">load_user</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.load_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a user object from the user id stored in the session</p>
+</dd></dl>
+
+<span class="target" id="module-application"></span><span class="target" id="module-test_db"></span><dl class="py class">
+<dt id="test_db.TestDB">
+<em class="property">class </em><code class="sig-prename descclassname">test_db.</code><code class="sig-name descname">TestDB</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_db.TestDB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for testing the database</p>
+<dl class="py method">
+<dt id="test_db.TestDB.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_db.TestDB.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialization for the test cases</p>
+<p>This is executed prior to each test.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="test_db.TestDB.tearDown">
+<code class="sig-name descname">tearDown</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_db.TestDB.tearDown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clean-up for the test cases</p>
+<p>This is executed after each test.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="test_db.TestDB.test_insertion">
+<code class="sig-name descname">test_insertion</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_db.TestDB.test_insertion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test if new records can be correctly inserted to each table</p>
+<p>Tables include user, plaid_items, accounts, transaction,
+savings_history and habits.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-test_plaid_methods"></span><dl class="py class">
+<dt id="test_plaid_methods.TestPlaidMethods">
+<em class="property">class </em><code class="sig-prename descclassname">test_plaid_methods.</code><code class="sig-name descname">TestPlaidMethods</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_plaid_methods.TestPlaidMethods" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for testing the plaid methods</p>
+<dl class="py method">
+<dt id="test_plaid_methods.TestPlaidMethods.get_access_token">
+<code class="sig-name descname">get_access_token</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">options</span><span class="o">=</span><span class="default_value">{'override_password': '{\n                &quot;override_accounts&quot;: [\n                    {\n                        &quot;type&quot;: &quot;depository&quot;,\n                        &quot;subtype&quot;: &quot;checking&quot;,\n                        &quot;transactions&quot;: [\n                            {\n                                &quot;date_transacted&quot;: &quot;2019-10-10&quot;,\n                                &quot;date_posted&quot;: &quot;2019-10-03&quot;,\n                                &quot;currency&quot;: &quot;USD&quot;,\n                                &quot;amount&quot;: 100,\n                                &quot;description&quot;: &quot;1 year Netflix subscription&quot;\n                            },\n                            {\n                                &quot;date_transacted&quot;: &quot;2019-10-01&quot;,\n                                &quot;date_posted&quot;: &quot;2019-10-02&quot;,\n                                &quot;currency&quot;: &quot;USD&quot;,\n                                &quot;amount&quot;: 100,\n                                &quot;description&quot;: &quot;1 year mobile subscription&quot;\n                            }\n                        ]\n                    }\n                ]\n            }\n            ', 'override_username': 'user_custom'}</span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_plaid_methods.TestPlaidMethods.get_access_token" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="test_plaid_methods.TestPlaidMethods.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_plaid_methods.TestPlaidMethods.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialization for the test cases</p>
+<p>This is executed prior to each test.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="test_plaid_methods.TestPlaidMethods.tearDown">
+<code class="sig-name descname">tearDown</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_plaid_methods.TestPlaidMethods.tearDown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clean-up for the test cases</p>
+<p>This is executed after each test.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="test_plaid_methods.TestPlaidMethods.test_get_transactions">
+<code class="sig-name descname">test_get_transactions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_plaid_methods.TestPlaidMethods.test_get_transactions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="test_plaid_methods.TestPlaidMethods.test_invalid_token_exchange">
+<code class="sig-name descname">test_invalid_token_exchange</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_plaid_methods.TestPlaidMethods.test_invalid_token_exchange" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="test_plaid_methods.TestPlaidMethods.test_token_exchange">
+<code class="sig-name descname">test_token_exchange</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_plaid_methods.TestPlaidMethods.test_token_exchange" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-test_routes"></span><dl class="py class">
+<dt id="test_routes.TestRoutes">
+<em class="property">class </em><code class="sig-prename descclassname">test_routes.</code><code class="sig-name descname">TestRoutes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_routes.TestRoutes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for testing the routes</p>
+<dl class="py method">
+<dt id="test_routes.TestRoutes.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_routes.TestRoutes.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialization for the test cases</p>
+<p>This is executed prior to each test.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="test_routes.TestRoutes.tearDown">
+<code class="sig-name descname">tearDown</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_routes.TestRoutes.tearDown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clean-up for the test cases</p>
+<p>This is executed after each test.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="test_routes.TestRoutes.test_email_exists_register">
+<code class="sig-name descname">test_email_exists_register</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_routes.TestRoutes.test_email_exists_register" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="test_routes.TestRoutes.test_invalid_login">
+<code class="sig-name descname">test_invalid_login</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_routes.TestRoutes.test_invalid_login" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="test_routes.TestRoutes.test_main_page_not_logged_in">
+<code class="sig-name descname">test_main_page_not_logged_in</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_routes.TestRoutes.test_main_page_not_logged_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="test_routes.TestRoutes.test_phone_exists_register">
+<code class="sig-name descname">test_phone_exists_register</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_routes.TestRoutes.test_phone_exists_register" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="test_routes.TestRoutes.test_valid_login">
+<code class="sig-name descname">test_valid_login</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_routes.TestRoutes.test_valid_login" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="test_routes.TestRoutes.test_valid_register">
+<code class="sig-name descname">test_valid_register</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_routes.TestRoutes.test_valid_register" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </div>
@@ -99,7 +766,7 @@
       &copy;2020, Andrew Youg, Esme Luo, Esther Liu, Kevin Loftis, Lea Genuit, Xu Liu, Zhentao Hou.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
