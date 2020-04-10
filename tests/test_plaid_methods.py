@@ -1,3 +1,5 @@
+from plaid.errors import PlaidError
+from app import application, classes, db
 import os
 import unittest
 import flask
@@ -10,8 +12,6 @@ BASEDIR = os.path.abspath(os.path.dirname(__file__))
 os.environ['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' \
                                         + os.path.join(BASEDIR, TEST_DB)
 
-from app import application, classes, db
-from plaid.errors import PlaidError
 
 ENV_VARS = {
     "PLAID_CLIENT_ID": os.environ["PLAID_CLIENT_ID"],
@@ -22,9 +22,9 @@ ENV_VARS = {
 INSTITUTION_ID = 'ins_109508'
 INITIAL_PRODUCTS = ['transactions']
 TEST_OPTION_TRANSACTION = {
-            "override_username": "user_custom",
-            "override_password":
-            """{
+    "override_username": "user_custom",
+    "override_password":
+    """{
                 "override_accounts": [
                     {
                         "type": "depository",
@@ -49,7 +49,7 @@ TEST_OPTION_TRANSACTION = {
                 ]
             }
             """
-        }
+}
 
 
 class TestPlaidMethods(unittest.TestCase):

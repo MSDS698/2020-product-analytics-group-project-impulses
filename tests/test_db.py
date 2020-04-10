@@ -1,3 +1,4 @@
+from app import application, classes, db
 import os
 import unittest
 from datetime import datetime
@@ -6,8 +7,6 @@ TEST_DB = 'test.db'
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 os.environ['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' \
                                         + os.path.join(BASEDIR, TEST_DB)
-
-from app import application, classes, db
 
 
 class TestDB(unittest.TestCase):
