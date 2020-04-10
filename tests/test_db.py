@@ -172,7 +172,8 @@ class TestDB(unittest.TestCase):
         test_habit = classes.Habits(user_id=user.id, habit_name="coffee",
                                     habit_category="test-category",
                                     time_minute="25",
-                                    time_hour="10")
+                                    time_hour="10",
+                                    time_day_of_week="2")
         db.session.add(test_habit)
         db.session.commit()
 
@@ -184,6 +185,8 @@ class TestDB(unittest.TestCase):
                          msg="check habit category")
         self.assertEqual(habit.time_minute, "25", msg="check habit minute")
         self.assertEqual(habit.time_hour, "10", msg="check habit hour")
+        self.assertEqual(habit.time_day_of_week, "2",
+                         msg="check habit day of week")
 
 
 if __name__ == "__main__":
