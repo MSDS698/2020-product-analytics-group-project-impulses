@@ -7,10 +7,7 @@ from plaid_methods import methods
 from plaid import Client
 from plaid.api import sandbox
 
-TEST_DB = 'test.db'
-BASEDIR = os.path.abspath(os.path.dirname(__file__))
-os.environ['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' \
-                                        + os.path.join(BASEDIR, TEST_DB)
+assert os.environ['SQLALCHEMY_DATABASE_URI'] == 'sqlite://'
 
 
 ENV_VARS = {
@@ -81,7 +78,6 @@ class TestPlaidMethods(unittest.TestCase):
         This is executed after each test.
         """
         db.session.remove()
-        os.remove(os.path.join(BASEDIR, TEST_DB))
 
     ####################################################################
     # Plaid Method Tests

@@ -3,11 +3,8 @@ import os
 import unittest
 from datetime import datetime
 
-TEST_DB = 'test.db'
-BASEDIR = os.path.abspath(os.path.dirname(__file__))
-os.environ['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' \
-                                        + os.path.join(BASEDIR, TEST_DB)
 
+assert os.environ['SQLALCHEMY_DATABASE_URI'] == 'sqlite://'
 
 class TestDB(unittest.TestCase):
     """Class for testing the database"""
@@ -29,7 +26,6 @@ class TestDB(unittest.TestCase):
         This is executed after each test.
         """
         db.session.remove()
-        os.remove(os.path.join(BASEDIR, TEST_DB))
 
     ####################################################################
     # Database Tests

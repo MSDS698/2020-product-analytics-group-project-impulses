@@ -30,6 +30,7 @@ jobs:
         PLAID_PUBLIC_KEY: ${{ secrets.PLAID_PUBLIC_KEY }}
         PLAID_SECRET: ${{ secrets.PLAID_SECRET_SANDBOX }}
         PLAID_ENV: sandbox
+        SQLALCHEMY_DATABASE_URI: sqlite://
       run: |
         python -m unittest discover tests
     - name: Python Style Checker

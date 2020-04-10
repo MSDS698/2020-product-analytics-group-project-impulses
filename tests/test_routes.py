@@ -3,11 +3,7 @@ import os
 import unittest
 import flask
 
-TEST_DB = 'test.db'
-BASEDIR = os.path.abspath(os.path.dirname(__file__))
-os.environ['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' \
-                                        + os.path.join(BASEDIR, TEST_DB)
-
+assert os.environ['SQLALCHEMY_DATABASE_URI'] == 'sqlite://'
 
 class TestRoutes(unittest.TestCase):
     """Class for testing the routes"""
@@ -30,7 +26,6 @@ class TestRoutes(unittest.TestCase):
         This is executed after each test.
         """
         db.session.remove()
-        os.remove(os.path.join(BASEDIR, TEST_DB))
 
     ####################################################################
     # Route Tests
@@ -71,7 +66,7 @@ class TestRoutes(unittest.TestCase):
                 follow_redirects=True
             )
             is_logged_in = '_user_id' in flask.session
-        self.assertEqual(is_logged_in, False)
+        self.assertFalse(is_logged_in)
 
     def test_valid_register(self):
         # add user to db
