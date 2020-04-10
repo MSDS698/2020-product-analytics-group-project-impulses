@@ -193,6 +193,7 @@ class Habits(db.Model):
     habit_category: category of the habit; string
     time_minute: minute of the reminder; string (0-59)
     time_hour: hour of the reminder; string (0-23)
+    time_day_of_week: day of week of the reminder; string
     """
     __tablename__ = "habits"
     id = db.Column("habits_id", db.Integer, primary_key=True)
