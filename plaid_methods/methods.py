@@ -4,6 +4,7 @@ import requests
 
 import os
 from typing import List
+import time
 
 
 def get_transactions(
@@ -26,23 +27,35 @@ def get_transactions(
     :param [access_token]:  access token to use to retrieve transactions
     :type [access_token]: [string]
     """
-    try:
-        response = client.Transactions.get(
-            access_token, start_date=start_date, end_date=end_date
-        )
-
-        transactions = response["transactions"]
-
-        while len(transactions) < response["total_transactions"]:
+    timeout = 5
+    while True:
+        try:
             response = client.Transactions.get(
-                access_token,
-                start_date=start_date,
-                end_date=end_date,
-                offset=len(transactions),
+                access_token, start_date=start_date, end_date=end_date
             )
-            transactions.extend(response["transactions"])
-    except APIError as e:
-        return e.code
+
+            transactions = response["transactions"]
+
+            while len(transactions) < response["total_transactions"]:
+                response = client.Transactions.get(
+                    access_token,
+                    start_date=start_date,
+                    end_date=end_date,
+                    offset=len(transactions),
+                )
+                transactions.extend(response["transactions"])
+            break
+        except ItemError as e:
+            if e.code == "NO_PRODUCT_READY":
+                if timeout == 0:
+                    return e.code
+                else:
+                    time.sleep(.5)
+                    timeout = timeout - 1
+
+
+        except APIError as e:
+            return e.code
     return transactions
 
 
