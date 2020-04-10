@@ -6,6 +6,7 @@ from datetime import datetime
 
 assert os.environ['SQLALCHEMY_DATABASE_URI'] == 'sqlite://'
 
+
 class TestDB(unittest.TestCase):
     """Class for testing the database"""
 
