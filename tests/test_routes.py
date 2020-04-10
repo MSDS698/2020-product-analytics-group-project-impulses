@@ -5,6 +5,7 @@ import flask
 
 assert os.environ['SQLALCHEMY_DATABASE_URI'] == 'sqlite://'
 
+
 class TestRoutes(unittest.TestCase):
     """Class for testing the routes"""
 
