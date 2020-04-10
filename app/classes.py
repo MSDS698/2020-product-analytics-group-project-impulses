@@ -11,7 +11,7 @@ from flask_wtf import FlaskForm
 
 from werkzeug.security import check_password_hash, generate_password_hash
 from wtforms import PasswordField, StringField, SubmitField, SelectField
-from wtforms.validators import DataRequired, Optional
+from wtforms.validators import DataRequired, Length
 from datetime import datetime
 
 from app import db, login_manager
@@ -209,11 +209,20 @@ class Habits(db.Model):
 
 class RegistrationForm(FlaskForm):
     """Class for registration form"""
-    first_name = StringField("First Name:", validators=[DataRequired()])
-    last_name = StringField("Last Name:", validators=[DataRequired()])
-    email = StringField("Email Address:", validators=[DataRequired()])
-    phone = StringField("Phone Number:", validators=[DataRequired()])
-    password = PasswordField("Create a Password:", validators=[DataRequired()])
+    first_name = StringField("First Name:",
+                             validators=[
+                                 DataRequired(message='Input Required')])
+    last_name = StringField("Last Name:", validators=[
+        DataRequired(message='Input Required')])
+    email = StringField("Email Address:", validators=[
+        DataRequired(message='Input Required')])
+    phone = StringField("Phone Number:",
+                        validators=[Length(min=10, max=10,
+                                           message="Please put in 10 digits "
+                                                   "valid phone number"
+                                           )])
+    password = PasswordField("Create a Password:", validators=[
+        DataRequired(message='Input Required')])
     submit = SubmitField("Submit")
 
 
