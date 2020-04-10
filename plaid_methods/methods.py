@@ -53,7 +53,6 @@ def get_transactions(
                     time.sleep(.5)
                     timeout = timeout - 1
 
-
         except APIError as e:
             return e.code
     return transactions
