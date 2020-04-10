@@ -5,10 +5,12 @@ def add_accounts(accounts, user, plaid_item, commit=True):
     """
     Add account information to the database
     :param accounts: accounts data from plaid api
-    :param user: User SQLAlchemy object of the user associated with the accounts
-    :param plaid_item: PlaidItem SQLalchemy object of the plaid_item associated with
-    the accounts
-    :param commit: If commit is True then commits transactions the add to the database
+    :param user: User SQLAlchemy object of the user associated with the
+    accounts
+    :param plaid_item: PlaidItem SQLalchemy object of the plaid_item associated
+    with the accounts
+    :param commit: If commit is True then commits transactions the add to the
+    database
     """
 
     for account in accounts:
@@ -27,9 +29,12 @@ def add_transactions(transactions, user, account, commit=True):
     """
     Add account information to the database
     :param transactions: transactions data from plaid api
-    :param user: User SQLAlchemy object of the user associated with the transactions
-    :param account: Accounts SQLAlchemy object of the user associated with the transactions
-    :param commit: If commit is True then commits transactions the add to the database
+    :param user: User SQLAlchemy object of the user associated with the
+    transactions
+    :param account: Accounts SQLAlchemy object of the user associated with the
+    transactions
+    :param commit: If commit is True then commits transactions the add to the
+    database
     """
 
     for transaction in transactions:
