@@ -100,9 +100,9 @@ class TestPlaidMethods(unittest.TestCase):
         )
         self.assertEqual(response, 'INVALID_PUBLIC_TOKEN')
 
-    def test_get_accounts(self):
-        start_date = "2019-10-01"
-        end_date = "2020-11-01"
+    def test_get_transactions(self):
+        start_date = "2020-01-01"
+        end_date = "2020-02-01"
         access_token = self.get_access_token(None)
         response = methods.get_transactions(self.client,
                                             start_date,
