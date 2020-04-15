@@ -11,10 +11,17 @@
     <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='dashboard/css/dashboard.css')}}">
 
     <!-- Bootstrap links -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 </head>
 
 <body class="home">
@@ -40,13 +47,16 @@
 
     <ul class="nav nav-tabs nav-fill md-tabs" id="myTabMD" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="home-tab-md" data-toggle="tab" href="#home-md" role="tab" aria-controls="home-md" aria-selected="true">Dashboard</a>
+            <a class="nav-link active" id="home-tab-md" data-toggle="tab" href="#home-md" role="tab"
+                aria-controls="home-md" aria-selected="true">Dashboard</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="profile-tab-md" data-toggle="tab" href="#profile-md" role="tab" aria-controls="profile-md" aria-selected="false">Habits</a>
+            <a class="nav-link" id="profile-tab-md" data-toggle="tab" href="#profile-md" role="tab"
+                aria-controls="profile-md" aria-selected="false">Habits</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="contact-tab-md" data-toggle="tab" href="#contact-md" role="tab" aria-controls="contact-md" aria-selected="false">Account</a>
+            <a class="nav-link" id="contact-tab-md" data-toggle="tab" href="#contact-md" role="tab"
+                aria-controls="contact-md" aria-selected="false">Account</a>
         </li>
     </ul>
     <div class="tab-content card pt-5" id="myTabContentMD">
@@ -57,8 +67,8 @@
                     <div class="col-sm">
                         <h3>Transaction Data</h3>
                         <ul class="content">
-                            {% for transaction in transactions %}
-                            <li>{{ transaction.name }}</li>
+                            {% for transaction in user.transaction %}
+                            <li>{{ transaction.merchant_category }}</li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -71,7 +81,8 @@
                 <div class="row">
                     <div class="col-sm">
                         <form method="POST" class="content">
-                            <h2>Add a new habit</h2> {{ form.csrf_token }} {% if form.errors %} {{ form.errors }} {% endif %} {{ form.habit_name.label }} {{ form.habit_name() }}
+                            <h2>Add a new habit</h2> {{ form.csrf_token }} {% if form.errors %} {{ form.errors }}
+                            {% endif %} {{ form.habit_name.label }} {{ form.habit_name() }}
                             <br /> {{ form.habit_category.label }} {{ form.habit_category() }}
                             <br /> {{ form.time_day_of_week.label }} {{ form.time_day_of_week() }}
                             <br /> {{ form.time_hour.label }} {{ form.time_hour() }}
@@ -82,7 +93,7 @@
                     <div class="col-sm">
                         <h2>All habits</h2>
                         <ul class="content">
-                            {% for habit in habits %}
+                            {% for habit in user.habits %}
                             <li>{{ habit.habit_name }}</li>
                             <ul>
                                 <li>Category: {{ habit.habit_category}}</li>
@@ -99,22 +110,53 @@
         <div class="tab-pane fade" id="contact-md" role="tabpanel" aria-labelledby="contact-tab-md">
             <div class="container">
                 <div class="row">
-                    <div class="col-sm"></div>
                     <div class="col-sm">
-                        <form id='plaid-link-form' action={{url_for( 'access_plaid_token')}} method="post">
-                        </form>
-                        <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js" data-client-name="My App" data-form-id="plaid-link-form" data-key={{plaid_public_key}} data-product={{plaid_products}} data-env={{plaid_environment}}>
-                        </script>
-
-                        <p class="content">First Name: {{user.first_name}}</p>
-                        <p class="content">Last Name: {{user.last_name}}</p>
-                        <p class="content">Email: {{user.email}}</p>
-                        <p class="content">Phone: {{user.phone}}</p>
+                        <div class="container">
+                            <div class="row">
+                                <div class='col-sm'>
+                                    <p class="content">First Name: {{user.first_name}}</p>
+                                    <p class="content">Last Name: {{user.last_name}}</p>
+                                    <p class="content">Email: {{user.email}}</p>
+                                    <p class="content">Phone: {{user.phone}}</p>
+                                </div>
+                                <div class='col-sm'>
+                                    <p class='content'><b>Linked Accounts</b></p>
+                                    <ul class="list-group">
+                                        {% for account in user.accounts %}
+                                        <li class="list-group-item">
+                                            <p class="content"><b>Account Name:</b> {{ account.account_name }}</p>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                    <form id='plaid-link-form' action={{url_for( 'access_plaid_token')}} method="post">
+                                    </form>
+                                    <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js" data-client-name="My App"
+                                        data-form-id="plaid-link-form" data-key={{plaid_public_key}} data-product={{plaid_products}}
+                                        data-env={{plaid_environment}}>
+                                        </script>
+                                    <script>
+                                        var button = document.getElementById('plaid-link-button');
+                                        button.innerHTML = "Link an Account though Plaid"
+                                        button.setAttribute('class',"btn btn-primary")
+                                    </script>
+                                    {% with messages = get_flashed_messages() %}
+                                        {% if messages %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {% for message in messages %}
+                                                {{ message }}
+                                            {% endfor %}
+                                          </div>
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm"></div>
                 </div>
+                <div class="col-sm"></div>
             </div>
         </div>
+    </div>
     </div>
 
 </body>
