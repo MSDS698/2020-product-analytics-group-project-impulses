@@ -106,8 +106,39 @@ def register():
 @application.route("/dashboard", methods=["POST", "GET"])
 @login_required
 def dashboard():
-    # add a new habit
+    # default values
+    transactions = ''
     habit_form = classes.HabitForm()
+
+    # get user session
+    user_id = current_user.id
+
+    # check if signed up in plaid
+    plaid_dict = classes.PlaidItems.query.filter_by(
+        user_id=user_id).first()
+
+    if plaid_dict:  # if signed up in plaid
+        print('dashboard: already signed up plaid')
+        item_id = plaid_dict.item_id
+        access_token = plaid_dict.access_token
+
+        # get transaction data
+        transactions = get_transactions(client, '2019-10-01', '2019-11-01',
+                                        access_token)
+
+    # get user session
+    user_id = current_user.id
+
+    # get selected habits
+    if request.method == "POST":
+        print('request: ', request.form.getlist("table_row"))
+        if request.form.getlist("table_row"):
+            print("habits selected")
+            # habits = request.form.getlist("habit_selected")
+            # for habit in habits:
+            #     print(habit)
+
+    print(habit_form.validate_on_submit())
     if habit_form.validate_on_submit():
         habit_name = habit_form.habit_name.data
         habit_category = habit_form.habit_category.data
