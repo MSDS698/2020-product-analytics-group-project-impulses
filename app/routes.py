@@ -131,29 +131,22 @@ def dashboard():
 
     # get selected habits
     if request.method == "POST":
-        print('request: ', request.form.getlist("table_row"))
-        if request.form.getlist("table_row"):
-            print("habits selected")
-            # habits = request.form.getlist("habit_selected")
-            # for habit in habits:
-            #     print(habit)
+        habit_name = request.form.getlist("habit_name")
+        habit_category = request.form.getlist("habit_category")
+        time_minute = request.form.getlist("time_minute")
+        time_hour = request.form.getlist("time_hour")
+        time_day_of_week = request.form.getlist("time_day_of_week")
+        if habit_name:
+            # delete the users' habits
+            classes.Habits.query.filter_by(user_id=user_id).delete()
 
-    print(habit_form.validate_on_submit())
-    if habit_form.validate_on_submit():
-        habit_name = habit_form.habit_name.data
-        habit_category = habit_form.habit_category.data
-        time_minute = habit_form.time_minute.data
-        time_hour = habit_form.time_hour.data
-        time_day_of_week = habit_form.time_day_of_week.data
-        habit = classes.Habits(user=current_user,
-                               habit_name=habit_name,
-                               habit_category=habit_category,
-                               time_minute=time_minute,
-                               time_hour=time_hour,
-                               time_day_of_week=time_day_of_week)
-        db.session.add(habit)
-        db.session.commit()
-        return redirect(url_for("dashboard"))
+            # add the latest habits back to db
+            for i in range(len(habit_name)):
+                habit = classes.Habits(user_id, habit_name[i], habit_category[i],
+                                   time_minute[i], time_hour[i], time_day_of_week[i])
+                db.session.add(habit)
+                db.session.commit()
+            return redirect(url_for("dashboard"))
 
     return render_template("dashboard.html",
                            user=current_user,
