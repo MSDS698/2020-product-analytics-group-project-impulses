@@ -8,7 +8,7 @@ import time
 
 
 def get_transactions(
-    client: plaid.Client, start_date: str, end_date: str, account
+    client: plaid.Client, start_date: str, end_date: str, access_token: str, account_id: str
 ) -> List[dict]:
     """
     Returns transactions associated with access_token
@@ -27,11 +27,9 @@ def get_transactions(
     :param [access_token]:  access token to use to retrieve transactions
     :type [access_token]: [string]
 
-    :param [account_ids]:  account ids of the transactions you want to retrieve
-    :type [account_ids]: [list[string]]
+    :param [account_id]:  account id of the transactions you want to retrieve
+    :type [account_id]:[list[string]]
     """
-    access_token = account.plaid_item.access_token
-    account_id = account.account_plaid_id
     timeout = 5
     while True:
         try:

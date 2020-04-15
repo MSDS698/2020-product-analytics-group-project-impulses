@@ -104,10 +104,14 @@ class TestPlaidMethods(unittest.TestCase):
         start_date = "2020-01-01"
         end_date = "2020-02-01"
         access_token = self.get_access_token(None)
+        account_id = methods.get_accounts(self.client, access_token)[
+            0]['account_id']
+
         response = methods.get_transactions(self.client,
                                             start_date,
                                             end_date,
-                                            access_token)
+                                            access_token,
+                                            account_id)
         self.assertEqual(type(response), list)
 
     def get_access_token(self, options=TEST_OPTION_TRANSACTION):

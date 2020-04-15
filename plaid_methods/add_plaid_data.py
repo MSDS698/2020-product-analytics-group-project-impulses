@@ -44,7 +44,8 @@ def add_transactions(transactions, user, account, commit=True):
         trans = classes.Transaction(user=user,
                                     account=account,
                                     trans_date=parse_date(transaction['date']),
-                                    post_date=parse_date(transaction['authorized_date']),
+                                    post_date=parse_date(
+                                        transaction['authorized_date']),
                                     trans_amount=transaction['amount'],
                                     merchant_category=categories,
                                     merchant_address=loc['address'],
@@ -60,8 +61,9 @@ def add_transactions(transactions, user, account, commit=True):
     if commit is True:
         db.session.commit()
 
+
 def parse_date(date_string):
     try:
-        return datetime.strptime(date_string,"%Y-%m-%d")
+        return datetime.strptime(date_string, "%Y-%m-%d")
     except TypeError:
         return None
