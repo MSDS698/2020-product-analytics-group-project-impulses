@@ -124,11 +124,14 @@ def access_plaid_token():
         account_indicies = set([int(field[9])
                                 for field in selected_accounts_data])
         accounts = []
+
         for idx in account_indicies:
-            accounts.append({'account_id': request.form[f'accounts[{idx}][id]'],
-                             'name': request.form[f'accounts[{idx}][name]'],
-                             'type': request.form[f'accounts[{idx}][type]'],
-                             'subtype': request.form[f'accounts[{idx}][subtype]']})
+            accounts.append(
+                {'account_id': request.form[f'accounts[{idx}][id]'],
+                 'name': request.form[f'accounts[{idx}][name]'],
+                 'type': request.form[f'accounts[{idx}][type]'],
+                 'subtype': request.form[f'accounts[{idx}][subtype]']}
+            )
 
         existing_account_ids = [account_id for account in current_user.accounts
                                 for account_id in account.account_plaid_id]
@@ -151,9 +154,10 @@ def access_plaid_token():
         plaid_to_db.add_accounts(accounts, current_user, plaid)
 
         for account in current_user.accounts:
-            transactions = get_transactions(client, '2019-10-01', '2019-11-01',
-                                            access_token=account.plaid_item.access_token,
-                                            account_id=account.account_plaid_id)
+            transactions = get_transactions(
+                client, '2019-10-01', '2019-11-01',
+                access_token=account.plaid_item.access_token,
+                account_id=account.account_plaid_id)
             plaid_to_db.add_transactions(transactions, current_user, account)
 
     except ItemError as e:
