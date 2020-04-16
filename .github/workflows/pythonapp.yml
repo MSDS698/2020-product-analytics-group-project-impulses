@@ -32,9 +32,8 @@ jobs:
         PLAID_ENV: sandbox
         SQLALCHEMY_DATABASE_URI: sqlite://
       run: |
-        python -m unittest discover tests
+        python -m unittest -v tests/test_*.py
     - name: Python Style Checker
       run: |
         pycodestyle . --exclude="./app/__init__.py, migrations" --show-source
-        pip install -e .
 
