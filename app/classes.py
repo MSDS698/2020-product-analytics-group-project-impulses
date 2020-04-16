@@ -15,9 +15,12 @@ from flask_wtf import FlaskForm
 from werkzeug.security import check_password_hash, generate_password_hash
 from wtforms import PasswordField, StringField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Length
+from flask_migrate import Migrate
 from datetime import datetime
 
-from app import db, login_manager
+from app import db, login_manager, application
+
+migrate = Migrate(application, db)
 
 
 class User(db.Model, UserMixin):

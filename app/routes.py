@@ -1,10 +1,11 @@
 import os
 from app import application, classes, db
-from flask import redirect, render_template, url_for, request
+from flask import redirect, render_template, url_for, request, flash
 from flask_login import current_user, login_user, login_required, logout_user
 from plaid.errors import ItemError
 from plaid_methods.methods import get_accounts, get_transactions, \
     token_exchange
+from plaid_methods import add_plaid_data as plaid_to_db
 from plaid import Client
 
 
@@ -77,25 +78,6 @@ def register():
 @application.route("/dashboard", methods=["POST", "GET"])
 @login_required
 def dashboard():
-    # default transactions
-    transactions = ''
-
-    # get user session
-    user_id = current_user.id
-
-    # check if signed up in plaid
-    plaid_dict = classes.PlaidItems.query.filter_by(
-        user_id=user_id).first()
-
-    if plaid_dict:  # if signed up in plaid
-        print('dashboard: already signed up plaid')
-        item_id = plaid_dict.item_id
-        access_token = plaid_dict.access_token
-
-        # get transaction data
-        transactions = get_transactions(client, '2019-10-01', '2019-11-01',
-                                        access_token)
-
     # get user session
     user_id = current_user.id
 
@@ -114,13 +96,8 @@ def dashboard():
         db.session.commit()
         return redirect(url_for("dashboard"))
 
-    # find user habit
-    habits = classes.Habits.query.filter_by(user_id=user_id).all()
-
     return render_template("dashboard.html",
                            user=current_user,
-                           transactions=transactions,
-                           habits=habits,
                            form=habit_form,
                            plaid_public_key=client.public_key,
                            plaid_environment=client.environment,
@@ -137,33 +114,51 @@ def logout():
     return redirect(url_for("index"))
 
 
-@application.route("/access_plaid_token", methods=["POST"])
+@application.route("/access_plaid_token", methods=["POST", "GET"])
 def access_plaid_token():
-
     try:
-        # get user session
-        user_id = current_user.id
+        public_token = request.form["public_token"]
+        # extract selected account information from response
+        selected_accounts_data = [
+            key for key in request.form.keys() if key.startswith('accounts')]
+        account_indicies = set([int(field[9])
+                                for field in selected_accounts_data])
+        accounts = []
 
-        # check if signed up in plaid
-        plaid_dict = classes.PlaidItems.query.\
-            filter_by(user_id=user_id).first()
-        if plaid_dict:  # if signed up in plaid
-            print('access_plaid_token: already signed up plaid')
-            item_id = plaid_dict.item_id
-            access_token = plaid_dict.access_token
+        for idx in account_indicies:
+            accounts.append(
+                {'account_id': request.form[f'accounts[{idx}][id]'],
+                 'name': request.form[f'accounts[{idx}][name]'],
+                 'type': request.form[f'accounts[{idx}][type]'],
+                 'subtype': request.form[f'accounts[{idx}][subtype]']}
+            )
 
-        else:  # if haven't signed up in plaid
-            # get the plaid token response
-            public_token = request.form["public_token"]
-            response = token_exchange(client, public_token)
-            item_id = response['item_id']
-            access_token = response['access_token']
+        existing_account_ids = [account_id for account in current_user.accounts
+                                for account_id in account.account_plaid_id]
 
-            # add plaid items
-            plaid = classes.PlaidItems(user_id=user_id, item_id=item_id,
-                                       access_token=access_token)
-            db.session.add(plaid)
-            db.session.commit()
+        for new_account in accounts:
+            if new_account['account_id'] in existing_account_ids:
+                flash("You have already added the account selected")
+                redirect(url_for("dashboard"))
+
+        response = token_exchange(client, public_token)
+        item_id = response['item_id']
+        access_token = response['access_token']
+
+        # add plaid items
+        plaid = classes.PlaidItems(user=current_user, item_id=item_id,
+                                   access_token=access_token)
+        db.session.add(plaid)
+        db.session.commit()
+
+        plaid_to_db.add_accounts(accounts, current_user, plaid)
+
+        for account in current_user.accounts:
+            transactions = get_transactions(
+                client, '2019-10-01', '2019-11-01',
+                access_token=account.plaid_item.access_token,
+                account_id=account.account_plaid_id)
+            plaid_to_db.add_transactions(transactions, current_user, account)
 
     except ItemError as e:
         outstring = f"Failure: {e.code}"
