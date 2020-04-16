@@ -7,8 +7,6 @@ from plaid_methods import methods
 from plaid import Client
 from plaid.api import sandbox
 
-assert os.environ['SQLALCHEMY_DATABASE_URI'] == 'sqlite://'
-
 
 ENV_VARS = {
     "PLAID_CLIENT_ID": os.environ["PLAID_CLIENT_ID"],
