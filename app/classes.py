@@ -36,6 +36,7 @@ class User(db.Model, UserMixin):
     signup_date: user's signup date; date
     status: user's current status; string
     auth_id: unique user id from OAuth if available; string
+    coins: total number of coins the user has; int
     """
     __tablename__ = "user"
     id = db.Column("user_id", db.Integer, primary_key=True)
@@ -48,6 +49,7 @@ class User(db.Model, UserMixin):
                             default=datetime.now())
     status = db.Column(db.String, nullable=False, default="active")
     auth_id = db.Column(db.String, default=None)
+    coins = db.Column(db.Integer, nullable=False, default=0)
 
     # relationships
     plaid_items = db.relationship("PlaidItems", backref="user")
@@ -225,7 +227,6 @@ class Coin(db.Model):
     log_id: auto increment primary key; int
     user_id: id of the user that the coin is associated with; int
     coin_amount: number of coins added or subtracted; int
-    total_coin: total number of coins that the user has; int
     log_date: date when the coin transaction occurs; date
     description: why the coins are added or subtracted, including 3 values:
                  login, saving, and lottery; string
@@ -234,7 +235,6 @@ class Coin(db.Model):
     id = db.Column("log_id", db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
     coin_amount = db.Column(db.Integer, nullable=False)
-    total_coin = db.Column(db.Integer, nullable=False)
     log_date = db.Column(db.Date, nullable=False)
     description = db.Column(db.String, nullable=False)
 
