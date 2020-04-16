@@ -1,4 +1,5 @@
 from app import db, classes
+from datetime import datetime
 
 
 def add_accounts(accounts, user, plaid_item, commit=True):
@@ -18,8 +19,8 @@ def add_accounts(accounts, user, plaid_item, commit=True):
                                account_name=account['name'],
                                account_type=account['type'],
                                account_subtype=account['subtype'],
-                               user_id=user.user_id,
-                               plaid_id=plaid_item.plaid_item_id)
+                               user=user,
+                               plaid_item=plaid_item)
         db.session.add(acc)
     if commit is True:
         db.session.commit()
@@ -40,10 +41,11 @@ def add_transactions(transactions, user, account, commit=True):
     for transaction in transactions:
         loc = transaction['location']
         categories = ';'.join(transaction['category'])
-        trans = classes.Transaction(user_id=user.user_id,
-                                    account_id=account.account_id,
-                                    trans_date=transaction['date'],
-                                    post_date=transaction['authorized_date'],
+        trans = classes.Transaction(user=user,
+                                    account=account,
+                                    trans_date=parse_date(transaction['date']),
+                                    post_date=parse_date(
+                                        transaction['authorized_date']),
                                     trans_amount=transaction['amount'],
                                     merchant_category=categories,
                                     merchant_address=loc['address'],
@@ -58,3 +60,10 @@ def add_transactions(transactions, user, account, commit=True):
         db.session.add(trans)
     if commit is True:
         db.session.commit()
+
+
+def parse_date(date_string):
+    try:
+        return datetime.strptime(date_string, "%Y-%m-%d")
+    except TypeError:
+        return None

@@ -35,6 +35,6 @@ jobs:
         python -m unittest discover tests
     - name: Python Style Checker
       run: |
-        pycodestyle . --exclude="./app/__init__.py" --show-source
+        pycodestyle . --exclude="./app/__init__.py, migrations" --show-source
         pip install -e .
 
