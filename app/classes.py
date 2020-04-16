@@ -55,6 +55,7 @@ class User(db.Model, UserMixin):
     transaction = db.relationship("Transaction", backref="user")
     savings_history = db.relationship("SavingsHistory", backref="user")
     habits = db.relationship("Habits", backref="user")
+    coin = db.relationship("Coin", backref="user")
 
     def __init__(self, first_name, last_name, email,
                  phone, password, auth_id=None):
@@ -215,6 +216,27 @@ class Habits(db.Model):
         self.time_minute = time_minute
         self.time_hour = time_hour
         self.time_day_of_week = time_day_of_week
+
+
+class Coin(db.Model):
+    """Data model for coin table.
+
+    Columns include:
+    log_id: auto increment primary key; int
+    user_id: id of the user that the coin is associated with; int
+    coin_amount: number of coins added or subtracted; int
+    total_coins: total number of coins that the user has; int
+    update_date: date when the coin transaction occurs; date
+    description: why the coins are added or subtracted, including 3 values:
+                 login, saving, and lottery; string
+    """
+    __tablename__ = "coin"
+    id = db.Column("log_id", db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
+    coin_amount = db.Column(db.Integer, nullable=False)
+    total_coins = db.Column(db.Integer, nullable=False)
+    update_date = db.Column(db.Date, nullable=False)
+    description = db.Column(db.String, nullable=False)
 
 
 class RegistrationForm(FlaskForm):
