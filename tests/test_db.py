@@ -181,6 +181,23 @@ class TestDB(unittest.TestCase):
         self.assertEqual(habit.time_day_of_week, "2",
                          msg="check habit day of week")
 
+        # add a new coin transaction to coin table
+        test_coin = classes.Coin(user=user, coin_amount=5,
+                                 log_date=datetime.strptime(
+                                     "2020-03-10", "%Y-%m-%d"),
+                                 description="login")
+        db.session.add(test_coin)
+        db.session.commit()
+
+        # test if the new coin transaction is correctly inserted
+        coin = classes.Coin.query.first()
+        self.assertEqual(coin.user_id, user.id, msg="check user id")
+        self.assertEqual(coin.coin_amount, 5, msg="check coin amount")
+        self.assertEqual(datetime.strftime(coin.log_date, "%Y-%m-%d"),
+                         "2020-03-10", msg="check coin log date")
+        self.assertEqual(coin.description, "login",
+                         msg="check coin description")
+
 
 if __name__ == "__main__":
     unittest.main()
