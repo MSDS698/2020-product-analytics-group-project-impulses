@@ -225,8 +225,8 @@ class Coin(db.Model):
     log_id: auto increment primary key; int
     user_id: id of the user that the coin is associated with; int
     coin_amount: number of coins added or subtracted; int
-    total_coins: total number of coins that the user has; int
-    update_date: date when the coin transaction occurs; date
+    total_coin: total number of coins that the user has; int
+    log_date: date when the coin transaction occurs; date
     description: why the coins are added or subtracted, including 3 values:
                  login, saving, and lottery; string
     """
@@ -234,8 +234,8 @@ class Coin(db.Model):
     id = db.Column("log_id", db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
     coin_amount = db.Column(db.Integer, nullable=False)
-    total_coins = db.Column(db.Integer, nullable=False)
-    update_date = db.Column(db.Date, nullable=False)
+    total_coin = db.Column(db.Integer, nullable=False)
+    log_date = db.Column(db.Date, nullable=False)
     description = db.Column(db.String, nullable=False)
 
 
