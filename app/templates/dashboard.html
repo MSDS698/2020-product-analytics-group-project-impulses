@@ -32,9 +32,11 @@
             $(this).attr("disabled", "disabled");
             var index = $("table tbody tr:last-child").index();
             var row = '<tr>' +
-                '<td><input type="text" class="form-control" name="name" id="name"></td>' +
-                '<td><input type="text" class="form-control" name="department" id="department"></td>' +
-                '<td><input type="text" class="form-control" name="phone" id="phone"></td>' +
+                '<td><input type="text" class="form-control" name="habit_name" id="habit_name"></td>' +
+                '<td><input type="text" class="form-control" name="habit_category" id="habit_category"></td>' +
+                '<td><input type="text" class="form-control" name="time_minute" id="time_minute"></td>' +
+                '<td><input type="text" class="form-control" name="time_hour" id="time_hour"></td>' +
+                '<td><input type="text" class="form-control" name="time_day_of_week" id="time_day_of_week"></td>' +
                 '<td>' + actions + '</td>' +
             '</tr>';
             $("table").append(row);

@@ -146,6 +146,7 @@ def dashboard():
                                    time_minute[i], time_hour[i], time_day_of_week[i])
                 db.session.add(habit)
                 db.session.commit()
+            print('did go')
             return redirect(url_for("dashboard"))
 
     return render_template("dashboard.html",
