@@ -40,12 +40,15 @@ class TestDataToDB(unittest.TestCase):
         db.create_all()
 
         # Create a test user and test plaid item
-        self.test_user = classes.User(first_name="first", last_name="last",
-                                      email="test@gmail.com", phone="9876543210",
+        self.test_user = classes.User(first_name="first",
+                                      last_name="last",
+                                      email="test@gmail.com",
+                                      phone="9876543210",
                                       password="password")
         db.session.add(self.test_user)
         db.session.commit()
-        self.test_item = classes.PlaidItems(user=self.test_user, item_id="item",
+        self.test_item = classes.PlaidItems(user=self.test_user,
+                                            item_id="item",
                                             access_token="token")
         db.session.add(self.test_item)
         db.session.commit()
@@ -72,11 +75,15 @@ class TestDataToDB(unittest.TestCase):
                                           response['public_token'])
         access_token = response['access_token']
         accounts = methods.get_accounts(self.client, access_token)
-        add_plaid_data.add_accounts(accounts, self.test_user, self.test_item, commit=True)
+        add_plaid_data.add_accounts(accounts, self.test_user,
+                                    self.test_item, commit=True)
         account = classes.Accounts.query.first()
-        self.assertEqual(account.user_id, self.test_user.id, msg="check user id")
-        self.assertEqual(account.plaid_id, self.test_item.id, msg="check plaid item id")
-        self.assertEqual(account.account_plaid_id, accounts[0]['account_id'],
+        self.assertEqual(account.user_id, self.test_user.id,
+                         msg="check user id")
+        self.assertEqual(account.plaid_id, self.test_item.id,
+                         msg="check plaid item id")
+        self.assertEqual(account.account_plaid_id,
+                         accounts[0]['account_id'],
                          msg="check account plaid id")
         self.assertEqual(account.account_name, accounts[0]['name'],
                          msg="check account name")
@@ -94,7 +101,8 @@ class TestDataToDB(unittest.TestCase):
                                           response['public_token'])
         access_token = response['access_token']
         accounts = methods.get_accounts(self.client, access_token)
-        add_plaid_data.add_accounts(accounts, self.test_user, self.test_item, commit=True)
+        add_plaid_data.add_accounts(accounts, self.test_user,
+                                    self.test_item, commit=True)
         start_date = "2019-01-01"
         end_date = "2020-04-01"
         transactions = methods.get_transactions(self.client,
@@ -103,32 +111,46 @@ class TestDataToDB(unittest.TestCase):
                                                 access_token,
                                                 accounts[0]['account_id'])
         account = classes.Accounts.query.first()
-        add_plaid_data.add_transactions(transactions, self.test_user, account, commit=True)
-        transaction = classes.Transaction.query.filter_by(account_id=account.id).first()
+        add_plaid_data.add_transactions(transactions, self.test_user,
+                                        account, commit=True)
+        transaction = classes.Transaction.query.\
+            filter_by(account_id=account.id).first()
         categories = ';'.join(transactions[0]['category'])
-        self.assertEqual(transaction.user_id, self.test_user.id, msg="check user id")
-        self.assertEqual(transaction.account_id, account.id, msg="check account id")
-        self.assertEqual(str(transaction.trans_amount), str(transactions[0]['amount']),
+        self.assertEqual(transaction.user_id, self.test_user.id,
+                         msg="check user id")
+        self.assertEqual(transaction.account_id, account.id,
+                         msg="check account id")
+        self.assertEqual(str(transaction.trans_amount),
+                         str(transactions[0]['amount']),
                          msg="check transaction amount")
-        self.assertEqual(datetime.strftime(transaction.trans_date, "%Y-%m-%d"), transactions[0]['date'],
+        self.assertEqual(datetime.strftime(transaction.trans_date, "%Y-%m-%d"),
+                         transactions[0]['date'],
                          msg="check transaction date")
         self.assertEqual(transaction.merchant_category, categories,
                          msg="check merchant category")
-        self.assertEqual(transaction.merchant_address, transactions[0]['location']['address'],
+        self.assertEqual(transaction.merchant_address,
+                         transactions[0]['location']['address'],
                          msg="check merchant address")
-        self.assertEqual(transaction.merchant_city, transactions[0]['location']['city'],
+        self.assertEqual(transaction.merchant_city,
+                         transactions[0]['location']['city'],
                          msg="check merchant city")
-        self.assertEqual(transaction.merchant_state, transactions[0]['location']['region'],
+        self.assertEqual(transaction.merchant_state,
+                         transactions[0]['location']['region'],
                          msg="check merchant state")
-        self.assertEqual(transaction.merchant_country, transactions[0]['location']['country'],
+        self.assertEqual(transaction.merchant_country,
+                         transactions[0]['location']['country'],
                          msg="check merchant country")
-        self.assertEqual(transaction.merchant_postal_code, transactions[0]['location']['postal_code'],
+        self.assertEqual(transaction.merchant_postal_code,
+                         transactions[0]['location']['postal_code'],
                          msg="check merchant postal code")
-        self.assertEqual(transaction.merchant_longitude, transactions[0]['location']['lon'],
+        self.assertEqual(transaction.merchant_longitude,
+                         transactions[0]['location']['lon'],
                          msg="check merchant longitude")
-        self.assertEqual(transaction.merchant_latitude, transactions[0]['location']['lat'],
+        self.assertEqual(transaction.merchant_latitude,
+                         transactions[0]['location']['lat'],
                          msg="check merchant latitude")
-        self.assertEqual(str(transaction.category_id), transactions[0]['category_id'],
+        self.assertEqual(str(transaction.category_id),
+                         transactions[0]['category_id'],
                          msg="check category id")
 
 
