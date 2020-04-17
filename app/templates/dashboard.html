@@ -16,7 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-    <!-- habit form -->
+<!-- habit form -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -32,15 +32,9 @@
             $(this).attr("disabled", "disabled");
             var index = $("table tbody tr:last-child").index();
             var row = '<tr>' +
-                '<td><input type="text"
-                name="habit_name"class="form-control"></td>' +
-                <td><input type="text" name="habit_category" class="form-control"></td>' +
-                '<td><input type="text" name="time_minute"
-                class="form-control"></td>' +
-                '<td><input type="text" name="time_hour"}
-                class="form-control"></td>' +
-                '<td><input type="text" name="time_day_of_week"
-                class="form-control"></td>' +
+                '<td><input type="text" class="form-control" name="name" id="name"></td>' +
+                '<td><input type="text" class="form-control" name="department" id="department"></td>' +
+                '<td><input type="text" class="form-control" name="phone" id="phone"></td>' +
                 '<td>' + actions + '</td>' +
             '</tr>';
             $("table").append(row);
