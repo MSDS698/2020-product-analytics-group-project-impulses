@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from app import application, classes, db
 from flask import redirect, render_template, url_for, request, flash
 from flask_login import current_user, login_user, login_required, logout_user
@@ -25,6 +26,36 @@ client = Client(
 )
 
 
+# helper function to update user coins when logging in
+def add_login_coin(user):
+    """Update user coins when logging in.
+
+    When the user is logged in for the first time, 10 coins will be added
+    as a sign-up bonus. For regular user login, 1 coin will be added. Only
+    1 coin will be rewarded daily for login.
+
+    If any changes occur, a new coin transaction will be added to coin
+    table and the coins column in user table will also be updated.
+    """
+    login_coin_date = db.session.query(db.func.max(classes.Coin.log_date)) \
+        .filter_by(user=user, description="login").scalar()
+    if login_coin_date is None:  # first time login, add 10 coins
+        new_coin = classes.Coin(user=user, coin_amount=10,
+                                log_date=datetime.now(),
+                                description="login")
+        user.coins += new_coin.coin_amount
+        db.session.add(new_coin)
+        db.session.commit()
+    elif (datetime.now().date() - login_coin_date).days > 0:
+        # 1 coin rewarded daily for login
+        new_coin = classes.Coin(user=user, coin_amount=1,
+                                log_date=datetime.now(),
+                                description="login")
+        user.coins += new_coin.coin_amount
+        db.session.add(new_coin)
+        db.session.commit()
+
+
 @application.route("/index")
 @application.route("/")
 def index():
@@ -44,6 +75,7 @@ def login():
         user = classes.User.query.filter_by(email=email).first()
         if user is not None and user.check_password(password):
             login_user(user)
+            add_login_coin(user)
             return redirect(url_for("index"))
         else:
             return "Not a valid user"
