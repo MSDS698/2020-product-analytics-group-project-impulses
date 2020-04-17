@@ -197,9 +197,11 @@ class Habits(db.Model):
     user_id: id of the user that made the habit; int
     habit_name: name of the habit user created; string
     habit_category: category of the habit; string
-    time_minute: minute of the reminder; string (0-59)
-    time_hour: hour of the reminder; string (0-23)
-    time_day_of_week: day of week of the reminder; string
+    time_minute: minute of the reminder, including 4 values:
+                 0, 15, 30, 45; string
+    time_hour: hour of the reminder, including 0-23; string
+    time_day_of_week: day of week of the reminder, including 3 values:
+                      1-5, 0,6, *; string
     """
     __tablename__ = "habits"
     id = db.Column("habits_id", db.Integer, primary_key=True)
@@ -209,15 +211,6 @@ class Habits(db.Model):
     time_minute = db.Column(db.String, nullable=False)
     time_hour = db.Column(db.String, nullable=False)
     time_day_of_week = db.Column(db.String, nullable=False)
-
-    def __init__(self, user_id, habit_name, habit_category, time_minute,
-                 time_hour, time_day_of_week):
-        self.user_id = user_id
-        self.habit_name = habit_name
-        self.habit_category = habit_category
-        self.time_minute = time_minute
-        self.time_hour = time_hour
-        self.time_day_of_week = time_day_of_week
 
 
 class Coin(db.Model):

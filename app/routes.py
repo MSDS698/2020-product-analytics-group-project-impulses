@@ -110,20 +110,20 @@ def register():
 @application.route("/dashboard", methods=["POST", "GET"])
 @login_required
 def dashboard():
-    # get user session
-    user_id = current_user.id
-
+    # add a new habit
     habit_form = classes.HabitForm()
-    print(habit_form.validate_on_submit())
     if habit_form.validate_on_submit():
-        print('a')
         habit_name = habit_form.habit_name.data
         habit_category = habit_form.habit_category.data
         time_minute = habit_form.time_minute.data
         time_hour = habit_form.time_hour.data
         time_day_of_week = habit_form.time_day_of_week.data
-        habit = classes.Habits(user_id, habit_name, habit_category,
-                               time_minute, time_hour, time_day_of_week)
+        habit = classes.Habits(user=current_user,
+                               habit_name=habit_name,
+                               habit_category=habit_category,
+                               time_minute=time_minute,
+                               time_hour=time_hour,
+                               time_day_of_week=time_day_of_week)
         db.session.add(habit)
         db.session.commit()
         return redirect(url_for("dashboard"))
