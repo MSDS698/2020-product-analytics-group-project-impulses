@@ -109,6 +109,7 @@ def dashboard():
     # default values
     transactions = ''
     habit_form = classes.HabitForm()
+    flag_habits_edit = False
 
     # get user session
     user_id = current_user.id
@@ -149,10 +150,15 @@ def dashboard():
                                        time_day_of_week[i])
                 db.session.add(habit)
                 db.session.commit()
-            return redirect(url_for("dashboard"))
+            flag_habits_edit = True
+            print('flag_habits_edit: ', flag_habits_edit)
+            # return redirect(url_for("dashboard") + '#habits-tab-md')
 
     return render_template("dashboard.html",
                            user=current_user,
+                           transactions=transactions,
+                           habits=habits,
+                           flag_habits_edit=flag_habits_edit,
                            form=habit_form,
                            plaid_public_key=client.public_key,
                            plaid_environment=client.environment,

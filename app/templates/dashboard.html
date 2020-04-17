@@ -110,6 +110,7 @@
     </div>
 
     <ul class="nav nav-tabs nav-fill md-tabs" id="myTabMD" role="tablist">
+        {% if not flag_habits_edit %}
         <li class="nav-item">
             <a class="nav-link active" id="dashboard-tab-md" data-toggle="tab"
                href="#dashboard-md" role="tab" aria-controls="dashboard-md" aria-selected="true">Dashboard</a>
@@ -118,6 +119,16 @@
             <a class="nav-link" id="habits-tab-md" data-toggle="tab"
                href="#habits-md" role="tab" aria-controls="habits-md" aria-selected="false">Habits</a>
         </li>
+        {% else %}
+        <li class="nav-item">
+            <a class="nav-link" id="dashboard-tab-md" data-toggle="tab" href="#dashboard-md" role="tab" aria-controls="dashboard-md" aria-selected="false">Dashboard</a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link" id="habits-tab-md" data-toggle="tab"
+               href="#habits-md" role="tab" aria-controls="habits-md"
+               aria-selected="true">Habits</a>
+        </li>
+        {% endif %}
         <li class="nav-item">
             <a class="nav-link" id="account-tab-md" data-toggle="tab"
                href="#account-md" role="tab" aria-controls="account-md" aria-selected="false">Account</a>
