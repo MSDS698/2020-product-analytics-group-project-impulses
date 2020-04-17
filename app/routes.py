@@ -142,7 +142,6 @@ def dashboard():
 
             # add the latest habits back to db
             for i in range(len(habit_name)):
-                print('time_day_of_week[i]: ', time_day_of_week[i])
                 habit = classes.Habits(user_id, habit_name[i],
                                        habit_category[i],
                                        time_hour_minute[i][3:],
@@ -150,7 +149,6 @@ def dashboard():
                                        time_day_of_week[i])
                 db.session.add(habit)
                 db.session.commit()
-            print('habit name: ', habit_name)
             return redirect(url_for("dashboard"))
 
     return render_template("dashboard.html",

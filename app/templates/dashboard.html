@@ -111,20 +111,26 @@
 
     <ul class="nav nav-tabs nav-fill md-tabs" id="myTabMD" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="home-tab-md" data-toggle="tab" href="#home-md" role="tab"
-                aria-controls="home-md" aria-selected="true">Dashboard</a>
+            <a class="nav-link active" id="dashboard-tab-md" data-toggle="tab"
+               href="#dashboard-md" role="tab" aria-controls="dashboard-md" aria-selected="true">Dashboard</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="profile-tab-md" data-toggle="tab" href="#profile-md" role="tab"
-                aria-controls="profile-md" aria-selected="false">Habits</a>
+            <a class="nav-link" id="habits-tab-md" data-toggle="tab"
+               href="#habits-md" role="tab" aria-controls="habits-md" aria-selected="false">Habits</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="contact-tab-md" data-toggle="tab" href="#contact-md" role="tab"
-                aria-controls="contact-md" aria-selected="false">Account</a>
+            <a class="nav-link" id="account-tab-md" data-toggle="tab"
+               href="#account-md" role="tab" aria-controls="account-md" aria-selected="false">Account</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="lottery-tab-md" data-toggle="tab"
+               href="#lottery-md" role="tab" aria-controls="lottery-md"
+               aria-selected="false">Lottery</a>
         </li>
     </ul>
     <div class="tab-content card pt-12" id="myTabContentMD">
-        <div class="tab-pane fade show active" id="home-md" role="tabpanel" aria-labelledby="home-tab-md">
+        <div class="tab-pane fade show active" id="dashboard-md"
+             role="tabpanel" aria-labelledby="home-tab-md">
             <div class="container">
                 <div class="row">
                     <div class="col-sm"></div>
@@ -140,14 +146,20 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="profile-md" role="tabpanel" aria-labelledby="profile-tab-md">
+        <div class="tab-pane fade" id="habits-md" role="tabpanel"
+             aria-labelledby="profile-tab-md">
             <div class="container">
                 <div class="table-wrapper">
                     <div class="table-title">
                         <div class="row">
                             <div class="col-sm-8"><h2>Habits Details</h2></div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-2">
                                 <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="submit" form="habit"
+                                        class="btn btn-success add-new">Apply Changes
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -167,14 +179,18 @@
 
                             {% for habit in habits %}
                             <tr>
-                                <td><input readonly name="habit_name"
-                                           value={{habit.habit_name}}></td>
-                                <td><input readonly name="habit_category"
-                                            value={{habit.habit_category}}></td>
-                                <td><input readonly name="time_hour_minute"
-                                           value={{habit.time_hour}}:{{habit.time_minute}}></td>
-                                <td><input readonly name="time_day_of_week"
-                                           value={{habit.time_day_of_week}}></td>
+                                <td><input style="width:100%" readonly
+                                           name="habit_name"
+                                           value="{{habit.habit_name}}"></td>
+                                <td><input style="width:100%" readonly
+                                           name="habit_category"
+                                            value="{{habit.habit_category}}"></td>
+                                <td><input style="width:100%" readonly
+                                           name="time_hour_minute"
+                                           value="{{habit.time_hour}}:{{habit.time_minute}}"></td>
+                                <td><input style="width:100%" readonly
+                                           name="time_day_of_week"
+                                           value="{{habit.time_day_of_week}}"></td>
                                 <td>
                                     <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                                 </td>
@@ -184,12 +200,12 @@
                         </tbody>
 
                     </table>
-                        <button type="submit" form="habit">Submit</button>
                         </form>
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="contact-md" role="tabpanel" aria-labelledby="contact-tab-md">
+        <div class="tab-pane fade" id="account-md" role="tabpanel"
+             aria-labelledby="contact-tab-md">
             <div class="container">
                 <div class="row">
                     <div class="col-sm">
@@ -210,7 +226,7 @@
                                         </li>
                                         {% endfor %}
                                     </ul>
-                                    <form id='plaid-link-form' action={{url_for( 'access_plaid_token')}} method="post">
+                                    <form id='plaid-link-form' action={{url_for('access_plaid_token')}} method="post">
                                     </form>
                                     <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"
                                         data-client-name="My App" data-form-id="plaid-link-form"
@@ -237,6 +253,18 @@
                     </div>
                 </div>
                 <div class="col-sm"></div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="lottery-md" role="tabpanel"
+             aria-labelledby="contact-tab-md">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm"></div>
+                    <div class="col-sm">
+
+                    </div>
+                    <div class="col-sm"></div>
+                </div>
             </div>
         </div>
     </div>
