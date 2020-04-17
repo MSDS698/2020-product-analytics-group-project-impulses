@@ -32,11 +32,11 @@
             $(this).attr("disabled", "disabled");
             var index = $("table tbody tr:last-child").index();
             var row = '<tr>' +
-                '<td><input type="text" class="form-control" name="habit_name" id="habit_name"></td>' +
-                '<td><input type="text" class="form-control" name="habit_category" id="habit_category"></td>' +
-                '<td><input type="text" class="form-control" name="time_minute" id="time_minute"></td>' +
-                '<td><input type="text" class="form-control" name="time_hour" id="time_hour"></td>' +
-                '<td><input type="text" class="form-control" name="time_day_of_week" id="time_day_of_week"></td>' +
+                '<td><input type="text" class="form-control" name="habit_name"></td>' +
+                '<td><input type="text" class="form-control" name="habit_category"></td>' +
+                '<td><input type="text" class="form-control" name="time_minute"></td>' +
+                '<td><input type="text" class="form-control" name="time_hour"></td>' +
+                '<td><input type="text" class="form-control" name="time_day_of_week"></td>' +
                 '<td>' + actions + '</td>' +
             '</tr>';
             $("table").append(row);
@@ -144,6 +144,8 @@
                             </div>
                         </div>
                     </div>
+                    <form id="habit" method="post"
+                                  action="{{url_for('dashboard')}}">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -156,8 +158,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <form id="habit" method="post"
-                                  action="{{url_for('dashboard')}}">
+
                             {% for habit in habits %}
                             <tr>
                                 <td><input name="habit_name"
@@ -170,16 +171,16 @@
                                 <td><input name="time_day_of_week"
                                            value={{habit.time_day_of_week}}></td>
                                 <td>
-                                    <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                                    <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                                     <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                                 </td>
                             </tr>
                             {% endfor %}
-                            </form>
+
                         </tbody>
-                        <button type="submit" form="habit">go</button>
+
                     </table>
+                        <button type="submit" form="habit">Submit</button>
+                        </form>
                 </div>
             </div>
         </div>
