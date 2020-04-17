@@ -133,17 +133,21 @@ def dashboard():
     if request.method == "POST":
         habit_name = request.form.getlist("habit_name")
         habit_category = request.form.getlist("habit_category")
-        time_minute = request.form.getlist("time_minute")
-        time_hour = request.form.getlist("time_hour")
+        time_hour_minute = request.form.getlist("time_hour_minute")
         time_day_of_week = request.form.getlist("time_day_of_week")
+
         if habit_name:
-            # delete the users' habits
+            # delete the user's habits
             classes.Habits.query.filter_by(user_id=user_id).delete()
 
             # add the latest habits back to db
             for i in range(len(habit_name)):
-                habit = classes.Habits(user_id, habit_name[i], habit_category[i],
-                                   time_minute[i], time_hour[i], time_day_of_week[i])
+                print('time_day_of_week[i]: ', time_day_of_week[i])
+                habit = classes.Habits(user_id, habit_name[i],
+                                       habit_category[i],
+                                       time_hour_minute[i][3:],
+                                       time_hour_minute[i][:2],
+                                       time_day_of_week[i])
                 db.session.add(habit)
                 db.session.commit()
             print('habit name: ', habit_name)

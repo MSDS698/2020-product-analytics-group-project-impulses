@@ -33,10 +33,17 @@
             var index = $("table tbody tr:last-child").index();
             var row = '<tr>' +
                 '<td><input type="text" class="form-control" name="habit_name"></td>' +
-                '<td><input type="text" class="form-control" name="habit_category"></td>' +
-                '<td><input type="text" class="form-control" name="time_minute"></td>' +
-                '<td><input type="text" class="form-control" name="time_hour"></td>' +
-                '<td><input type="text" class="form-control" name="time_day_of_week"></td>' +
+                '<td><select class="form-control" name="habit_category">' +
+                        '<option value="coffee">Coffee</option>' +
+                        '<option value="transportation">Transportation</option>' +
+                        '<option value="lunch">Lunch</option>' +
+                    '</select></td>' +
+                '<td><input type="time" class="form-control" name="time_hour_minute"></td>' +
+                '<td><select class="form-control" name="time_day_of_week">' +
+                        '<option value="weekday">Weekday</option>' +
+                        '<option value="weekend">Weekend</option>' +
+                        '<option value="everyday">Everyday</option>' +
+                    '</select></td>' +
                 '<td>' + actions + '</td>' +
             '</tr>';
             $("table").append(row);
@@ -116,7 +123,7 @@
                 aria-controls="contact-md" aria-selected="false">Account</a>
         </li>
     </ul>
-    <div class="tab-content card pt-5" id="myTabContentMD">
+    <div class="tab-content card pt-12" id="myTabContentMD">
         <div class="tab-pane fade show active" id="home-md" role="tabpanel" aria-labelledby="home-tab-md">
             <div class="container">
                 <div class="row">
@@ -151,8 +158,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Category</th>
-                                <th>Minute</th>
-                                <th>Hour</th>
+                                <th>Time</th>
                                 <th>Day of Week</th>
                                 <th>Actions</th>
                             </tr>
@@ -161,14 +167,13 @@
 
                             {% for habit in habits %}
                             <tr>
-                                <td><input name="habit_name"
+                                <td><input readonly name="habit_name"
                                            value={{habit.habit_name}}></td>
-                                <td><input name="habit_category" value={{habit.habit_category}}></td>
-                                <td><input name="time_minute"
-                                           value={{habit.time_minute}}></td>
-                                <td><input name="time_hour"
-                                           value={{habit.time_hour}}></td>
-                                <td><input name="time_day_of_week"
+                                <td><input readonly name="habit_category"
+                                            value={{habit.habit_category}}></td>
+                                <td><input readonly name="time_hour_minute"
+                                           value={{habit.time_hour}}:{{habit.time_minute}}></td>
+                                <td><input readonly name="time_day_of_week"
                                            value={{habit.time_day_of_week}}></td>
                                 <td>
                                     <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
