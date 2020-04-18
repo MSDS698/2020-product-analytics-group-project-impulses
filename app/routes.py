@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from app import application, classes, db
 from flask import redirect, render_template, url_for, request, flash
 from flask_login import current_user, login_user, login_required, logout_user
@@ -25,6 +26,32 @@ client = Client(
 )
 
 
+# helper function to update user coins when logging in
+def add_login_coin(user):
+    """Update user coins when logging in.
+
+    When the user is logged in for the first time, 10 coins will be added
+    as a sign-up bonus. For regular user login, 2 coins are rewarded daily.
+
+    If any changes occur, a new coin transaction will be added to coin
+    table and the coins column in user table will also be updated.
+    """
+    login_coin_date = db.session.query(db.func.max(classes.Coin.log_date)) \
+        .filter_by(user=user, description="login").scalar()
+    if login_coin_date is None:  # first time login
+        coin_amount = 10
+    elif (datetime.now().date() - login_coin_date).days > 0:  # daily login
+        coin_amount = 2
+    else:
+        return
+    new_coin = classes.Coin(user=user, coin_amount=coin_amount,
+                            log_date=datetime.now(),
+                            description="login")
+    user.coins += coin_amount
+    db.session.add(new_coin)
+    db.session.commit()
+
+
 @application.route("/index")
 @application.route("/")
 def index():
@@ -44,6 +71,7 @@ def login():
         user = classes.User.query.filter_by(email=email).first()
         if user is not None and user.check_password(password):
             login_user(user)
+            add_login_coin(user)
             return redirect(url_for("index"))
         else:
             return "Not a valid user"
@@ -78,20 +106,20 @@ def register():
 @application.route("/dashboard", methods=["POST", "GET"])
 @login_required
 def dashboard():
-    # get user session
-    user_id = current_user.id
-
+    # add a new habit
     habit_form = classes.HabitForm()
-    print(habit_form.validate_on_submit())
     if habit_form.validate_on_submit():
-        print('a')
         habit_name = habit_form.habit_name.data
         habit_category = habit_form.habit_category.data
         time_minute = habit_form.time_minute.data
         time_hour = habit_form.time_hour.data
         time_day_of_week = habit_form.time_day_of_week.data
-        habit = classes.Habits(user_id, habit_name, habit_category,
-                               time_minute, time_hour, time_day_of_week)
+        habit = classes.Habits(user=current_user,
+                               habit_name=habit_name,
+                               habit_category=habit_category,
+                               time_minute=time_minute,
+                               time_hour=time_hour,
+                               time_day_of_week=time_day_of_week)
         db.session.add(habit)
         db.session.commit()
         return redirect(url_for("dashboard"))
