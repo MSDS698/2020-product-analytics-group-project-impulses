@@ -47,10 +47,11 @@ class TestDB(unittest.TestCase):
         self.assertEqual(user.last_name, "last", msg="check last name")
         self.assertEqual(user.email, "test@gmail.com", msg="check email")
         self.assertEqual(user.phone, "9876543210", msg="check phone number")
+        self.assertEqual(user.coins, 0, msg="check coin balance")
         self.assertTrue(user.check_password, msg="check password")
 
         # add a new plaid item to plaid_items table
-        test_item = classes.PlaidItems(user_id=user.id, item_id="%item$",
+        test_item = classes.PlaidItems(user=user, item_id="%item$",
                                        access_token="$token&")
         db.session.add(test_item)
         db.session.commit()
@@ -63,7 +64,7 @@ class TestDB(unittest.TestCase):
                          msg="check access token")
 
         # add a new account to accounts table
-        test_account = classes.Accounts(user_id=user.id, plaid_id=item.id,
+        test_account = classes.Accounts(user=user, plaid_id=item.id,
                                         account_plaid_id="test-account",
                                         account_name="test-bank",
                                         account_type="test-type",
@@ -85,7 +86,7 @@ class TestDB(unittest.TestCase):
                          msg="check account subtype")
 
         # add a new transaction to transaction table
-        test_trans = classes.Transaction(user_id=user.id,
+        test_trans = classes.Transaction(user=user,
                                          account_id=account.id,
                                          trans_amount=123.45,
                                          category_id=12345678,
@@ -136,7 +137,7 @@ class TestDB(unittest.TestCase):
                          msg="check merchant latitude")
 
         # add a new saving history to savings_history table
-        test_saving = classes.SavingsHistory(user_id=user.id,
+        test_saving = classes.SavingsHistory(user=user,
                                              savings_amount="3.21",
                                              total_savings="5.67",
                                              predicted_savings="10.89",
@@ -162,7 +163,7 @@ class TestDB(unittest.TestCase):
                          "2020-02-02", msg="check update date")
 
         # add a new habit to habits table
-        test_habit = classes.Habits(user_id=user.id, habit_name="coffee",
+        test_habit = classes.Habits(user=user, habit_name="coffee",
                                     habit_category="test-category",
                                     time_minute="25",
                                     time_hour="10",
@@ -180,6 +181,23 @@ class TestDB(unittest.TestCase):
         self.assertEqual(habit.time_hour, "10", msg="check habit hour")
         self.assertEqual(habit.time_day_of_week, "2",
                          msg="check habit day of week")
+
+        # add a new coin transaction to coin table
+        test_coin = classes.Coin(user=user, coin_amount=5,
+                                 log_date=datetime.strptime(
+                                     "2020-03-10", "%Y-%m-%d"),
+                                 description="login")
+        db.session.add(test_coin)
+        db.session.commit()
+
+        # test if the new coin transaction is correctly inserted
+        coin = classes.Coin.query.first()
+        self.assertEqual(coin.user_id, user.id, msg="check user id")
+        self.assertEqual(coin.coin_amount, 5, msg="check coin amount")
+        self.assertEqual(datetime.strftime(coin.log_date, "%Y-%m-%d"),
+                         "2020-03-10", msg="check coin log date")
+        self.assertEqual(coin.description, "login",
+                         msg="check coin description")
 
 
 if __name__ == "__main__":

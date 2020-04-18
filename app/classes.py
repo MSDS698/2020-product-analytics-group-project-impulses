@@ -36,6 +36,7 @@ class User(db.Model, UserMixin):
     signup_date: user's signup date; date
     status: user's current status; string
     auth_id: unique user id from OAuth if available; string
+    coins: total number of coins the user has; int
     """
     __tablename__ = "user"
     id = db.Column("user_id", db.Integer, primary_key=True)
@@ -48,6 +49,7 @@ class User(db.Model, UserMixin):
                             default=datetime.now())
     status = db.Column(db.String, nullable=False, default="active")
     auth_id = db.Column(db.String, default=None)
+    coins = db.Column(db.Integer, nullable=False, default=0)
 
     # relationships
     plaid_items = db.relationship("PlaidItems", backref="user")
@@ -55,6 +57,7 @@ class User(db.Model, UserMixin):
     transaction = db.relationship("Transaction", backref="user")
     savings_history = db.relationship("SavingsHistory", backref="user")
     habits = db.relationship("Habits", backref="user")
+    coin = db.relationship("Coin", backref="user")
 
     def __init__(self, first_name, last_name, email,
                  phone, password, auth_id=None):
@@ -194,9 +197,11 @@ class Habits(db.Model):
     user_id: id of the user that made the habit; int
     habit_name: name of the habit user created; string
     habit_category: category of the habit; string
-    time_minute: minute of the reminder; string (0-59)
-    time_hour: hour of the reminder; string (0-23)
-    time_day_of_week: day of week of the reminder; string
+    time_minute: minute of the reminder, including 4 values:
+                 0, 15, 30, 45; string
+    time_hour: hour of the reminder, including 0-23; string
+    time_day_of_week: day of week of the reminder, including 3 values:
+                      1-5, 0,6, *; string
     """
     __tablename__ = "habits"
     id = db.Column("habits_id", db.Integer, primary_key=True)
@@ -207,14 +212,24 @@ class Habits(db.Model):
     time_hour = db.Column(db.String, nullable=False)
     time_day_of_week = db.Column(db.String, nullable=False)
 
-    def __init__(self, user_id, habit_name, habit_category, time_minute,
-                 time_hour, time_day_of_week):
-        self.user_id = user_id
-        self.habit_name = habit_name
-        self.habit_category = habit_category
-        self.time_minute = time_minute
-        self.time_hour = time_hour
-        self.time_day_of_week = time_day_of_week
+
+class Coin(db.Model):
+    """Data model for coin table.
+
+    Columns include:
+    log_id: auto increment primary key; int
+    user_id: id of the user that the coin is associated with; int
+    coin_amount: number of coins added or subtracted; int
+    log_date: date when the coin transaction occurs; date
+    description: why the coins are added or subtracted, including 3 values:
+                 login, saving, and lottery; string
+    """
+    __tablename__ = "coin"
+    id = db.Column("log_id", db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
+    coin_amount = db.Column(db.Integer, nullable=False)
+    log_date = db.Column(db.Date, nullable=False)
+    description = db.Column(db.String, nullable=False)
 
 
 class RegistrationForm(FlaskForm):
