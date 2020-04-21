@@ -124,8 +124,12 @@ def dashboard():
         access_token = plaid_dict.access_token
 
         # get transaction data
-        transactions = get_transactions(client, '2019-10-01', '2019-11-01',
-                                        access_token)
+        transactions = classes.Transaction.query.filter_by(user_id=user_id).all()
+
+        # transactions = get_transactions(
+        #     client, '2019-10-01', '2019-11-01',
+        #     access_token=access_token,
+        #     account_id=current_user.accounts[0].account_plaid_id)
 
     # get user session
     user_id = current_user.id
@@ -143,16 +147,22 @@ def dashboard():
 
             # add the latest habits back to db
             for i in range(len(habit_name)):
-                habit = classes.Habits(user_id, habit_name[i],
-                                       habit_category[i],
-                                       time_hour_minute[i][3:],
-                                       time_hour_minute[i][:2],
-                                       time_day_of_week[i])
+                print(habit_name[i])
+                print(time_day_of_week[i])
+                print(time_hour_minute[i])
+                habit = classes.Habits(user_id=user_id, habit_name=habit_name[i],
+                                       habit_category=habit_category[i],
+                                       time_minute=time_hour_minute[i][3:],
+                                       time_hour=time_hour_minute[i][:2],
+                                       time_day_of_week=time_day_of_week[i])
+                print('asdd')
                 db.session.add(habit)
                 db.session.commit()
+                print('dfsfsdf')
             flag_habits_edit = True
             print('flag_habits_edit: ', flag_habits_edit)
             # return redirect(url_for("dashboard") + '#habits-tab-md')
+    habits = classes.Habits.query.filter_by(user_id=user_id).all()
 
     return render_template("dashboard.html",
                            user=current_user,
