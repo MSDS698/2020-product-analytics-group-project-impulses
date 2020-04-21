@@ -246,10 +246,12 @@ def receive_message():
 
     if response == "Y" or response == "N":
         resp = MessagingResponse()
-        resp.message(f"Hi {name}, Thanks for you response {response}")
+        res_str_1 = f"Hi {name}, Thanks for you response {response}"
+        resp.message(res_str_1)
         return str(resp)
     else:
         resp = MessagingResponse()
-        resp.message(f"Hi {name}, That's not a valid response,
-                     please respond Y/N")
+        res_str_1 = f"Hi {name}, That's not a valid response, "
+        res_str_2 = "please respond Y/N"
+        resp.message(res_str_1 + res_str_2)
         return str(resp)
