@@ -9,7 +9,6 @@ from plaid_methods.methods import get_accounts, get_transactions, \
 from plaid_methods import add_plaid_data as plaid_to_db
 from plaid import Client
 
-
 ENV_VARS = {
     "PLAID_CLIENT_ID": os.environ["PLAID_CLIENT_ID"],
     "PLAID_PUBLIC_KEY": os.environ["PLAID_PUBLIC_KEY"],
@@ -124,7 +123,8 @@ def dashboard():
         access_token = plaid_dict.access_token
 
         # get transaction data
-        transactions = classes.Transaction.query.filter_by(user_id=user_id).all()
+        transactions = classes.Transaction.query \
+            .filter_by(user_id=user_id).all()
 
     # get user session
     user_id = current_user.id
@@ -136,7 +136,6 @@ def dashboard():
         time_hour_minute = request.form.getlist("time_hour_minute")
         time_day_of_week = request.form.getlist("time_day_of_week")
 
-        # if habit_name:
         # delete the user's habits
         classes.Habits.query.filter_by(user_id=user_id).delete()
 
