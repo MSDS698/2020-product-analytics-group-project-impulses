@@ -8,13 +8,23 @@ from plaid_methods.methods import get_accounts, get_transactions, \
     token_exchange
 from plaid_methods import add_plaid_data as plaid_to_db
 from plaid import Client
+import pytz
+import pandas as pd
+import twilio
+import twilio.rest
+from twilio import twiml
+from twilio.twiml.messaging_response import MessagingResponse
+from twilio_methods.schedule_methods import dow_list, habit_today
 
 
 ENV_VARS = {
     "PLAID_CLIENT_ID": os.environ["PLAID_CLIENT_ID"],
     "PLAID_PUBLIC_KEY": os.environ["PLAID_PUBLIC_KEY"],
     "PLAID_SECRET": os.environ["PLAID_SECRET"],
-    "PLAID_ENV": os.environ["PLAID_ENV"]
+    "PLAID_ENV": os.environ["PLAID_ENV"],
+    "TWILIO_ACCOUNT_SID": os.environ["TWILIO_ACCOUNT_SID"],
+    "TWILIO_AUTH_TOKEN": os.environ["TWILIO_AUTH_TOKEN"],
+    "SQLALCHEMY_DATABASE_URI": os.environ["SQLALCHEMY_DATABASE_URI"]
 }
 
 # setup plaid client
@@ -24,6 +34,11 @@ client = Client(
     ENV_VARS["PLAID_PUBLIC_KEY"],
     ENV_VARS["PLAID_ENV"],
 )
+
+# setup twilio client
+twilio_client = twilio.rest.Client(
+    ENV_VARS["TWILIO_ACCOUNT_SID"],
+    ENV_VARS["TWILIO_AUTH_TOKEN"])
 
 
 # helper function to update user coins when logging in
@@ -194,3 +209,44 @@ def access_plaid_token():
         return outstring
 
     return redirect(url_for("dashboard"))
+
+@application.route("/send_message", methods=['GET', 'POST'])
+def send_message():
+    df_habit = pd.read_sql_table('habits', ENV_VARS["SQLALCHEMY_DATABASE_URI"])
+    df_user = pd.read_sql_table('user', ENV_VARS["SQLALCHEMY_DATABASE_URI"])[["user_id","phone"]]
+
+    df_habit["time_minute"] = df_habit["time_minute"].astype(int)
+    df_habit["time_hour"] = df_habit["time_hour"].astype(int)
+
+    df_publish = habit_today(df_habit, df_user)
+    print(df_publish)
+
+    for _, row in df_publish.iterrows():
+        pst = pytz.timezone("America/Los_Angeles")
+        now = datetime.now().astimezone(pst)
+
+        if row["time_minute"] == now.minute and row["time_hour"] == now.hour:
+            hc=row["habit_category"]
+            body=f"Would you like to save $5 on {hc} today? please respond Y/N"
+            msg = twilio_client.messages.create(
+                body=body,
+                to=row["phone"],
+                from_="+16462573594")
+
+    return redirect(url_for("index"))
+
+@application.route("/receive_message", methods=["POST"])
+def receive_message():
+    number = str(request.form['From'])[2:]
+    response = request.form['Body']
+    user_by_num = classes.User.query.filter_by(phone=number).first()
+    name = user_by_num.first_name
+
+    if response == "Y" or response == "N":
+        resp = MessagingResponse()
+        resp.message(f"Hi {name}, Thanks for you response {response}")
+        return str(resp)
+    else:
+        resp = MessagingResponse()
+        resp.message(f"Hi {name}, That's not a valid response, please respond Y/N")
+        return str(resp)
