@@ -228,8 +228,7 @@ def send_message():
 
         if row["time_minute"] == now.minute and row["time_hour"] == now.hour:
             hc = row["habit_category"]
-            body = f"Would you like to save $5 on {hc} today?
-            please respond Y/N"
+            body = f"Would you like to save $5 on {hc} today? Respond Y/N"
             msg = twilio_client.messages.create(
                 body=body,
                 to=row["phone"],
