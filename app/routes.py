@@ -210,10 +210,11 @@ def access_plaid_token():
 
     return redirect(url_for("dashboard"))
 
+
 @application.route("/send_message", methods=['GET', 'POST'])
 def send_message():
     df_habit = pd.read_sql_table('habits', ENV_VARS["SQLALCHEMY_DATABASE_URI"])
-    df_user = pd.read_sql_table('user', ENV_VARS["SQLALCHEMY_DATABASE_URI"])[["user_id","phone"]]
+    df_user = pd.read_sql_table('user', ENV_VARS["SQLALCHEMY_DATABASE_URI"])
 
     df_habit["time_minute"] = df_habit["time_minute"].astype(int)
     df_habit["time_hour"] = df_habit["time_hour"].astype(int)
@@ -226,14 +227,16 @@ def send_message():
         now = datetime.now().astimezone(pst)
 
         if row["time_minute"] == now.minute and row["time_hour"] == now.hour:
-            hc=row["habit_category"]
-            body=f"Would you like to save $5 on {hc} today? please respond Y/N"
+            hc = row["habit_category"]
+            body = f"Would you like to save $5 on {hc} today?
+            please respond Y/N"
             msg = twilio_client.messages.create(
                 body=body,
                 to=row["phone"],
                 from_="+16462573594")
 
     return redirect(url_for("index"))
+
 
 @application.route("/receive_message", methods=["POST"])
 def receive_message():
@@ -248,5 +251,6 @@ def receive_message():
         return str(resp)
     else:
         resp = MessagingResponse()
-        resp.message(f"Hi {name}, That's not a valid response, please respond Y/N")
+        resp.message(f"Hi {name}, That's not a valid response,
+                     please respond Y/N")
         return str(resp)
