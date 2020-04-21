@@ -126,11 +126,6 @@ def dashboard():
         # get transaction data
         transactions = classes.Transaction.query.filter_by(user_id=user_id).all()
 
-        # transactions = get_transactions(
-        #     client, '2019-10-01', '2019-11-01',
-        #     access_token=access_token,
-        #     account_id=current_user.accounts[0].account_plaid_id)
-
     # get user session
     user_id = current_user.id
 
@@ -141,27 +136,20 @@ def dashboard():
         time_hour_minute = request.form.getlist("time_hour_minute")
         time_day_of_week = request.form.getlist("time_day_of_week")
 
-        if habit_name:
-            # delete the user's habits
-            classes.Habits.query.filter_by(user_id=user_id).delete()
+        # if habit_name:
+        # delete the user's habits
+        classes.Habits.query.filter_by(user_id=user_id).delete()
 
-            # add the latest habits back to db
-            for i in range(len(habit_name)):
-                print(habit_name[i])
-                print(time_day_of_week[i])
-                print(time_hour_minute[i])
-                habit = classes.Habits(user_id=user_id, habit_name=habit_name[i],
-                                       habit_category=habit_category[i],
-                                       time_minute=time_hour_minute[i][3:],
-                                       time_hour=time_hour_minute[i][:2],
-                                       time_day_of_week=time_day_of_week[i])
-                print('asdd')
-                db.session.add(habit)
-                db.session.commit()
-                print('dfsfsdf')
-            flag_habits_edit = True
-            print('flag_habits_edit: ', flag_habits_edit)
-            # return redirect(url_for("dashboard") + '#habits-tab-md')
+        # add the latest habits back to db
+        for i in range(len(habit_name)):
+            habit = classes.Habits(user_id=user_id, habit_name=habit_name[i],
+                                   habit_category=habit_category[i],
+                                   time_minute=time_hour_minute[i][3:],
+                                   time_hour=time_hour_minute[i][:2],
+                                   time_day_of_week=time_day_of_week[i])
+            db.session.add(habit)
+            db.session.commit()
+        flag_habits_edit = True
     habits = classes.Habits.query.filter_by(user_id=user_id).all()
 
     return render_template("dashboard.html",
