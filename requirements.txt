@@ -5,7 +5,7 @@ autopep8==1.5
 certifi==2020.4.5.1
 chardet==3.0.4
 click==7.1.1
-Flask==1.1.1
+Flask==1.1.2
 Flask-Login==0.5.0
 Flask-Migrate==2.5.3
 Flask-SQLAlchemy==2.4.1
@@ -32,8 +32,12 @@ python-editor==1.0.4
 pytz==2019.3
 requests==2.23.0
 six==1.14.0
+<<<<<<< HEAD
 SQLAlchemy==1.3.9
 twilio==6.38.0
+=======
+SQLAlchemy==1.3.16
+>>>>>>> c2b328cf76c0340fde0e3809b174fc6c407d05d6
 urllib3==1.25.8
 wcwidth==0.1.9
 Werkzeug==1.0.1
