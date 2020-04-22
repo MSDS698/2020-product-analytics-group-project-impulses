@@ -106,7 +106,6 @@ def register():
 @login_required
 def dashboard():
     # default values
-    transactions = ''
     habit_form = classes.HabitForm()
     flag_habits_edit = False
 
@@ -118,16 +117,8 @@ def dashboard():
         user_id=user_id).first()
 
     if plaid_dict:  # if signed up in plaid
-        print('dashboard: already signed up plaid')
-        item_id = plaid_dict.item_id
-        access_token = plaid_dict.access_token
-
-        # get transaction data
-        transactions = classes.Transaction.query \
-            .filter_by(user_id=user_id).all()
-
-    # get user session
-    user_id = current_user.id
+        # get data from the savings history table
+        pass
 
     # get selected habits
     if request.method == "POST":
@@ -153,7 +144,6 @@ def dashboard():
 
     return render_template("dashboard.html",
                            user=current_user,
-                           transactions=transactions,
                            habits=habits,
                            flag_habits_edit=flag_habits_edit,
                            form=habit_form,
