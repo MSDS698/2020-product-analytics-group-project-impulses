@@ -146,7 +146,6 @@ def dashboard():
                            user=current_user,
                            habits=habits,
                            flag_habits_edit=flag_habits_edit,
-                           form=habit_form,
                            plaid_public_key=client.public_key,
                            plaid_environment=client.environment,
                            plaid_products=ENV_VARS.get("PLAID_PRODUCTS",
