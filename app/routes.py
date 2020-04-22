@@ -106,7 +106,6 @@ def register():
 @login_required
 def dashboard():
     # default values
-    habit_form = classes.HabitForm()
     flag_habits_edit = False
 
     # get user session
