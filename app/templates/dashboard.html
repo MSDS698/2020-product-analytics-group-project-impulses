@@ -11,17 +11,80 @@
     <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='dashboard/css/dashboard.css')}}">
 
     <!-- Bootstrap links -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<!-- habit form -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+        var actions = $("table td:last-child").html();
+        // Append table with add row form on add new button click
+        $(".add-new").click(function(){
+            var index = $("table tbody tr:last-child").index();
+            var row = '<tr>' +
+                '<td><input type="text" class="form-control" name="habit_name"></td>' +
+                '<td><select class="form-control" name="habit_category">' +
+                        '<option value="coffee">Coffee</option>' +
+                        '<option value="transportation">Transportation</option>' +
+                        '<option value="lunch">Lunch</option>' +
+                    '</select></td>' +
+                '<td><input type="time" class="form-control" name="time_hour_minute"></td>' +
+                '<td><select class="form-control" name="time_day_of_week">' +
+                        '<option value="weekday">Weekday</option>' +
+                        '<option value="weekend">Weekend</option>' +
+                        '<option value="everyday">Everyday</option>' +
+                    '</select></td>' +
+                '<td>' + actions + '</td>' +
+            '</tr>';
+            $("table").append(row);
+            $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+        // Add row on add button click
+        $(document).on("click", ".add", function(){
+            var empty = false;
+            var input = $(this).parents("tr").find('input[type="text"]');
+            input.each(function(){
+                if(!$(this).val()){
+                    $(this).addClass("error");
+                    empty = true;
+                } else{
+                    $(this).removeClass("error");
+                }
+            });
+            $(this).parents("tr").find(".error").first().focus();
+            if(!empty){
+                input.each(function(){
+                    $(this).parent("td").html($(this).val());
+                });
+                $(this).parents("tr").find(".add, .edit").toggle();
+                $(".add-new").removeAttr("disabled");
+            }
+        });
+        // Edit row on edit button click
+        $(document).on("click", ".edit", function(){
+            $(this).parents("tr").find("td:not(:last-child)").each(function(){
+                $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
+            });
+            $(this).parents("tr").find(".add, .edit").toggle();
+            $(".add-new").attr("disabled", "disabled");
+        });
+        // Delete row on delete button click
+        $(document).on("click", ".delete", function(){
+            $(this).parents("tr").remove();
+            $(".add-new").removeAttr("disabled");
+        });
+    });
+    </script>
 </head>
 
 <body class="home">
@@ -46,68 +109,106 @@
     </div>
 
     <ul class="nav nav-tabs nav-fill md-tabs" id="myTabMD" role="tablist">
+        {% if not flag_habits_edit %}
         <li class="nav-item">
-            <a class="nav-link active" id="home-tab-md" data-toggle="tab" href="#home-md" role="tab"
-                aria-controls="home-md" aria-selected="true">Dashboard</a>
+            <a class="nav-link active" id="dashboard-tab-md" data-toggle="tab"
+               href="#dashboard-md" role="tab" aria-controls="dashboard-md" aria-selected="true">Dashboard</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="profile-tab-md" data-toggle="tab" href="#profile-md" role="tab"
-                aria-controls="profile-md" aria-selected="false">Habits</a>
+            <a class="nav-link" id="habits-tab-md" data-toggle="tab"
+               href="#habits-md" role="tab" aria-controls="habits-md" aria-selected="false">Habits</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+            <a class="nav-link" id="dashboard-tab-md" data-toggle="tab" href="#dashboard-md" role="tab" aria-controls="dashboard-md" aria-selected="false">Dashboard</a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link" id="habits-tab-md" data-toggle="tab"
+               href="#habits-md" role="tab" aria-controls="habits-md"
+               aria-selected="true">Habits</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+            <a class="nav-link" id="account-tab-md" data-toggle="tab"
+               href="#account-md" role="tab" aria-controls="account-md" aria-selected="false">Account</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="contact-tab-md" data-toggle="tab" href="#contact-md" role="tab"
-                aria-controls="contact-md" aria-selected="false">Account</a>
+            <a class="nav-link" id="lottery-tab-md" data-toggle="tab"
+               href="#lottery-md" role="tab" aria-controls="lottery-md"
+               aria-selected="false">Lottery</a>
         </li>
     </ul>
-    <div class="tab-content card pt-5" id="myTabContentMD">
-        <div class="tab-pane fade show active" id="home-md" role="tabpanel" aria-labelledby="home-tab-md">
+    <div class="tab-content card pt-12" id="myTabContentMD">
+        <div class="tab-pane fade show active" id="dashboard-md"
+             role="tabpanel" aria-labelledby="home-tab-md">
             <div class="container">
                 <div class="row">
                     <div class="col-sm"></div>
                     <div class="col-sm">
-                        <h3>Transaction Data</h3>
-                        <ul class="content">
-                            {% for transaction in user.transaction %}
-                            <li>{{ transaction.merchant_category }}</li>
-                            {% endfor %}
-                        </ul>
+                        <h3>Savings History</h3>
                     </div>
                     <div class="col-sm"></div>
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="profile-md" role="tabpanel" aria-labelledby="profile-tab-md">
+        <div class="tab-pane fade" id="habits-md" role="tabpanel"
+             aria-labelledby="profile-tab-md">
             <div class="container">
-                <div class="row">
-                    <div class="col-sm">
-                        <form method="POST" class="content">
-                            <h2>Add a new habit</h2> {{ form.csrf_token }} {% if form.errors %} {{ form.errors }}
-                            {% endif %} {{ form.habit_name.label }} {{ form.habit_name() }}
-                            <br /> {{ form.habit_category.label }} {{ form.habit_category() }}
-                            <br /> {{ form.time_day_of_week.label }} {{ form.time_day_of_week() }}
-                            <br /> {{ form.time_hour.label }} {{ form.time_hour() }}
-                            <br /> {{ form.time_minute.label }} {{ form.time_minute() }}
-                            <br /> {{ form.submit() }}
+                <div class="table-wrapper">
+                    <div class="table-title">
+                        <div class="row">
+                            <div class="col-sm-8"><h2>Habits Details</h2></div>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="submit" form="habit" class="btn btn-success apply-changes">Apply Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                    <form id="habit" method="post"
+                                  action="{{url_for('dashboard')}}">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Time</th>
+                                <th>Day of Week</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for habit in habits %}
+                            <tr>
+                                <td><input style="width:100%" readonly
+                                           name="habit_name"
+                                           value="{{habit.habit_name}}"></td>
+                                <td><input style="width:100%" readonly
+                                           name="habit_category"
+                                            value="{{habit.habit_category}}"></td>
+                                <td><input style="width:100%" readonly
+                                           name="time_hour_minute"
+                                           value="{{habit.time_hour}}:{{habit.time_minute}}"></td>
+                                <td><input style="width:100%" readonly
+                                           name="time_day_of_week"
+                                           value="{{habit.time_day_of_week}}"></td>
+                                <td>
+                                    <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
                         </form>
-                    </div>
-                    <div class="col-sm">
-                        <h2>All habits</h2>
-                        <ul class="content">
-                            {% for habit in user.habits %}
-                            <li>{{ habit.habit_name }}</li>
-                            <ul>
-                                <li>Category: {{ habit.habit_category}}</li>
-                                <li>Day of Week: {{ habit.time_day_of_week}}</li>
-                                <li>Hour: {{ habit.time_hour}}</li>
-                                <li>Minute: {{ habit.time_minute}}</li>
-                            </ul>
-                            {% endfor %}
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="contact-md" role="tabpanel" aria-labelledby="contact-tab-md">
+        <div class="tab-pane fade" id="account-md" role="tabpanel"
+             aria-labelledby="contact-tab-md">
             <div class="container">
                 <div class="row">
                     <div class="col-sm">
@@ -128,7 +229,7 @@
                                         </li>
                                         {% endfor %}
                                     </ul>
-                                    <form id='plaid-link-form' action={{url_for( 'access_plaid_token')}} method="post">
+                                    <form id='plaid-link-form' action={{url_for('access_plaid_token')}} method="post">
                                     </form>
                                     <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"
                                         data-client-name="My App" data-form-id="plaid-link-form"
@@ -155,6 +256,19 @@
                     </div>
                 </div>
                 <div class="col-sm"></div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="lottery-md" role="tabpanel"
+             aria-labelledby="contact-tab-md">
+            <div class="container">
+                <div class="row">
+                    <h2>You have {{coin_amount}} Coins!!!</h2>
+                    <div class="col-sm"></div>
+                    <div class="col-sm">
+
+                    </div>
+                    <div class="col-sm"></div>
+                </div>
             </div>
         </div>
     </div>
