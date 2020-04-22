@@ -9,7 +9,6 @@ from plaid_methods.methods import get_accounts, get_transactions, \
 from plaid_methods import add_plaid_data as plaid_to_db
 from plaid import Client
 
-
 ENV_VARS = {
     "PLAID_CLIENT_ID": os.environ["PLAID_CLIENT_ID"],
     "PLAID_PUBLIC_KEY": os.environ["PLAID_PUBLIC_KEY"],
@@ -106,27 +105,46 @@ def register():
 @application.route("/dashboard", methods=["POST", "GET"])
 @login_required
 def dashboard():
-    # add a new habit
-    habit_form = classes.HabitForm()
-    if habit_form.validate_on_submit():
-        habit_name = habit_form.habit_name.data
-        habit_category = habit_form.habit_category.data
-        time_minute = habit_form.time_minute.data
-        time_hour = habit_form.time_hour.data
-        time_day_of_week = habit_form.time_day_of_week.data
-        habit = classes.Habits(user=current_user,
-                               habit_name=habit_name,
-                               habit_category=habit_category,
-                               time_minute=time_minute,
-                               time_hour=time_hour,
-                               time_day_of_week=time_day_of_week)
-        db.session.add(habit)
-        db.session.commit()
-        return redirect(url_for("dashboard"))
+    # default values
+    flag_habits_edit = False
+
+    # get user session
+    user_id = current_user.id
+
+    # check if signed up in plaid
+    plaid_dict = classes.PlaidItems.query.filter_by(
+        user_id=user_id).first()
+
+    if plaid_dict:  # if signed up in plaid
+        # get data from the savings history table
+        pass
+
+    # get selected habits
+    if request.method == "POST":
+        habit_name = request.form.getlist("habit_name")
+        habit_category = request.form.getlist("habit_category")
+        time_hour_minute = request.form.getlist("time_hour_minute")
+        time_day_of_week = request.form.getlist("time_day_of_week")
+
+        # delete the user's habits
+        classes.Habits.query.filter_by(user_id=user_id).delete()
+
+        # add the latest habits back to db
+        for i in range(len(habit_name)):
+            habit = classes.Habits(user_id=user_id, habit_name=habit_name[i],
+                                   habit_category=habit_category[i],
+                                   time_minute=time_hour_minute[i][3:],
+                                   time_hour=time_hour_minute[i][:2],
+                                   time_day_of_week=time_day_of_week[i])
+            db.session.add(habit)
+            db.session.commit()
+        flag_habits_edit = True
+    habits = classes.Habits.query.filter_by(user_id=user_id).all()
 
     return render_template("dashboard.html",
                            user=current_user,
-                           form=habit_form,
+                           habits=habits,
+                           flag_habits_edit=flag_habits_edit,
                            plaid_public_key=client.public_key,
                            plaid_environment=client.environment,
                            plaid_products=ENV_VARS.get("PLAID_PRODUCTS",
