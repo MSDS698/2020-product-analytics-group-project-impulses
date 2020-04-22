@@ -32,12 +32,9 @@ python-editor==1.0.4
 pytz==2019.3
 requests==2.23.0
 six==1.14.0
-<<<<<<< HEAD
 SQLAlchemy==1.3.9
 twilio==6.38.0
-=======
 SQLAlchemy==1.3.16
->>>>>>> c2b328cf76c0340fde0e3809b174fc6c407d05d6
 urllib3==1.25.8
 wcwidth==0.1.9
 Werkzeug==1.0.1
