@@ -271,14 +271,13 @@ def send_message():
         pst = pytz.timezone("America/Los_Angeles")
         now = datetime.now().astimezone(pst)        
         if habit.time_day_of_week == now.weekday() and \
-           hait.time_minute == now.minute and \
+           habit.time_minute == now.minute and \
            habit.time_hour == now.hour:
 
-            hc = row["habit_category"]
-            body = f"Would you like to save $5 on {hc} today? Respond Y/N"
+            body = f"Would you like to save $5 on {habit.habit_category} today? Respond Y/N"
             msg = twilio_client.messages.create(
                 body=body,
-                to=row["phone"],
+                to=habit.user.phone,
                 from_="+16462573594")
 
     return redirect(url_for("index"))
