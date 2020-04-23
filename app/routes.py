@@ -295,7 +295,7 @@ def receive_message():
 
     if save_num >= user_habits_num:
         resp = MessagingResponse()
-        res_str_1 = f"""Oops, I don't understand!"""
+        res_str_1 = f"Oops, I don't understand!"
         resp.message(res_str_1)
         return str(resp)
 
@@ -315,7 +315,7 @@ def receive_message():
 
         else:
             resp = MessagingResponse()
-            res_str = f"Hi {name}, That's not a valid response, " + \
+            res_str = f"Hi {name}, that's not a valid response, " + \
                       "please respond Y/N "
             resp.message(res_str)
             return str(resp)
