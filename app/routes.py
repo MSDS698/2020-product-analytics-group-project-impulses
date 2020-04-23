@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 from app import application, classes, db
-from flask import redirect, render_template, url_for, request, flash, session
+from flask import redirect, render_template, url_for, request, flash
 from flask_login import current_user, login_user, login_required, logout_user
 from plaid.errors import ItemError
 from plaid_methods.methods import get_accounts, get_transactions, \
@@ -14,7 +14,6 @@ import twilio
 import twilio.rest
 from twilio import twiml
 from twilio.twiml.messaging_response import MessagingResponse
-from twilio_methods.schedule_methods import dow_list, habit_today
 
 ENV_VARS = {
     "PLAID_CLIENT_ID": os.environ["PLAID_CLIENT_ID"],
