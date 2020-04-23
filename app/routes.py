@@ -263,8 +263,8 @@ def send_message():
            habit.time_minute == str(now.minute) and \
            habit.time_hour == str(now.hour):
 
-            body = f"""Would you like to save $5 on {habit.habit_category}
-                    today? Respond Y/N"""
+            body = f"Would you like to save $5 on {habit.habit_category}" + \
+                    "today? Respond Y/N"
             msg = twilio_client.messages.create(
                 body=body,
                 to=habit.user.phone,
@@ -318,7 +318,7 @@ def receive_message():
 
         else:
             resp = MessagingResponse()
-            res_str_1 = f"Hi {name}, That's not a valid response, "
-            res_str_2 = f"please respond Y/N "
-            resp.message(res_str_1 + res_str_2)
+            res_str = f"Hi {name}, That's not a valid response, " + \
+                      "please respond Y/N "
+            resp.message(res_str)
             return str(resp)
