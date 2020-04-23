@@ -55,12 +55,12 @@ def add_login_coin(user):
     tz = pytz.timezone("America/Los_Angeles")
     if login_coin_date is None:  # first time login
         coin_amount = 10
-    elif (datetime.now().astimezone(tz) - login_coin_date).days > 0:  # daily login
+    elif (datetime.now().astimezone(tz).date() - login_coin_date).days > 0:  # daily login
         coin_amount = 2
     else:
         return
     new_coin = classes.Coin(user=user, coin_amount=coin_amount,
-                            log_date=datetime.now().astimezone(tz),
+                            log_date=datetime.now().astimezone(tz).date(),
                             description="login")
     user.coins += coin_amount
     db.session.add(new_coin)
@@ -77,7 +77,7 @@ def add_saving_coin(user):
     """
     tz = pytz.timezone("America/Los_Angeles")
     new_coin = classes.Coin(user=user, coin_amount=10,
-                            log_date=datetime.now().astimezone(tz),
+                            log_date=datetime.now().astimezone(tz).date(),
                             description="saving")
     user.coins += 10
     db.session.add(new_coin)
@@ -317,6 +317,6 @@ def receive_message():
         else:
             resp = MessagingResponse()
             res_str_1 = f"Hi {name}, That's not a valid response, "
-            res_str_2 = "please respond Y/N"
+            res_str_2 = f"please respond Y/N , {date}"
             resp.message(res_str_1 + res_str_2)
             return str(resp)
