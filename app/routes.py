@@ -52,16 +52,34 @@ def add_login_coin(user):
     """
     login_coin_date = db.session.query(db.func.max(classes.Coin.log_date)) \
         .filter_by(user=user, description="login").scalar()
+    tz = pytz.timezone("America/Los_Angeles")
     if login_coin_date is None:  # first time login
         coin_amount = 10
-    elif (datetime.now().date() - login_coin_date).days > 0:  # daily login
+    elif (datetime.now(tz).date() - login_coin_date).days > 0:  # daily login
         coin_amount = 2
     else:
         return
     new_coin = classes.Coin(user=user, coin_amount=coin_amount,
-                            log_date=datetime.now(),
+                            log_date=datetime.now(tz),
                             description="login")
     user.coins += coin_amount
+    db.session.add(new_coin)
+    db.session.commit()
+
+
+# helper function to update user coins when replying "yes" to saving texts
+def add_saving_coin(user):
+    """Update user coins when replying "yes" to saving texts.
+
+    When the user replies "yes" to saving text messages, 10 coins will be
+    added. A new coin transaction will be added to coin table and the coins
+    column in user table will also be updated.
+    """
+    new_coin = classes.Coin(user=user, coin_amount=10,
+                            log_date=datetime.now(
+                                pytz.timezone("America/Los_Angeles")),
+                            description="saving")
+    user.coins += 10
     db.session.add(new_coin)
     db.session.commit()
 
