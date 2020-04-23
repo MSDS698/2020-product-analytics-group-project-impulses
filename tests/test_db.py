@@ -165,9 +165,9 @@ class TestDB(unittest.TestCase):
         # add a new habit to habits table
         test_habit = classes.Habits(user=user, habit_name="coffee",
                                     habit_category="test-category",
-                                    time_minute="25",
-                                    time_hour="10",
-                                    time_day_of_week="2")
+                                    time_minute=25,
+                                    time_hour=10,
+                                    time_day_of_week="weekday")
         db.session.add(test_habit)
         db.session.commit()
 
@@ -177,9 +177,9 @@ class TestDB(unittest.TestCase):
         self.assertEqual(habit.habit_name, "coffee", msg="check habit name")
         self.assertEqual(habit.habit_category, "test-category",
                          msg="check habit category")
-        self.assertEqual(habit.time_minute, "25", msg="check habit minute")
-        self.assertEqual(habit.time_hour, "10", msg="check habit hour")
-        self.assertEqual(habit.time_day_of_week, "2",
+        self.assertEqual(habit.time_minute, 25, msg="check habit minute")
+        self.assertEqual(habit.time_hour, 10, msg="check habit hour")
+        self.assertEqual(habit.time_day_of_week, "weekday",
                          msg="check habit day of week")
 
         # add a new coin transaction to coin table
