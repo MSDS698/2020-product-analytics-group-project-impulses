@@ -300,7 +300,7 @@ def receive_message():
 
     else:
         if response.lower() == "y":
-
+            add_saving_coin(user_by_num)
             resp = MessagingResponse()
             res_str_1 = f"Hi {name}, you save some money today! Hoorey!"
             resp.message(res_str_1)
@@ -318,35 +318,3 @@ def receive_message():
             res_str_2 = "please respond Y/N"
             resp.message(res_str_1 + res_str_2)
             return str(resp)
-
-# @application.route("/showdf", methods=["POST"])
-# def showdf():
-#     pst = pytz.timezone("America/Los_Angeles")
-#     now = datetime.now().astimezone(pst)
-#     minute = now.minute
-#     hour = now.hour
-#     user_by_num = classes.User.query.filter_by(phone=number).first()
-#     df = pd.read_sql_table(user_by_num.habits, ENV_VARS["SQLALCHEMY_DATABASE_URI"])
-#     return df.to_html
-
-
-
-# @application.route("/verify", methods=['GET', 'POST'])
-# def verify():
-
-#     # service = twilio_client.verify.services.create(friendly_name='My Verify Service')
-#     verification = twilio_client.verify \
-#                                 .services(service.sid) \
-#                                 .verifications \
-#                                 .create(to='+14158192258', channel='sms')
-#     return redirect(url_for("index"))
-
-# @application.route("/verify", methods=['GET', 'POST'])
-# def verify():
-
-#     # service = twilio_client.verify.services.create(friendly_name='My Verify Service')
-# check verification
-# verification_check = client.verify \
-#                            .services('VAXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX') \
-#                            .verification_checks \
-#                            .create(to='+15017122661', code='1234')
