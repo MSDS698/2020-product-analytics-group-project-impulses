@@ -260,9 +260,9 @@ def send_message():
     # print(df_publish)
 
 
-    # dow_dict = {'weekday': [0, 1, 2, 3, 4],
-    #             'weekend': [5, 6],
-    #             'everyday': [0, 1, 2, 3, 4, 5, 6]}
+    dow_dict = {'weekday': [0, 1, 2, 3, 4],
+                'weekend': [5, 6],
+                'everyday': [0, 1, 2, 3, 4, 5, 6]}
 
 
     habits = classes.Habits.query.all()
@@ -270,7 +270,7 @@ def send_message():
     for habit in habits:
         pst = pytz.timezone("America/Los_Angeles")
         now = datetime.now().astimezone(pst)        
-        if habit.time_day_of_week == now.weekday() and \
+        if now.weekday() in dow_dict[habit.time_day_of_week] and \
            habit.time_minute == now.minute and \
            habit.time_hour == now.hour:
 
