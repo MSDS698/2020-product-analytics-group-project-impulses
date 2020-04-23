@@ -263,7 +263,7 @@ def send_message():
            habit.time_minute == str(now.minute) and \
            habit.time_hour == str(now.hour):
 
-            body = f"Would you like to save $5 on {habit.habit_category}" + \
+            body = f"Would you like to save $5 on {habit.habit_category} " + \
                     "today? Respond Y/N"
             msg = twilio_client.messages.create(
                 body=body,
