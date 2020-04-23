@@ -9,10 +9,7 @@ from plaid_methods.methods import get_accounts, get_transactions, \
 from plaid_methods import add_plaid_data as plaid_to_db
 from plaid import Client
 import pytz
-import pandas as pd
-import twilio
 import twilio.rest
-from twilio import twiml
 from twilio.twiml.messaging_response import MessagingResponse
 
 ENV_VARS = {
@@ -54,8 +51,8 @@ def add_login_coin(user):
     tz = pytz.timezone("America/Los_Angeles")
     if login_coin_date is None:  # first time login
         coin_amount = 10
-    elif (datetime.now().astimezone(tz).date() -
-          login_coin_date).days > 0:  # daily login
+    elif (datetime.now().astimezone(tz).date() - login_coin_date).days > 0:
+        # daily login
         coin_amount = 2
     else:
         return
@@ -260,8 +257,8 @@ def send_message():
         pst = pytz.timezone("America/Los_Angeles")
         now = datetime.now().astimezone(pst)
         if now.weekday() in dow_dict[habit.time_day_of_week] and \
-           habit.time_minute == str(now.minute) and \
-           habit.time_hour == str(now.hour):
+           habit.time_minute == now.minute and \
+           habit.time_hour == now.hour:
 
             body = f"Would you like to save $5 on {habit.habit_category} " + \
                     "today? Respond Y/N"
