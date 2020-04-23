@@ -3,7 +3,8 @@ SQLAlchemy Object Relational Mapper (ORM) and Flask-WTForms
 
 Including:
 Classes for each table in the database -
-user, plaid_items, accounts, transaction, savings_history, and habits
+user, plaid_items, accounts, transaction, savings_history, habits,
+coin, lottery, and user_lottery_log
 
 WTForms -
 RegistrationForm, LogInForm, and HabitForm
@@ -58,6 +59,7 @@ class User(db.Model, UserMixin):
     savings_history = db.relationship("SavingsHistory", backref="user")
     habits = db.relationship("Habits", backref="user")
     coin = db.relationship("Coin", backref="user")
+    lottery_log = db.relationship("UserLotteryLog", backref="user")
 
     def __init__(self, first_name, last_name, email,
                  phone, password, auth_id=None):
@@ -229,6 +231,43 @@ class Coin(db.Model):
     coin_amount = db.Column(db.Integer, nullable=False)
     log_date = db.Column(db.Date, nullable=False)
     description = db.Column(db.String, nullable=False)
+
+
+class Lottery(db.Model):
+    """Data model for lottery table.
+
+    Columns include:
+    lottery_id: auto increment primary key; int
+    lottery_name: name of the lottery; string
+    start_date: date when the lottery starts; datetime
+    end_date: date when the lottery ends; datetime
+    category: lottery category; string
+    winner_user_id: user id of the lottery winner; int
+    """
+    __tablename__ = "lottery"
+    id = db.Column("lottery_id", db.Integer, primary_key=True)
+    lottery_name = db.Column(db.String, nullable=False)
+    start_date = db.Column(db.DateTime, nullable=False)
+    end_date = db.Column(db.DateTime, nullable=False)
+    category = db.Column(db.String, nullable=False)
+    winner_user_id = db.Column(db.Integer, default=None)
+
+    # relationships
+    lottery_log = db.relationship("UserLotteryLog", backref="lottery")
+
+
+class UserLotteryLog(db.Model):
+    """Data model for user_lottery_log table.
+
+    Columns include:
+    lottery_log_id: auto increment primary key; int
+    user_id: id of the user; int
+    lottery_id: id of the lottery that the user entered; int
+    """
+    __tablename__ = "user_lottery_log"
+    id = db.Column("lottery_log_id", db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
+    lottery_id = db.Column(db.Integer, db.ForeignKey("lottery.lottery_id"))
 
 
 class RegistrationForm(FlaskForm):
