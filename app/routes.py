@@ -132,6 +132,7 @@ def register():
             return redirect(url_for("login"))
     return render_template("register.html", form=registration_form)
 
+
 @application.route('/create_habit', methods=["POST"])
 @login_required
 def create_habit():
@@ -207,6 +208,7 @@ def create_habit():
 #                            get("PLAID_COUNTRY_CODES", "US")
 #                            )
 
+
 @application.route("/dashboard", methods=["POST", "GET"])
 @login_required
 def dashboard():
@@ -226,12 +228,13 @@ def dashboard():
 @application.route('/find_insights')
 @login_required
 def find_insights():
-    #time.sleep(3)
+    # time.sleep(3)
     insights_start_date = '2019-10-01'
     insights_end_date = '2019-11-01'
     df = pd.DataFrame([t.__dict__ for t in current_user.transaction])
     df.to_csv('test.csv')
     return df.to_markdown()
+
 
 @application.route("/logout")
 def logout():
@@ -310,7 +313,7 @@ def send_message():
            habit.time_hour == now.hour:
 
             body = f"Would you like to save $5 on {habit.habit_category} " + \
-                    "today? Respond Y/N"
+                "today? Respond Y/N"
             msg = twilio_client.messages.create(
                 body=body,
                 to=habit.user.phone,
