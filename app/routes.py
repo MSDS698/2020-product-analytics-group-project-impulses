@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 from app import application, classes, db
-from flask import redirect, render_template, url_for, request, flash, session
+from flask import redirect, render_template, url_for, request, flash
 from flask_login import current_user, login_user, login_required, logout_user
 from plaid.errors import ItemError
 from plaid_methods.methods import get_accounts, get_transactions, \
@@ -14,7 +14,6 @@ import twilio
 import twilio.rest
 from twilio import twiml
 from twilio.twiml.messaging_response import MessagingResponse
-from twilio_methods.schedule_methods import dow_list, habit_today
 
 ENV_VARS = {
     "PLAID_CLIENT_ID": os.environ["PLAID_CLIENT_ID"],
@@ -250,25 +249,25 @@ def access_plaid_token():
 
 @application.route("/send_message", methods=['GET', 'POST'])
 def send_message():
-    df_habit = pd.read_sql_table('habits', ENV_VARS["SQLALCHEMY_DATABASE_URI"])
-    df_user = pd.read_sql_table('user', ENV_VARS["SQLALCHEMY_DATABASE_URI"])
 
-    df_habit["time_minute"] = df_habit["time_minute"].astype(int)
-    df_habit["time_hour"] = df_habit["time_hour"].astype(int)
+    dow_dict = {'weekday': [0, 1, 2, 3, 4],
+                'weekend': [5, 6],
+                'everyday': [0, 1, 2, 3, 4, 5, 6]}
 
-    df_publish = habit_today(df_habit, df_user)
-    print(df_publish)
+    habits = classes.Habits.query.all()
 
-    for _, row in df_publish.iterrows():
+    for habit in habits:
         pst = pytz.timezone("America/Los_Angeles")
         now = datetime.now().astimezone(pst)
+        if now.weekday() in dow_dict[habit.time_day_of_week] and \
+           habit.time_minute == str(now.minute) and \
+           habit.time_hour == str(now.hour):
 
-        if row["time_minute"] == now.minute and row["time_hour"] == now.hour:
-            hc = row["habit_category"]
-            body = f"Would you like to save $5 on {hc} today? Respond Y/N"
+            body = f"Would you like to save $5 on {habit.habit_category} " + \
+                    "today? Respond Y/N"
             msg = twilio_client.messages.create(
                 body=body,
-                to=row["phone"],
+                to=habit.user.phone,
                 from_="+16462573594")
 
     return redirect(url_for("index"))
@@ -319,7 +318,7 @@ def receive_message():
 
         else:
             resp = MessagingResponse()
-            res_str_1 = f"Hi {name}, That's not a valid response, "
-            res_str_2 = f"please respond Y/N "
-            resp.message(res_str_1 + res_str_2)
+            res_str = f"Hi {name}, That's not a valid response, " + \
+                      "please respond Y/N "
+            resp.message(res_str)
             return str(resp)
