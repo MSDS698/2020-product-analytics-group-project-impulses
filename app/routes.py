@@ -276,9 +276,9 @@ def send_message():
 @application.route("/receive_message", methods=["POST"])
 def receive_message():
 
-    dow_dict = {'weekday': [0,1,2,3,4],
-                'weekend': [5,6],
-                'everyday': [0,1,2,3,4,5,6]}
+    dow_dict = {'weekday': [0, 1, 2, 3, 4],
+                'weekend': [5, 6],
+                'everyday': [0, 1, 2, 3, 4, 5, 6]}
 
     pst = pytz.timezone("America/Los_Angeles")
     now = datetime.now().astimezone(pst)
@@ -288,11 +288,12 @@ def receive_message():
     response = request.form['Body']
     user_by_num = classes.User.query.filter_by(phone=number).first()
     name = user_by_num.first_name
+    
     user_habits_num = len([habit for habit in user_by_num.habits
                            if now.weekday() in dow_dict[habit.time_day_of_week]])
-    save_num = len([save for save in user_by_num.coin if save.log_date == date and save.description == "saving"])
-    print(user_habits_num)
-    print(save_num)
+
+    save_num = len([save for save in user_by_num.coin 
+                    if save.log_date == date and save.description == "saving"])
 
     if save_num >= user_habits_num:
         resp = MessagingResponse()
