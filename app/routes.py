@@ -11,6 +11,7 @@ from plaid import Client
 import pytz
 import twilio.rest
 from twilio.twiml.messaging_response import MessagingResponse
+import time
 
 ENV_VARS = {
     "PLAID_CLIENT_ID": os.environ["PLAID_CLIENT_ID"],
@@ -131,50 +132,39 @@ def register():
             return redirect(url_for("login"))
     return render_template("register.html", form=registration_form)
 
+@application.route('/create_habit', methods=["POST"])
+@login_required
+def create_habit():
+    # add a new habit
+    habit_form = classes.HabitForm()
+    if habit_form.validate_on_submit():
+        print('valid')
+        habit_name = habit_form.habit_name.data
+        habit_category = habit_form.habit_category.data
+        time_minute = habit_form.time_minute.data
+        time_hour = habit_form.time_hour.data
+        time_day_of_week = habit_form.time_day_of_week.data
+        habit = classes.Habits(user=current_user,
+                               habit_name=habit_name,
+                               habit_category=habit_category,
+                               time_minute=time_minute,
+                               time_hour=time_hour,
+                               time_day_of_week=time_day_of_week)
+        db.session.add(habit)
+        db.session.commit()
+        return redirect(url_for("dashboard"))
+
+    return redirect(url_for('dashboard'))
+
+
 
 @application.route("/dashboard", methods=["POST", "GET"])
 @login_required
 def dashboard():
-    # default values
-    flag_habits_edit = False
-
-    # get user session
-    user_id = current_user.id
-
-    # check if signed up in plaid
-    plaid_dict = classes.PlaidItems.query.filter_by(
-        user_id=user_id).first()
-
-    if plaid_dict:  # if signed up in plaid
-        # get data from the savings history table
-        pass
-
-    # get selected habits
-    if request.method == "POST":
-        habit_name = request.form.getlist("habit_name")
-        habit_category = request.form.getlist("habit_category")
-        time_hour_minute = request.form.getlist("time_hour_minute")
-        time_day_of_week = request.form.getlist("time_day_of_week")
-
-        # delete the user's habits
-        classes.Habits.query.filter_by(user_id=user_id).delete()
-
-        # add the latest habits back to db
-        for i in range(len(habit_name)):
-            habit = classes.Habits(user_id=user_id, habit_name=habit_name[i],
-                                   habit_category=habit_category[i],
-                                   time_minute=time_hour_minute[i][3:],
-                                   time_hour=time_hour_minute[i][:2],
-                                   time_day_of_week=time_day_of_week[i])
-            db.session.add(habit)
-            db.session.commit()
-        flag_habits_edit = True
-    habits = classes.Habits.query.filter_by(user_id=user_id).all()
 
     return render_template("dashboard.html",
                            user=current_user,
-                           habits=habits,
-                           flag_habits_edit=flag_habits_edit,
+                           form=classes.HabitForm(),
                            plaid_public_key=client.public_key,
                            plaid_environment=client.environment,
                            plaid_products=ENV_VARS.get("PLAID_PRODUCTS",
@@ -183,6 +173,16 @@ def dashboard():
                            get("PLAID_COUNTRY_CODES", "US")
                            )
 
+
+@application.route('/find_insights')
+@login_required
+def find_insights():
+    #time.sleep(3)
+    insights_start_date = '2019-10-01'
+    insights_end_date = '2019-11-01'
+    df = pd.DataFrame([t.__dict__ for t in current_user.transaction])
+    df.to_csv('test.csv')
+    return df.to_markdown()
 
 @application.route("/logout")
 def logout():
