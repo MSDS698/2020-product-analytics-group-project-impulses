@@ -60,7 +60,7 @@ def add_login_coin(user):
     else:
         return
     new_coin = classes.Coin(user=user, coin_amount=coin_amount,
-                            log_date=datetime.now(tz),
+                            log_date=datetime.now().astimezone(tz),
                             description="login")
     user.coins += coin_amount
     db.session.add(new_coin)
@@ -296,7 +296,7 @@ def receive_message():
 
     if save_num >= user_habits_num:
         resp = MessagingResponse()
-        res_str_1 = """Oops, I don't understand"""
+        res_str_1 = f"""Oops, I don't understand, {date}"""
         resp.message(res_str_1)
         return str(resp)
 
