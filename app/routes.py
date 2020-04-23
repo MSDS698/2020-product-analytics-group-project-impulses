@@ -250,51 +250,28 @@ def access_plaid_token():
 
 @application.route("/send_message", methods=['GET', 'POST'])
 def send_message():
-    # df_habit = pd.read_sql_table('habits', ENV_VARS["SQLALCHEMY_DATABASE_URI"])
-    # df_user = pd.read_sql_table('user', ENV_VARS["SQLALCHEMY_DATABASE_URI"])
-
-    # df_habit["time_minute"] = df_habit["time_minute"].astype(int)
-    # df_habit["time_hour"] = df_habit["time_hour"].astype(int)
-
-    # df_publish = habit_today(df_habit, df_user)
-    # print(df_publish)
-
 
     dow_dict = {'weekday': [0, 1, 2, 3, 4],
                 'weekend': [5, 6],
                 'everyday': [0, 1, 2, 3, 4, 5, 6]}
 
-
     habits = classes.Habits.query.all()
 
     for habit in habits:
         pst = pytz.timezone("America/Los_Angeles")
-        now = datetime.now().astimezone(pst)        
+        now = datetime.now().astimezone(pst)
         if now.weekday() in dow_dict[habit.time_day_of_week] and \
-           habit.time_minute == now.minute and \
-           habit.time_hour == now.hour:
+           habit.time_minute == str(now.minute) and \
+           habit.time_hour == str(now.hour):
 
-            body = f"Would you like to save $5 on {habit.habit_category} today? Respond Y/N"
+            body = f"""Would you like to save $5 on {habit.habit_category}
+                    today? Respond Y/N"""
             msg = twilio_client.messages.create(
                 body=body,
                 to=habit.user.phone,
                 from_="+16462573594")
 
     return redirect(url_for("index"))
-
-    # for _, row in df_publish.iterrows():
-    #     pst = pytz.timezone("America/Los_Angeles")
-    #     now = datetime.now().astimezone(pst)
-
-    #     if row["time_minute"] == now.minute and row["time_hour"] == now.hour:
-    #         hc = row["habit_category"]
-    #         body = f"Would you like to save $5 on {hc} today? Respond Y/N"
-    #         msg = twilio_client.messages.create(
-    #             body=body,
-    #             to=row["phone"],
-    #             from_="+16462573594")
-
-    # return redirect(url_for("index"))
 
 
 @application.route("/receive_message", methods=["POST"])
