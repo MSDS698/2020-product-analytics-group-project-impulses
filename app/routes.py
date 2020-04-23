@@ -1,19 +1,29 @@
 import os
 from datetime import datetime
 from app import application, classes, db
-from flask import redirect, render_template, url_for, request, flash
+from flask import redirect, render_template, url_for, request, flash, session
 from flask_login import current_user, login_user, login_required, logout_user
 from plaid.errors import ItemError
 from plaid_methods.methods import get_accounts, get_transactions, \
     token_exchange
 from plaid_methods import add_plaid_data as plaid_to_db
 from plaid import Client
+import pytz
+import pandas as pd
+import twilio
+import twilio.rest
+from twilio import twiml
+from twilio.twiml.messaging_response import MessagingResponse
+from twilio_methods.schedule_methods import dow_list, habit_today
 
 ENV_VARS = {
     "PLAID_CLIENT_ID": os.environ["PLAID_CLIENT_ID"],
     "PLAID_PUBLIC_KEY": os.environ["PLAID_PUBLIC_KEY"],
     "PLAID_SECRET": os.environ["PLAID_SECRET"],
-    "PLAID_ENV": os.environ["PLAID_ENV"]
+    "PLAID_ENV": os.environ["PLAID_ENV"],
+    "TWILIO_ACCOUNT_SID": os.environ["TWILIO_ACCOUNT_SID"],
+    "TWILIO_AUTH_TOKEN": os.environ["TWILIO_AUTH_TOKEN"],
+    "SQLALCHEMY_DATABASE_URI": os.environ["SQLALCHEMY_DATABASE_URI"]
 }
 
 # setup plaid client
@@ -23,6 +33,11 @@ client = Client(
     ENV_VARS["PLAID_PUBLIC_KEY"],
     ENV_VARS["PLAID_ENV"],
 )
+
+# setup twilio client
+twilio_client = twilio.rest.Client(
+    ENV_VARS["TWILIO_ACCOUNT_SID"],
+    ENV_VARS["TWILIO_AUTH_TOKEN"])
 
 
 # helper function to update user coins when logging in
@@ -37,16 +52,35 @@ def add_login_coin(user):
     """
     login_coin_date = db.session.query(db.func.max(classes.Coin.log_date)) \
         .filter_by(user=user, description="login").scalar()
+    tz = pytz.timezone("America/Los_Angeles")
     if login_coin_date is None:  # first time login
         coin_amount = 10
-    elif (datetime.now().date() - login_coin_date).days > 0:  # daily login
+    elif (datetime.now().astimezone(tz).date() -
+          login_coin_date).days > 0:  # daily login
         coin_amount = 2
     else:
         return
     new_coin = classes.Coin(user=user, coin_amount=coin_amount,
-                            log_date=datetime.now(),
+                            log_date=datetime.now().astimezone(tz).date(),
                             description="login")
     user.coins += coin_amount
+    db.session.add(new_coin)
+    db.session.commit()
+
+
+# helper function to update user coins when replying "yes" to saving texts
+def add_saving_coin(user):
+    """Update user coins when replying "yes" to saving texts.
+
+    When the user replies "yes" to saving text messages, 10 coins will be
+    added. A new coin transaction will be added to coin table and the coins
+    column in user table will also be updated.
+    """
+    tz = pytz.timezone("America/Los_Angeles")
+    new_coin = classes.Coin(user=user, coin_amount=10,
+                            log_date=datetime.now().astimezone(tz).date(),
+                            description="saving")
+    user.coins += 10
     db.session.add(new_coin)
     db.session.commit()
 
@@ -212,3 +246,80 @@ def access_plaid_token():
         return outstring
 
     return redirect(url_for("dashboard"))
+
+
+@application.route("/send_message", methods=['GET', 'POST'])
+def send_message():
+    df_habit = pd.read_sql_table('habits', ENV_VARS["SQLALCHEMY_DATABASE_URI"])
+    df_user = pd.read_sql_table('user', ENV_VARS["SQLALCHEMY_DATABASE_URI"])
+
+    df_habit["time_minute"] = df_habit["time_minute"].astype(int)
+    df_habit["time_hour"] = df_habit["time_hour"].astype(int)
+
+    df_publish = habit_today(df_habit, df_user)
+    print(df_publish)
+
+    for _, row in df_publish.iterrows():
+        pst = pytz.timezone("America/Los_Angeles")
+        now = datetime.now().astimezone(pst)
+
+        if row["time_minute"] == now.minute and row["time_hour"] == now.hour:
+            hc = row["habit_category"]
+            body = f"Would you like to save $5 on {hc} today? Respond Y/N"
+            msg = twilio_client.messages.create(
+                body=body,
+                to=row["phone"],
+                from_="+16462573594")
+
+    return redirect(url_for("index"))
+
+
+@application.route("/receive_message", methods=["POST"])
+def receive_message():
+
+    dow_dict = {'weekday': [0, 1, 2, 3, 4],
+                'weekend': [5, 6],
+                'everyday': [0, 1, 2, 3, 4, 5, 6]}
+
+    pst = pytz.timezone("America/Los_Angeles")
+    now = datetime.now().astimezone(pst)
+    date = now.date()
+
+    number = str(request.form['From'])[2:]
+    response = request.form['Body']
+    user_by_num = classes.User.query.filter_by(phone=number).first()
+    name = user_by_num.first_name
+
+    user_habits_num = len([habit for habit in user_by_num.habits
+                           if now.weekday() in
+                           dow_dict[habit.time_day_of_week]])
+
+    save_num = len([save for save in user_by_num.coin
+                    if save.log_date == date and save.description == "saving"])
+
+    if save_num >= user_habits_num:
+        resp = MessagingResponse()
+        res_str_1 = f"""Oops, I don't understand!"""
+        resp.message(res_str_1)
+        return str(resp)
+
+    else:
+        if response.lower() == "y":
+            add_saving_coin(user_by_num)
+            resp = MessagingResponse()
+            res_str_1 = f"Hi {name}, you save some money today! Hoorey!"
+            resp.message(res_str_1)
+            return str(resp)
+
+        elif response.lower() == "n":
+            resp = MessagingResponse()
+            res_str_1 = f"Hi {name}, we understand, maybe next time!"
+            resp.message(res_str_1)
+            return str(resp)
+
+        else:
+            resp = MessagingResponse()
+            res_str_1 = f"Hi {name}, That's not a valid response, "
+            res_str_2 = f"please respond Y/N "
+            resp.message(res_str_1 + res_str_2)
+            return str(resp)
