@@ -55,7 +55,7 @@ def add_login_coin(user):
     tz = pytz.timezone("America/Los_Angeles")
     if login_coin_date is None:  # first time login
         coin_amount = 10
-    elif (datetime.now(tz).date() - login_coin_date).days > 0:  # daily login
+    elif (datetime.now().astimezone(tz) - login_coin_date).days > 0:  # daily login
         coin_amount = 2
     else:
         return
@@ -75,9 +75,9 @@ def add_saving_coin(user):
     added. A new coin transaction will be added to coin table and the coins
     column in user table will also be updated.
     """
+    tz = pytz.timezone("America/Los_Angeles")
     new_coin = classes.Coin(user=user, coin_amount=10,
-                            log_date=datetime.now(
-                                pytz.timezone("America/Los_Angeles")),
+                            log_date=datetime.now().astimezone(tz),
                             description="saving")
     user.coins += 10
     db.session.add(new_coin)
@@ -288,9 +288,11 @@ def receive_message():
     response = request.form['Body']
     user_by_num = classes.User.query.filter_by(phone=number).first()
     name = user_by_num.first_name
-    user_habits_num = len([habit for habit in user_by_num.habits 
+    user_habits_num = len([habit for habit in user_by_num.habits
                            if now.weekday() in dow_dict[habit.time_day_of_week]])
-    save_num = len([save for save in user_by_num.coin if date == save.log_date])
+    save_num = len([save for save in user_by_num.coin if save.log_date == date and save.description == "saving"])
+    print(user_habits_num)
+    print(save_num)
 
     if save_num >= user_habits_num:
         resp = MessagingResponse()
