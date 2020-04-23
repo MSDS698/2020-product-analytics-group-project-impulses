@@ -197,19 +197,18 @@ class Habits(db.Model):
     user_id: id of the user that made the habit; int
     habit_name: name of the habit user created; string
     habit_category: category of the habit; string
-    time_minute: minute of the reminder, including 4 values:
-                 0, 15, 30, 45; string
-    time_hour: hour of the reminder, including 0-23; string
+    time_minute: minute of the reminder (0-59); int
+    time_hour: hour of the reminder (0-23); int
     time_day_of_week: day of week of the reminder, including 3 values:
-                      1-5, 0,6, *; string
+                      "weekday", "weekend", "everyday"; string
     """
     __tablename__ = "habits"
     id = db.Column("habits_id", db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
     habit_name = db.Column(db.String, nullable=False)
     habit_category = db.Column(db.String, nullable=False)
-    time_minute = db.Column(db.String, nullable=False)
-    time_hour = db.Column(db.String, nullable=False)
+    time_minute = db.Column(db.Integer, nullable=False)
+    time_hour = db.Column(db.Integer, nullable=False)
     time_day_of_week = db.Column(db.String, nullable=False)
 
 
@@ -268,16 +267,16 @@ class HabitForm(FlaskForm):
                                            'Transportation')],
                                  validators=[DataRequired()])
     time_minute = SelectField("Minute:",
-                              choices=[(str(i), str(i))
-                                       for i in range(0, 60, 15)],
+                              choices=[(i, i)
+                                       for i in range(60)],
                               validators=[DataRequired()])
-    time_hour = SelectField("Hour:", choices=[(str(i), str(i))
+    time_hour = SelectField("Hour:", choices=[(i, i)
                                               for i in range(24)],
                             validators=[DataRequired()])
     time_day_of_week = SelectField("Day Of Week:",
-                                   choices=[('1-5', 'Monday-Friday'),
-                                            ('0,6', 'Weekends'),
-                                            ('*', 'Everyday')],
+                                   choices=[('weekday', 'Weekday'),
+                                            ('weekend', 'Weekend'),
+                                            ('everyday', 'Everyday')],
                                    validators=[DataRequired()])
     submit = SubmitField("Submit")
 
