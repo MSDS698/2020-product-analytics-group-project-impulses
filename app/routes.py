@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 from app import application, classes, db
-from flask import redirect, render_template, url_for, request, flash
+from flask import redirect, render_template, url_for, request, flash, session
 from flask_login import current_user, login_user, login_required, logout_user
 from plaid.errors import ItemError
 from plaid_methods.methods import get_accounts, get_transactions, \
@@ -257,19 +257,78 @@ def send_message():
 
 @application.route("/receive_message", methods=["POST"])
 def receive_message():
+
+    dow_dict = {'weekday': [0,1,2,3,4],
+                'weekend': [5,6],
+                'everyday': [0,1,2,3,4,5,6]}
+
+    pst = pytz.timezone("America/Los_Angeles")
+    now = datetime.now().astimezone(pst)
+    date = now.date()
+
     number = str(request.form['From'])[2:]
     response = request.form['Body']
     user_by_num = classes.User.query.filter_by(phone=number).first()
     name = user_by_num.first_name
+    user_habits_num = len([habit for habit in user_by_num.habits 
+                           if now.weekday() in dow_dict[habit.time_day_of_week]])
+    save_num = len([save for save in user_by_num.coin if date == save.log_date])
 
-    if response == "Y" or response == "N":
+    if save_num >= user_habits_num:
         resp = MessagingResponse()
-        res_str_1 = f"Hi {name}, Thanks for you response {response}"
+        res_str_1 = """Oops, I don't understand"""
         resp.message(res_str_1)
         return str(resp)
+
     else:
-        resp = MessagingResponse()
-        res_str_1 = f"Hi {name}, That's not a valid response, "
-        res_str_2 = "please respond Y/N"
-        resp.message(res_str_1 + res_str_2)
-        return str(resp)
+        if response.lower() == "y":
+
+            resp = MessagingResponse()
+            res_str_1 = f"Hi {name}, you save some money today! Hoorey!"
+            resp.message(res_str_1)
+            return str(resp)
+        
+        elif response.lower() == "n":
+            resp = MessagingResponse()
+            res_str_1 = f"Hi {name}, we understand, maybe next time!"
+            resp.message(res_str_1)
+            return str(resp)
+
+        else:
+            resp = MessagingResponse()
+            res_str_1 = f"Hi {name}, That's not a valid response, "
+            res_str_2 = "please respond Y/N"
+            resp.message(res_str_1 + res_str_2)
+            return str(resp)
+
+# @application.route("/showdf", methods=["POST"])
+# def showdf():
+#     pst = pytz.timezone("America/Los_Angeles")
+#     now = datetime.now().astimezone(pst)
+#     minute = now.minute
+#     hour = now.hour
+#     user_by_num = classes.User.query.filter_by(phone=number).first()
+#     df = pd.read_sql_table(user_by_num.habits, ENV_VARS["SQLALCHEMY_DATABASE_URI"])
+#     return df.to_html
+
+
+
+# @application.route("/verify", methods=['GET', 'POST'])
+# def verify():
+
+#     # service = twilio_client.verify.services.create(friendly_name='My Verify Service')
+#     verification = twilio_client.verify \
+#                                 .services(service.sid) \
+#                                 .verifications \
+#                                 .create(to='+14158192258', channel='sms')
+#     return redirect(url_for("index"))
+
+# @application.route("/verify", methods=['GET', 'POST'])
+# def verify():
+
+#     # service = twilio_client.verify.services.create(friendly_name='My Verify Service')
+# check verification
+# verification_check = client.verify \
+#                            .services('VAXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX') \
+#                            .verification_checks \
+#                            .create(to='+15017122661', code='1234')

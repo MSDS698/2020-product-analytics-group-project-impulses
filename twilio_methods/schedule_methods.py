@@ -14,7 +14,7 @@ def dow_list(dow):
         return [days for days in range(int(dow[0]), int(dow[-1])+1)]
     elif "," in dow:
         return list(map(int, dow.split(",")))
-    elif dow == "*" or dow =="everyday":
+    elif dow == "*" or dow == "everyday":
         return [days for days in range(7)]
     elif dow.lower() == "weekday":
         return [days for days in range(5)]
