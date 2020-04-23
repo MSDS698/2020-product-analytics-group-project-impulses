@@ -55,7 +55,8 @@ def add_login_coin(user):
     tz = pytz.timezone("America/Los_Angeles")
     if login_coin_date is None:  # first time login
         coin_amount = 10
-    elif (datetime.now().astimezone(tz).date() - login_coin_date).days > 0:  # daily login
+    elif (datetime.now().astimezone(tz).date() -
+          login_coin_date).days > 0:  # daily login
         coin_amount = 2
     else:
         return
@@ -288,11 +289,12 @@ def receive_message():
     response = request.form['Body']
     user_by_num = classes.User.query.filter_by(phone=number).first()
     name = user_by_num.first_name
-    
-    user_habits_num = len([habit for habit in user_by_num.habits
-                           if now.weekday() in dow_dict[habit.time_day_of_week]])
 
-    save_num = len([save for save in user_by_num.coin 
+    user_habits_num = len([habit for habit in user_by_num.habits
+                           if now.weekday() in
+                           dow_dict[habit.time_day_of_week]])
+
+    save_num = len([save for save in user_by_num.coin
                     if save.log_date == date and save.description == "saving"])
 
     if save_num >= user_habits_num:
@@ -308,7 +310,7 @@ def receive_message():
             res_str_1 = f"Hi {name}, you save some money today! Hoorey!"
             resp.message(res_str_1)
             return str(resp)
-        
+
         elif response.lower() == "n":
             resp = MessagingResponse()
             res_str_1 = f"Hi {name}, we understand, maybe next time!"
