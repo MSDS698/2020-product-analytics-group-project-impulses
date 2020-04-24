@@ -262,14 +262,8 @@ def dashboard():
                     enter_lottery(current_user, lottery_obj)
 
     # get the lottery that the user has bought
-    bought_lottery_objs = classes.UserLotteryLog.query.filter(
-        classes.UserLotteryLog.user_id == current_user.id).all()
-    bought_lottery_ids = [bought_lottery_obj.lottery_id for bought_lottery_obj
-                          in bought_lottery_objs]
-    bought_lottery_records = []
-    for tmp_lottery_id in bought_lottery_ids:
-        lottery = classes.Lottery.query.filter_by(id=tmp_lottery_id).first()
-        bought_lottery_records.append(lottery)
+    bought_lottery_records = classes.UserLotteryLog.query.filter_by(
+        user=current_user).all()
 
     # get all the available lottery records
     tz = pytz.timezone("America/Los_Angeles")
