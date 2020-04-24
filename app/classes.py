@@ -267,10 +267,10 @@ class HabitForm(FlaskForm):
                                            'Transportation')],
                                  validators=[DataRequired()])
     time_minute = SelectField("Minute:",
-                              choices=[(i, i)
+                              choices=[(str(i), str(i))
                                        for i in range(60)],
                               validators=[DataRequired()])
-    time_hour = SelectField("Hour:", choices=[(i, i)
+    time_hour = SelectField("Hour:", choices=[(str(i), str(i))
                                               for i in range(24)],
                             validators=[DataRequired()])
     time_day_of_week = SelectField("Day Of Week:",
