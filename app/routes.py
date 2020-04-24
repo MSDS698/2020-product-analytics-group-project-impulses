@@ -12,6 +12,7 @@ import pytz
 import pandas as pd
 import twilio.rest
 from twilio.twiml.messaging_response import MessagingResponse
+from app.plotly import plotly_saving_history, plotly_percent_saved
 import time
 
 ENV_VARS = {
@@ -174,6 +175,7 @@ def create_habit():
                                time_minute=int(time_minute),
                                time_hour=int(time_hour),
                                time_day_of_week=time_day_of_week)
+
         db.session.add(habit)
         db.session.commit()
         return redirect(url_for("dashboard"))
@@ -246,18 +248,13 @@ def dashboard():
 
         # if user try to buy the lottery tickets
         if buy_lottery[0] == 'buy':
-            print('checked_lottery: ', checked_lottery)
             lottery_objs = classes.Lottery.query.filter(
                 classes.Lottery.id.in_(checked_lottery)).all()
-            cost = 0
-            for lottery_obj in lottery_objs:
-                cost += int(lottery_obj.cost)
+            cost = sum(lottery_obj.cost for lottery_obj in lottery_objs)
             if cost > int(current_user.coins):
                 lottery_status = 'Not enough coins'
-                print(lottery_status)
             else:
                 lottery_status = 'You just bought a lottery ticket'
-                print(lottery_status)
                 for lottery_obj in lottery_objs:
                     enter_lottery(current_user, lottery_obj)
 
@@ -267,10 +264,41 @@ def dashboard():
 
     # get all the available lottery records
     tz = pytz.timezone("America/Los_Angeles")
-    current_time = datetime.now().astimezone(tz).date()
+    current_time = datetime.now().astimezone(tz)
     available_lottery_records = classes.Lottery.query.filter(
         classes.Lottery.start_date <= str(current_time),
         classes.Lottery.end_date >= str(current_time)).all()
+
+    # Dashboard tab
+    # extract user's saving history from coins associated with "saving"
+    user_id = current_user.id
+
+    # using the login coins now for demo, since we don't have enough data for
+    # the saving coins yet
+    saving_date = classes.Coin.query.filter_by(user_id=user_id,
+                                               description='login') \
+        .with_entities(classes.Coin.log_date).all()
+    saving_coins = classes.Coin.query.filter_by(user_id=user_id,
+                                                description='login') \
+        .with_entities(classes.Coin.coin_amount).all()
+    savings_bar_plot, total_saving_coins = \
+        plotly_saving_history(saving_date, saving_coins)
+
+    # count how many times user has responded "Y" to save
+    # here, description should be "saving" as well in the future
+    num_saved = len(classes.Coin.query.filter_by(user_id=user_id,
+                                                 description='login').all())
+    # count number of total saving suggestions texts sent to user
+    # total num = num of habits * days since user first signed up
+    signup_tz = tz.localize(classes.User.query.filter_by(id=user_id).
+                            with_entities(classes.User.signup_date).first()[
+                                0])
+    days = (datetime.now().astimezone(tz) - signup_tz).days
+    num_total_suggestions = len(classes.Habits.query.
+                                filter_by(user_id=user_id).all()) * days
+    saving_percent_plot = plotly_percent_saved(num_saved,
+                                               num_total_suggestions)
+
     return render_template("dashboard.html",
                            user=current_user,
                            form=classes.HabitForm(),
@@ -282,7 +310,12 @@ def dashboard():
                            plaid_products=ENV_VARS.get("PLAID_PRODUCTS",
                                                        "transactions"),
                            plaid_country_codes=ENV_VARS.
-                           get("PLAID_COUNTRY_CODES", "US")
+                           get("PLAID_COUNTRY_CODES", "US"),
+                           source_bar=savings_bar_plot,
+                           source_pie=saving_percent_plot,
+                           num_total_suggestions=num_total_suggestions,
+                           num_saved=num_saved,
+                           total_saving_coins=total_saving_coins
                            )
 
 
