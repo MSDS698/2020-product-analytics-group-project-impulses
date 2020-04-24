@@ -83,6 +83,29 @@ def add_saving_coin(user):
     db.session.commit()
 
 
+# helper function to update user coins when entering a lottery
+def enter_lottery(user, lottery):
+    """Update user coins when buying an entry to a lottery.
+
+    When the user buys an entry to a lottery, coins corresponding to the
+    lottery cost will be deducted from the total number of coins that the
+    user has.
+
+    A new coin transaction will be added to coin table and the coins column
+    in user table will also be updated. A new lottery log will be added to
+    user_lottery_log table.
+    """
+    tz = pytz.timezone("America/Los_Angeles")
+    new_coin = classes.Coin(user=user, coin_amount=-lottery.cost,
+                            log_date=datetime.now().astimezone(tz).date(),
+                            description="lottery")
+    new_lottery_log = classes.UserLotteryLog(user=user, lottery=lottery)
+    user.coins -= lottery.cost
+    db.session.add(new_coin)
+    db.session.add(new_lottery_log)
+    db.session.commit()
+
+
 @application.route("/index")
 @application.route("/")
 def index():
@@ -157,6 +180,7 @@ def create_habit():
 
     return redirect(url_for('dashboard'))
 
+
 # @application.route("/dashboard", methods=["POST", "GET"])
 # @login_required
 # def dashboard():
@@ -212,10 +236,47 @@ def create_habit():
 @application.route("/dashboard", methods=["POST", "GET"])
 @login_required
 def dashboard():
+    # default values
+    lottery_status = "You haven't bought a lottery ticket yet"
 
+    # get lottery
+    if request.method == "POST":
+        buy_lottery = request.form.getlist("lottery_submit")
+        checked_lottery = request.form.getlist("lottery_check")
+
+        # if user try to buy the lottery tickets
+        if buy_lottery[0] == 'buy':
+            print('checked_lottery: ', checked_lottery)
+            lottery_objs = classes.Lottery.query.filter(
+                classes.Lottery.id.in_(checked_lottery)).all()
+            cost = 0
+            for lottery_obj in lottery_objs:
+                cost += int(lottery_obj.cost)
+            if cost > int(current_user.coins):
+                lottery_status = 'Not enough coins'
+                print(lottery_status)
+            else:
+                lottery_status = 'You just bought a lottery ticket'
+                print(lottery_status)
+                for lottery_obj in lottery_objs:
+                    enter_lottery(current_user, lottery_obj)
+
+    # get the lottery that the user has bought
+    bought_lottery_records = classes.UserLotteryLog.query.filter_by(
+        user=current_user).all()
+
+    # get all the available lottery records
+    tz = pytz.timezone("America/Los_Angeles")
+    current_time = datetime.now().astimezone(tz).date()
+    available_lottery_records = classes.Lottery.query.filter(
+        classes.Lottery.start_date <= str(current_time),
+        classes.Lottery.end_date >= str(current_time)).all()
     return render_template("dashboard.html",
                            user=current_user,
                            form=classes.HabitForm(),
+                           lottery_status=lottery_status,
+                           available_lottery_records=available_lottery_records,
+                           bought_lottery_records=bought_lottery_records,
                            plaid_public_key=client.public_key,
                            plaid_environment=client.environment,
                            plaid_products=ENV_VARS.get("PLAID_PRODUCTS",
@@ -298,7 +359,6 @@ def access_plaid_token():
 
 @application.route("/send_message", methods=['GET', 'POST'])
 def send_message():
-
     dow_dict = {'weekday': [0, 1, 2, 3, 4],
                 'weekend': [5, 6],
                 'everyday': [0, 1, 2, 3, 4, 5, 6]}
@@ -309,11 +369,10 @@ def send_message():
         pst = pytz.timezone("America/Los_Angeles")
         now = datetime.now().astimezone(pst)
         if now.weekday() in dow_dict[habit.time_day_of_week] and \
-           habit.time_minute == now.minute and \
-           habit.time_hour == now.hour:
-
+                habit.time_minute == now.minute and \
+                habit.time_hour == now.hour:
             body = f"Would you like to save $5 on {habit.habit_category} " + \
-                "today? Respond Y/N"
+                   "today? Respond Y/N"
             msg = twilio_client.messages.create(
                 body=body,
                 to=habit.user.phone,
@@ -324,7 +383,6 @@ def send_message():
 
 @application.route("/receive_message", methods=["POST"])
 def receive_message():
-
     dow_dict = {'weekday': [0, 1, 2, 3, 4],
                 'weekend': [5, 6],
                 'everyday': [0, 1, 2, 3, 4, 5, 6]}

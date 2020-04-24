@@ -129,13 +129,13 @@
         </li>
         {% endif %}
         <li class="nav-item">
-            <a class="nav-link" id="account-tab-md" data-toggle="tab"
-               href="#account-md" role="tab" aria-controls="account-md" aria-selected="false">Account</a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link" id="lottery-tab-md" data-toggle="tab"
                href="#lottery-md" role="tab" aria-controls="lottery-md"
                aria-selected="false">Lottery</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="account-tab-md" data-toggle="tab"
+               href="#account-md" role="tab" aria-controls="account-md" aria-selected="false">Account</a>
         </li>
     </ul>
     <div class="tab-content card pt-12" id="myTabContentMD">
@@ -297,16 +297,85 @@
              aria-labelledby="contact-tab-md">
             <div class="container">
                 <div class="row">
-                    <h2>You have {{coin_amount}} Coins!!!</h2>
                     <div class="col-sm"></div>
                     <div class="col-sm">
-
+                        <h2>{{lottery_status}}</h2>
                     </div>
                     <div class="col-sm"></div>
                 </div>
+                <div class="row">
+                    <div class="col-sm">
+                        <h2>Available Lottery Tickets</h2>
+                    <form id="lottery" method="post"
+                                  action="{{url_for('dashboard')}}">
+
+                        <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Check Box</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for available_lottery_record in available_lottery_records %}
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                      <input class="form-check-input"
+                                             type="checkbox"
+                                             value="{{available_lottery_record.id}}"
+                                             name="lottery_check" >
+                                    </div>
+                                </td>
+                                <td>{{available_lottery_record.lottery_name}}</td>
+                                <td>{{available_lottery_record.category}}</td>
+                                <td>{{available_lottery_record.cost}}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        </table>
+                        <button type="submit" name="lottery_submit"
+                                    form="lottery"
+                                class="btn btn-success" value="buy">Buy
+                                lottery tickets</button>
+                        </form>
+                        </div>
+                    <div class="col-sm">
+                        <h2>Lottery Tickets You've Bought</h2>
+                        <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Cost</th>
+                                <th>Winner</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for bought_lottery_record in bought_lottery_records %}
+                            <tr>
+                                <td>{{bought_lottery_record.lottery.lottery_name}}</td>
+                                <td>{{bought_lottery_record.lottery.category}}</td>
+                                <td>{{bought_lottery_record.lottery.cost}}</td>
+                                <td>
+                                    {% if not bought_lottery_record.lottery.winner_user_id %}
+                                    Hasn't Revealed
+                                    {% elif bought_lottery_record.lottery.winner_user_id != user.id%}
+                                    You Lost......
+                                    {% elif bought_lottery_record.lottery.winner_user_id == user.id%}
+                                    You Won!
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 
     <!--Habit Form Modal -->
