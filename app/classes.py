@@ -242,6 +242,7 @@ class Lottery(db.Model):
     start_date: date when the lottery starts; datetime
     end_date: date when the lottery ends; datetime
     category: lottery category; string
+    cost: number of coins that the lottery costs; int
     winner_user_id: user id of the lottery winner; int
     """
     __tablename__ = "lottery"
@@ -250,6 +251,7 @@ class Lottery(db.Model):
     start_date = db.Column(db.DateTime, nullable=False)
     end_date = db.Column(db.DateTime, nullable=False)
     category = db.Column(db.String, nullable=False)
+    cost = db.Column(db.Integer, nullable=False)
     winner_user_id = db.Column(db.Integer, default=None)
 
     # relationships
