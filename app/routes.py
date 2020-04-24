@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from app import application, classes, db
 from flask import redirect, render_template, url_for, request, flash
 from flask_login import current_user, login_user, login_required, logout_user
@@ -12,7 +12,7 @@ import pytz
 import pandas as pd
 import twilio.rest
 from twilio.twiml.messaging_response import MessagingResponse
-from app.plotly import plotly_saving_history
+from app.plotly import plotly_saving_history, plotly_percent_saved
 import time
 
 ENV_VARS = {
@@ -276,19 +276,34 @@ def dashboard():
         classes.Lottery.end_date >= str(current_time)).all()
 
     # Dashboard tab
+    # extract user's saving history from coins associated with "saving"
     user_id = current_user.id
+
+    # using the login coins now for demo, since we don't have enough data for
+    # the saving coins yet
     saving_date = classes.Coin.query.filter_by(user_id=user_id,
                                                description='login') \
         .with_entities(classes.Coin.log_date).all()
-
     saving_coins = classes.Coin.query.filter_by(user_id=user_id,
                                                 description='login') \
         .with_entities(classes.Coin.coin_amount).all()
-    saving_coins_sum = [saving_coins[0][0]]
-    for i, coin in enumerate(saving_coins[1:]):
-        saving_coins_sum.append(saving_coins_sum[i] + coin[0])
+    savings_bar_plot = plotly_saving_history(saving_date, saving_coins)
 
-    output = plotly_saving_history(saving_date, saving_coins_sum)
+    # count how many times user has responded "Y" to save
+    # here, description should be "saving" as well in the future
+    num_saved = len(classes.Coin.query.filter_by(user_id=user_id,
+                                                 description='login').all())
+    # count number of total saving suggestions texts sent to user
+    # total num = num of habits * days since user first signed up
+    pst = pytz.timezone("America/Los_Angeles")
+    signup_tz = pst.localize(classes.User.query.filter_by(id=user_id).
+                             with_entities(classes.User.signup_date).first()[
+                                 0])
+    days = (datetime.now(timezone.utc) - signup_tz).days
+    num_total_suggestions = len(classes.Habits.query.
+                                filter_by(user_id=user_id).all()) * days
+    saving_percent_plot = plotly_percent_saved(num_saved,
+                                               num_total_suggestions)
 
     return render_template("dashboard.html",
                            user=current_user,
@@ -302,7 +317,8 @@ def dashboard():
                                                        "transactions"),
                            plaid_country_codes=ENV_VARS.
                            get("PLAID_COUNTRY_CODES", "US"),
-                           source=output
+                           source_bar=savings_bar_plot,
+                           source_pie=saving_percent_plot
                            )
 
 

@@ -145,15 +145,26 @@
              role="tabpanel" aria-labelledby="home-tab-md">
             <div class="container">
                 <div class="row">
-                    <div class="col-sm"></div>
-                    <div class="col-sm">
-                        <h3>Savings History</h3>
-                        <div>
-                        {{ source|safe }}
-                        </div>
-
+                  <div class="col-sm-6">
+                    <div class="card">
+                      <div class="card-body">
+                        <h5 class="card-title">Total Savings</h5>
+                         <div>
+                             {{ source_pie|safe }}
+                         </div>
+                      </div>
                     </div>
-                    <div class="col-sm"></div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="card">
+                      <div class="card-body">
+                        <h5 class="card-title">Savings History</h5>
+                            <div>
+                            {{ source_bar|safe }}
+                            </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
             </div>
         </div>
