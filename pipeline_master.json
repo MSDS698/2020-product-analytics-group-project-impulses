@@ -1,6 +1,6 @@
 {
     "pipeline": {
-        "name": "Impulses_deploy_master",
+        "name": "Impulses_deploy",
         "roleArn": "arn:aws:iam::941468269564:role/service-role/AWSCodePipelineServiceRole-us-west-2-Impulses",
         "artifactStore": {
             "type": "S3",
@@ -50,8 +50,8 @@
                         },
                         "runOrder": 1,
                         "configuration": {
-                            "ApplicationName": "Impulses-Master",
-                            "EnvironmentName": "impulse-master"
+                            "ApplicationName": "Impulses",
+                            "EnvironmentName": "impulse-diane"
                         },
                         "outputArtifacts": [],
                         "inputArtifacts": [
