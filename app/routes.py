@@ -98,7 +98,7 @@ def enter_lottery(user, lottery):
     tz = pytz.timezone("America/Los_Angeles")
     new_coin = classes.Coin(user=user, coin_amount=-lottery.cost,
                             log_date=datetime.now().astimezone(tz).date(),
-                            description="saving")
+                            description="lottery")
     new_lottery_log = classes.UserLotteryLog(user=user, lottery=lottery)
     user.coins -= lottery.cost
     db.session.add(new_coin)
