@@ -9,7 +9,9 @@
 
 application_name=Impulses
 environment_name=impulse-diane
-#pipeline_name=Impulses_deploy 
+# pipeline_name=Impulses_deploy 
+# Used to test process with our own credentials
+# jsonfile=file://pipeline_master.json
 jsonfile=file://pipeline_diane.json
 
 #### Initializing EBS ####
@@ -17,7 +19,8 @@ jsonfile=file://pipeline_diane.json
 #				there is no .elasticbeanstalk folder in directory, 
 #				aws account does not have a environment with the same name
 # working
-echo "3\n\n$application_name\nY\n1\nn\nn\n" | eb init -i
+# echo -e "3\n\n$application_name\nY\n1\nn\nn\n" | eb init -i -p python-3.6
+eb init $application_name -p python-3.6
 
 #### Creating EBS Environment (EC2 instance) ####
 # 				This will host our webserver
@@ -37,7 +40,7 @@ aws codepipeline create-pipeline --cli-input-json $jsonfile
 # eb terminate
 
 # 				delete ebs application
-# aws elasticbeanstalk delete-application --application-name Impulses-test
+# aws elasticbeanstalk delete-application --application-name $application_name
 
 #				delete aws codepipeline
 # aws codepipeline delete-pipeline --name $pipeline_name
