@@ -248,18 +248,13 @@ def dashboard():
 
         # if user try to buy the lottery tickets
         if buy_lottery[0] == 'buy':
-            print('checked_lottery: ', checked_lottery)
             lottery_objs = classes.Lottery.query.filter(
                 classes.Lottery.id.in_(checked_lottery)).all()
-            cost = 0
-            for lottery_obj in lottery_objs:
-                cost += int(lottery_obj.cost)
+            cost = sum(lottery_obj.cost for lottery_obj in lottery_objs)
             if cost > int(current_user.coins):
                 lottery_status = 'Not enough coins'
-                print(lottery_status)
             else:
                 lottery_status = 'You just bought a lottery ticket'
-                print(lottery_status)
                 for lottery_obj in lottery_objs:
                     enter_lottery(current_user, lottery_obj)
 
@@ -269,7 +264,7 @@ def dashboard():
 
     # get all the available lottery records
     tz = pytz.timezone("America/Los_Angeles")
-    current_time = datetime.now().astimezone(tz).date()
+    current_time = datetime.now().astimezone(tz)
     available_lottery_records = classes.Lottery.query.filter(
         classes.Lottery.start_date <= str(current_time),
         classes.Lottery.end_date >= str(current_time)).all()
@@ -295,11 +290,10 @@ def dashboard():
                                                  description='login').all())
     # count number of total saving suggestions texts sent to user
     # total num = num of habits * days since user first signed up
-    pst = pytz.timezone("America/Los_Angeles")
-    signup_tz = pst.localize(classes.User.query.filter_by(id=user_id).
-                             with_entities(classes.User.signup_date).first()[
-                                 0])
-    days = (datetime.now().astimezone(pst) - signup_tz).days
+    signup_tz = tz.localize(classes.User.query.filter_by(id=user_id).
+                            with_entities(classes.User.signup_date).first()[
+                                0])
+    days = (datetime.now().astimezone(tz) - signup_tz).days
     num_total_suggestions = len(classes.Habits.query.
                                 filter_by(user_id=user_id).all()) * days
     saving_percent_plot = plotly_percent_saved(num_saved,
