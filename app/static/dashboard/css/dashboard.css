@@ -102,7 +102,7 @@
 
 
 /* for habit table */
-body {
+/* body {
     color: #404E67;
     background: #F5F7FA;
     font-family: 'Open Sans', sans-serif;
@@ -194,4 +194,4 @@ table.table .form-control.error {
 }
 table.table td .add {
     display: none;
-}
+} */
