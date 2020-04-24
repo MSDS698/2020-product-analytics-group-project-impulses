@@ -237,25 +237,50 @@ def create_habit():
 @login_required
 def dashboard():
     # default values
-    bought_lottery = "You haven't bought a lottery ticket yet"
+    lottery_status = "You haven't bought a lottery ticket yet"
 
     # get lottery
     if request.method == "POST":
-        buy_lottery = request.form.getlist("lottery")
-        print('buy_lottery: ', buy_lottery)
-        if buy_lottery[0] == 'buy':
-            bought_lottery = 'You just bought a lottery ticket'
-            # TODO: edit lottery table
-            # lottery_object = classes.Lottery()
-            # db.session.add(lottery_object)
-            # db.session.commit()
-    lottery_records = classes.Lottery.query.all()
+        buy_lottery = request.form.getlist("lottery_submit")
+        checked_lottery = request.form.getlist("lottery_check")
 
+        # if user try to buy the lottery tickets
+        if buy_lottery[0] == 'buy':
+            print('checked_lottery: ', checked_lottery)
+            lottery_objs = classes.Lottery.query.filter(
+                classes.Lottery.id.in_(checked_lottery)).all()
+            cost = 0
+            for lottery_obj in lottery_objs:
+                cost += int(lottery_obj.cost)
+            if cost > int(current_user.coins):
+                lottery_status = 'Not enough coins'
+                print(lottery_status)
+            else:
+                lottery_status = 'You just bought a lottery ticket'
+                print(lottery_status)
+                for lottery_obj in lottery_objs:
+                    enter_lottery(current_user, lottery_obj)
+
+    # get the lottery that the user has bought
+    bought_lottery_objs = classes.UserLotteryLog.query.filter(
+        classes.UserLotteryLog.user_id == current_user.id).all()
+    bought_lottery_ids = [bought_lottery_obj.id for bought_lottery_obj in
+                          bought_lottery_objs]
+    bought_lottery_records = classes.Lottery.query.filter(
+        classes.Lottery.id.in_(bought_lottery_ids)).all()
+
+    # get all the available lottery records
+    tz = pytz.timezone("America/Los_Angeles")
+    current_time = datetime.now().astimezone(tz).date()
+    available_lottery_records = classes.Lottery.query.filter(
+        classes.Lottery.start_date <= str(current_time),
+        classes.Lottery.end_date >= str(current_time)).all()
     return render_template("dashboard.html",
                            user=current_user,
                            form=classes.HabitForm(),
-                           bought_lottery=bought_lottery,
-                           lottery_records=lottery_records,
+                           lottery_status=lottery_status,
+                           available_lottery_records=available_lottery_records,
+                           bought_lottery_records=bought_lottery_records,
                            plaid_public_key=client.public_key,
                            plaid_environment=client.environment,
                            plaid_products=ENV_VARS.get("PLAID_PRODUCTS",
