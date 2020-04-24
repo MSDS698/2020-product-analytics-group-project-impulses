@@ -264,10 +264,12 @@ def dashboard():
     # get the lottery that the user has bought
     bought_lottery_objs = classes.UserLotteryLog.query.filter(
         classes.UserLotteryLog.user_id == current_user.id).all()
-    bought_lottery_ids = set([bought_lottery_obj.id for bought_lottery_obj
-                              in bought_lottery_objs])
-    bought_lottery_records = classes.Lottery.query.filter(
-        classes.Lottery.id.in_(bought_lottery_ids)).all()
+    bought_lottery_ids = [bought_lottery_obj.lottery_id for bought_lottery_obj
+                          in bought_lottery_objs]
+    bought_lottery_records = []
+    for tmp_lottery_id in bought_lottery_ids:
+        lottery = classes.Lottery.query.filter_by(id=tmp_lottery_id).first()
+        bought_lottery_records.append(lottery)
 
     # get all the available lottery records
     tz = pytz.timezone("America/Los_Angeles")
@@ -363,7 +365,6 @@ def access_plaid_token():
 
 @application.route("/send_message", methods=['GET', 'POST'])
 def send_message():
-
     dow_dict = {'weekday': [0, 1, 2, 3, 4],
                 'weekend': [5, 6],
                 'everyday': [0, 1, 2, 3, 4, 5, 6]}
@@ -374,11 +375,10 @@ def send_message():
         pst = pytz.timezone("America/Los_Angeles")
         now = datetime.now().astimezone(pst)
         if now.weekday() in dow_dict[habit.time_day_of_week] and \
-           habit.time_minute == now.minute and \
-           habit.time_hour == now.hour:
-
+                habit.time_minute == now.minute and \
+                habit.time_hour == now.hour:
             body = f"Would you like to save $5 on {habit.habit_category} " + \
-                "today? Respond Y/N"
+                   "today? Respond Y/N"
             msg = twilio_client.messages.create(
                 body=body,
                 to=habit.user.phone,
@@ -389,7 +389,6 @@ def send_message():
 
 @application.route("/receive_message", methods=["POST"])
 def receive_message():
-
     dow_dict = {'weekday': [0, 1, 2, 3, 4],
                 'weekend': [5, 6],
                 'everyday': [0, 1, 2, 3, 4, 5, 6]}
