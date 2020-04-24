@@ -83,6 +83,29 @@ def add_saving_coin(user):
     db.session.commit()
 
 
+# helper function to update user coins when entering a lottery
+def enter_lottery(user, lottery):
+    """Update user coins when buying an entry to a lottery.
+
+    When the user buys an entry to a lottery, coins corresponding to the
+    lottery cost will be deducted from the total number of coins that the
+    user has.
+
+    A new coin transaction will be added to coin table and the coins column
+    in user table will also be updated. A new lottery log will be added to
+    user_lottery_log table.
+    """
+    tz = pytz.timezone("America/Los_Angeles")
+    new_coin = classes.Coin(user=user, coin_amount=-lottery.cost,
+                            log_date=datetime.now().astimezone(tz).date(),
+                            description="saving")
+    new_lottery_log = classes.UserLotteryLog(user=user, lottery=lottery)
+    user.coins -= lottery.cost
+    db.session.add(new_coin)
+    db.session.add(new_lottery_log)
+    db.session.commit()
+
+
 @application.route("/index")
 @application.route("/")
 def index():
@@ -156,6 +179,7 @@ def create_habit():
         return redirect(url_for("dashboard"))
 
     return redirect(url_for('dashboard'))
+
 
 # @application.route("/dashboard", methods=["POST", "GET"])
 # @login_required
