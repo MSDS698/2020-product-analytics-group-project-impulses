@@ -1,6 +1,6 @@
 {
     "pipeline": {
-        "name": "Impulses_diane",
+        "name": "Impulses_deploy",
         "roleArn": "arn:aws:iam::374226464461:role/service-role/AWSCodePipelineServiceRole-us-west-2-MSDS603_Week1",
         "artifactStore": {
             "type": "S3",
