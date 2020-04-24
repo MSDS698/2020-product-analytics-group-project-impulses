@@ -9,6 +9,7 @@ from plaid_methods.methods import get_accounts, get_transactions, \
 from plaid_methods import add_plaid_data as plaid_to_db
 from plaid import Client
 import pytz
+import pandas as pd
 import twilio.rest
 from twilio.twiml.messaging_response import MessagingResponse
 import time
@@ -139,7 +140,6 @@ def create_habit():
     # add a new habit
     habit_form = classes.HabitForm()
     if habit_form.validate_on_submit():
-        print('valid')
         habit_name = habit_form.habit_name.data
         habit_category = habit_form.habit_category.data
         time_minute = habit_form.time_minute.data
