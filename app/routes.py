@@ -286,7 +286,6 @@ def dashboard():
         .with_entities(classes.Coin.coin_amount).all()
     saving_coins_sum = [saving_coins[0][0]]
     for i, coin in enumerate(saving_coins[1:]):
-        print(i, coin)
         saving_coins_sum.append(saving_coins_sum[i] + coin[0])
 
     output = plotly_saving_history(saving_date, saving_coins_sum)
