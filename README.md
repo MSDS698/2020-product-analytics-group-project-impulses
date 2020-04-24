@@ -8,9 +8,9 @@
 
 ## Deployment Resources
 
-Master branch url: http://impulse-master.eba-2mxduspm.us-west-2.elasticbeanstalk.com/
+Master branch url: http://impulses.us-west-2.elasticbeanstalk.com/
 
-Test branch url: http://imp-env-test-3.eba-ri85ihii.us-west-2.elasticbeanstalk.com/ 
+Test branch url: http://impulse-test.us-west-2.elasticbeanstalk.com/
 
 AWS Codepipeline: https://aws.amazon.com/codepipeline/
 

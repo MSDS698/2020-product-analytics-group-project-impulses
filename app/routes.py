@@ -148,8 +148,8 @@ def create_habit():
         habit = classes.Habits(user=current_user,
                                habit_name=habit_name,
                                habit_category=habit_category,
-                               time_minute=time_minute,
-                               time_hour=time_hour,
+                               time_minute=int(time_minute),
+                               time_hour=int(time_hour),
                                time_day_of_week=time_day_of_week)
         db.session.add(habit)
         db.session.commit()
