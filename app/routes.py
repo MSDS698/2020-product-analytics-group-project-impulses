@@ -212,10 +212,26 @@ def create_habit():
 @application.route("/dashboard", methods=["POST", "GET"])
 @login_required
 def dashboard():
+    # default values
+    bought_lottery = "You haven't bought a lottery ticket yet"
+
+    # get lottery
+    if request.method == "POST":
+        buy_lottery = request.form.getlist("lottery")
+        print('buy_lottery: ', buy_lottery)
+        if buy_lottery[0] == 'buy':
+            bought_lottery = 'You just bought a lottery ticket'
+            # TODO: edit lottery table
+            # lottery_object = classes.Lottery()
+            # db.session.add(lottery_object)
+            # db.session.commit()
+    lottery_records = classes.Lottery.query.all()
 
     return render_template("dashboard.html",
                            user=current_user,
                            form=classes.HabitForm(),
+                           bought_lottery=bought_lottery,
+                           lottery_records=lottery_records,
                            plaid_public_key=client.public_key,
                            plaid_environment=client.environment,
                            plaid_products=ENV_VARS.get("PLAID_PRODUCTS",

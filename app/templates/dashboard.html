@@ -297,16 +297,43 @@
              aria-labelledby="contact-tab-md">
             <div class="container">
                 <div class="row">
-                    <h2>You have {{coin_amount}} Coins!!!</h2>
+                    <div class="col-sm">
+                        <h3>{{bought_lottery}}</h3>
+                    </div>
                     <div class="col-sm"></div>
                     <div class="col-sm">
-
+                        <form id="lottery" method="post"
+                                  action="{{url_for('dashboard')}}">
+                            <button type="submit" name="lottery" form="lottery"
+                                class="btn btn-success" value="buy">Buy
+                                lottery tickets</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm"></div>
+                    <div class="col-sm">
+                        <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Category</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for lottery_record in lottery_records %}
+                            <tr>
+                                <td>{{lottery_record.lottery_name}}</td>
+                                <td>{{lottery_record.category}}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        </table>
                     </div>
                     <div class="col-sm"></div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
     <!--Habit Form Modal -->
