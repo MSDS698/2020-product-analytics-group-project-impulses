@@ -286,7 +286,8 @@ def dashboard():
     saving_coins = classes.Coin.query.filter_by(user_id=user_id,
                                                 description='login') \
         .with_entities(classes.Coin.coin_amount).all()
-    savings_bar_plot = plotly_saving_history(saving_date, saving_coins)
+    savings_bar_plot, total_saving_coins = plotly_saving_history(saving_date, 
+                                                                 saving_coins)
 
     # count how many times user has responded "Y" to save
     # here, description should be "saving" as well in the future
@@ -317,7 +318,10 @@ def dashboard():
                            plaid_country_codes=ENV_VARS.
                            get("PLAID_COUNTRY_CODES", "US"),
                            source_bar=savings_bar_plot,
-                           source_pie=saving_percent_plot
+                           source_pie=saving_percent_plot,
+                           num_total_suggestions=num_total_suggestions,
+                           num_saved=num_saved,
+                           total_saving_coins=total_saving_coins
                            )
 
 

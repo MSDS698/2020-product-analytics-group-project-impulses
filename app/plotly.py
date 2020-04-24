@@ -14,7 +14,7 @@ def plotly_saving_history(saving_date, saving_coins):
     fig = px.bar(df, x="date", y="coins")
     output = plotly.offline.plot(fig, include_plotlyjs=False,
                                  output_type='div')
-    return output
+    return output, saving_coins_sum[-1]
 
 
 def plotly_percent_saved(num_saved, num_total_suggestions):
