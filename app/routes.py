@@ -1,5 +1,5 @@
 import os
-from datetime import datetime, timezone
+from datetime import datetime
 from app import application, classes, db
 from flask import redirect, render_template, url_for, request, flash
 from flask_login import current_user, login_user, login_required, logout_user
@@ -176,7 +176,6 @@ def create_habit():
                                time_hour=int(time_hour),
                                time_day_of_week=time_day_of_week)
 
-        add_saving_coin(user=current_user)
         db.session.add(habit)
         db.session.commit()
         return redirect(url_for("dashboard"))
