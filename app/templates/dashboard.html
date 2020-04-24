@@ -85,6 +85,8 @@
         });
     });
     </script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
 </head>
 
 <body class="home">
@@ -143,11 +145,28 @@
              role="tabpanel" aria-labelledby="home-tab-md">
             <div class="container">
                 <div class="row">
-                    <div class="col-sm"></div>
-                    <div class="col-sm">
-                        <h3>Savings History</h3>
+                  <div class="col-sm-6">
+                    <div class="card">
+                      <div class="card-body">
+                        <h5 class="card-title">Total Savings</h5>
+                          <p class="card-text">Of the {{num_total_suggestions}} saving suggestions we sent you, you have made {{num_saved}} savings.</p>
+                         <div>
+                             {{ source_pie|safe }}
+                         </div>
+                      </div>
                     </div>
-                    <div class="col-sm"></div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="card">
+                      <div class="card-body">
+                        <h5 class="card-title">Savings History</h5>
+                          <p class="card-text">You have earned {{total_saving_coins}} coins from making savings!</p>
+                            <div>
+                            {{ source_bar|safe }}
+                            </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
             </div>
         </div>

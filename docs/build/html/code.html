@@ -39,8 +39,49 @@
 <dd></dd></dl>
 
 <dl class="py function">
+<dt id="app.routes.add_login_coin">
+<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">add_login_coin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.add_login_coin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update user coins when logging in.</p>
+<p>When the user is logged in for the first time, 10 coins will be added
+as a sign-up bonus. For regular user login, 2 coins are rewarded daily.</p>
+<p>If any changes occur, a new coin transaction will be added to coin
+table and the coins column in user table will also be updated.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="app.routes.add_saving_coin">
+<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">add_saving_coin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.add_saving_coin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update user coins when replying “yes” to saving texts.</p>
+<p>When the user replies “yes” to saving text messages, 10 coins will be
+added. A new coin transaction will be added to coin table and the coins
+column in user table will also be updated.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="app.routes.create_habit">
+<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">create_habit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.create_habit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt id="app.routes.dashboard">
 <code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">dashboard</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.dashboard" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="app.routes.enter_lottery">
+<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">enter_lottery</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user</span></em>, <em class="sig-param"><span class="n">lottery</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.enter_lottery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update user coins when buying an entry to a lottery.</p>
+<p>When the user buys an entry to a lottery, coins corresponding to the
+lottery cost will be deducted from the total number of coins that the
+user has.</p>
+<p>A new coin transaction will be added to coin table and the coins column
+in user table will also be updated. A new lottery log will be added to
+user_lottery_log table.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="app.routes.find_insights">
+<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">find_insights</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.find_insights" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
@@ -59,22 +100,35 @@
 <dd></dd></dl>
 
 <dl class="py function">
+<dt id="app.routes.receive_message">
+<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">receive_message</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.receive_message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt id="app.routes.register">
 <code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">register</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.register" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py function">
+<dt id="app.routes.send_message">
+<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">send_message</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.send_message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <span class="target" id="module-app.classes"></span><p>SQLAlchemy Object Relational Mapper (ORM) and Flask-WTForms</p>
-<p>Including classes for each table in the database:
-user, plaid_items, accounts, transaction, savings_history
-and RegistrationForm and LogInForm</p>
+<p>Including:
+Classes for each table in the database -
+user, plaid_items, accounts, transaction, savings_history, habits,
+coin, lottery, and user_lottery_log</p>
+<p>WTForms -
+RegistrationForm, LogInForm, and HabitForm</p>
 <dl class="py class">
 <dt id="app.classes.Accounts">
 <em class="property">class </em><code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">Accounts</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.Accounts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Data model for accounts table.</p>
 <p>Columns include:
-account_id: auto increment primary key; bigint
-user_id: user id that the account is associated with; bigint
-plaid_id: plaid id that the account is associated with; bigint
+account_id: auto increment primary key; int
+user_id: user id that the account is associated with; int
+plaid_id: plaid id that the account is associated with; int
 account_plaid_id: unique id for identification in plaid; string
 account_name: account name; string
 account_type: account type, ex. investment/depository/credit; string
@@ -122,6 +176,51 @@ account_subtype: account subtype, ex. 401k/checking/credit card; string</p>
 </dd></dl>
 
 <dl class="py class">
+<dt id="app.classes.Coin">
+<em class="property">class </em><code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">Coin</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.Coin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data model for coin table.</p>
+<p>Columns include:
+log_id: auto increment primary key; int
+user_id: id of the user that the coin is associated with; int
+coin_amount: number of coins added or subtracted; int
+log_date: date when the coin transaction occurs; date
+description: why the coins are added or subtracted, including 3 values:</p>
+<blockquote>
+<div><p>login, saving, and lottery; string</p>
+</div></blockquote>
+<dl class="py attribute">
+<dt id="app.classes.Coin.coin_amount">
+<code class="sig-name descname">coin_amount</code><a class="headerlink" href="#app.classes.Coin.coin_amount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Coin.description">
+<code class="sig-name descname">description</code><a class="headerlink" href="#app.classes.Coin.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Coin.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#app.classes.Coin.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Coin.log_date">
+<code class="sig-name descname">log_date</code><a class="headerlink" href="#app.classes.Coin.log_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Coin.user">
+<code class="sig-name descname">user</code><a class="headerlink" href="#app.classes.Coin.user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Coin.user_id">
+<code class="sig-name descname">user_id</code><a class="headerlink" href="#app.classes.Coin.user_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="app.classes.HabitForm">
 <em class="property">class </em><code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">HabitForm</code><span class="sig-paren">(</span><em class="sig-param">formdata=&lt;object object&gt;</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.HabitForm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class for habit formation form</p>
@@ -142,7 +241,7 @@ account_subtype: account subtype, ex. 401k/checking/credit card; string</p>
 
 <dl class="py attribute">
 <dt id="app.classes.HabitForm.time_day_of_week">
-<code class="sig-name descname">time_day_of_week</code><em class="property"> = &lt;UnboundField(SelectField, ('Day Of Week:',), {'choices': [('1-5', 'Monday-Friday'), ('0,6', 'Weekends'), ('*', 'Everyday')], 'validators': [&lt;wtforms.validators.DataRequired object&gt;]})&gt;</em><a class="headerlink" href="#app.classes.HabitForm.time_day_of_week" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">time_day_of_week</code><em class="property"> = &lt;UnboundField(SelectField, ('Day Of Week:',), {'choices': [('weekday', 'Weekday'), ('weekend', 'Weekend'), ('everyday', 'Everyday')], 'validators': [&lt;wtforms.validators.DataRequired object&gt;]})&gt;</em><a class="headerlink" href="#app.classes.HabitForm.time_day_of_week" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -152,22 +251,26 @@ account_subtype: account subtype, ex. 401k/checking/credit card; string</p>
 
 <dl class="py attribute">
 <dt id="app.classes.HabitForm.time_minute">
-<code class="sig-name descname">time_minute</code><em class="property"> = &lt;UnboundField(SelectField, ('Minute:',), {'choices': [('0', '0'), ('15', '15'), ('30', '30'), ('45', '45')], 'validators': [&lt;wtforms.validators.DataRequired object&gt;]})&gt;</em><a class="headerlink" href="#app.classes.HabitForm.time_minute" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">time_minute</code><em class="property"> = &lt;UnboundField(SelectField, ('Minute:',), {'choices': [('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8'), ('9', '9'), ('10', '10'), ('11', '11'), ('12', '12'), ('13', '13'), ('14', '14'), ('15', '15'), ('16', '16'), ('17', '17'), ('18', '18'), ('19', '19'), ('20', '20'), ('21', '21'), ('22', '22'), ('23', '23'), ('24', '24'), ('25', '25'), ('26', '26'), ('27', '27'), ('28', '28'), ('29', '29'), ('30', '30'), ('31', '31'), ('32', '32'), ('33', '33'), ('34', '34'), ('35', '35'), ('36', '36'), ('37', '37'), ('38', '38'), ('39', '39'), ('40', '40'), ('41', '41'), ('42', '42'), ('43', '43'), ('44', '44'), ('45', '45'), ('46', '46'), ('47', '47'), ('48', '48'), ('49', '49'), ('50', '50'), ('51', '51'), ('52', '52'), ('53', '53'), ('54', '54'), ('55', '55'), ('56', '56'), ('57', '57'), ('58', '58'), ('59', '59')], 'validators': [&lt;wtforms.validators.DataRequired object&gt;]})&gt;</em><a class="headerlink" href="#app.classes.HabitForm.time_minute" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt id="app.classes.Habits">
-<em class="property">class </em><code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">Habits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em>, <em class="sig-param"><span class="n">habit_name</span></em>, <em class="sig-param"><span class="n">habit_category</span></em>, <em class="sig-param"><span class="n">time_minute</span></em>, <em class="sig-param"><span class="n">time_hour</span></em>, <em class="sig-param"><span class="n">time_day_of_week</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.Habits" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">Habits</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.Habits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Data model for habits table.</p>
 <p>Columns include:
-habits_id: auto increment primary key; bigint
-user_id: id of the user that made the habit; bigint
+habits_id: auto increment primary key; int
+user_id: id of the user that made the habit; int
 habit_name: name of the habit user created; string
 habit_category: category of the habit; string
-time_minute: minute of the reminder; bigint (0-59)
-time_hour: hour of the reminder; bigint(0-23)</p>
+time_minute: minute of the reminder (0-59); int
+time_hour: hour of the reminder (0-23); int
+time_day_of_week: day of week of the reminder, including 3 values:</p>
+<blockquote>
+<div><p>“weekday”, “weekend”, “everyday”; string</p>
+</div></blockquote>
 <dl class="py attribute">
 <dt id="app.classes.Habits.habit_category">
 <code class="sig-name descname">habit_category</code><a class="headerlink" href="#app.classes.Habits.habit_category" title="Permalink to this definition">¶</a></dt>
@@ -232,12 +335,66 @@ time_hour: hour of the reminder; bigint(0-23)</p>
 </dd></dl>
 
 <dl class="py class">
+<dt id="app.classes.Lottery">
+<em class="property">class </em><code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">Lottery</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.Lottery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data model for lottery table.</p>
+<p>Columns include:
+lottery_id: auto increment primary key; int
+lottery_name: name of the lottery; string
+start_date: date when the lottery starts; datetime
+end_date: date when the lottery ends; datetime
+category: lottery category; string
+cost: number of coins that the lottery costs; int
+winner_user_id: user id of the lottery winner; int</p>
+<dl class="py attribute">
+<dt id="app.classes.Lottery.category">
+<code class="sig-name descname">category</code><a class="headerlink" href="#app.classes.Lottery.category" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Lottery.cost">
+<code class="sig-name descname">cost</code><a class="headerlink" href="#app.classes.Lottery.cost" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Lottery.end_date">
+<code class="sig-name descname">end_date</code><a class="headerlink" href="#app.classes.Lottery.end_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Lottery.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#app.classes.Lottery.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Lottery.lottery_log">
+<code class="sig-name descname">lottery_log</code><a class="headerlink" href="#app.classes.Lottery.lottery_log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Lottery.lottery_name">
+<code class="sig-name descname">lottery_name</code><a class="headerlink" href="#app.classes.Lottery.lottery_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Lottery.start_date">
+<code class="sig-name descname">start_date</code><a class="headerlink" href="#app.classes.Lottery.start_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.Lottery.winner_user_id">
+<code class="sig-name descname">winner_user_id</code><a class="headerlink" href="#app.classes.Lottery.winner_user_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="app.classes.PlaidItems">
 <em class="property">class </em><code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">PlaidItems</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.PlaidItems" title="Permalink to this definition">¶</a></dt>
 <dd><p>Data model for plaid_items table.</p>
 <p>Columns include:
-plaid_item_id: auto increment primary key; bigint
-user_id: user id that the plaid item is associated with; bigint
+plaid_item_id: auto increment primary key; int
+user_id: user id that the plaid item is associated with; int
 item_id: plaid item id; string
 access_token: token that is associated to user account information</p>
 <blockquote>
@@ -316,8 +473,8 @@ access_token: token that is associated to user account information</p>
 <em class="property">class </em><code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">SavingsHistory</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.SavingsHistory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Data model for savings_history table.</p>
 <p>Columns include:
-savings_id: auto increment primary key; bigint
-user_id: id of the user that made the saving; bigint
+savings_id: auto increment primary key; int
+user_id: id of the user that made the saving; int
 savings_amount: savings amount; decimal(10, 2)
 total_savings: total savings the user has made so far; decimal(10, 2)
 predicted_savings: predicted savings the user will make; decimal(10, 2)
@@ -373,11 +530,11 @@ transfer_date: date when the savings are transferred to a</p>
 <em class="property">class </em><code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">Transaction</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.Transaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Data model for transaction table.</p>
 <p>Columns include:
-transaction_id: auto increment primary key; bigint
-user_id: user id that the transaction is associated with; bigint
-account_id: account id that the transaction is associated with; bigint
+transaction_id: auto increment primary key; int
+user_id: user id that the transaction is associated with; int
+account_id: account id that the transaction is associated with; int
 trans_amount: transaction amount; decimal(10, 2)
-category_id: category id in plaid; bigint
+category_id: category id in plaid; int
 is_preferred_saving: whether the transaction is a preferred saving</p>
 <blockquote>
 <div><p>category; string</p>
@@ -489,7 +646,7 @@ merchant_latitude: merchant latitude; string</p>
 <em class="property">class </em><code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">User</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">first_name</span></em>, <em class="sig-param"><span class="n">last_name</span></em>, <em class="sig-param"><span class="n">email</span></em>, <em class="sig-param"><span class="n">phone</span></em>, <em class="sig-param"><span class="n">password</span></em>, <em class="sig-param"><span class="n">auth_id</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.User" title="Permalink to this definition">¶</a></dt>
 <dd><p>Data model for user table.</p>
 <p>Columns include:
-user_id: auto increment primary key; bigint
+user_id: auto increment primary key; int
 first_name: user’s first name; string
 last_name: user’s last name; string
 email: user’s email address; string; unique
@@ -497,7 +654,8 @@ phone: user’s phone number; string; unique
 password_hash: user’s hashed password; string
 signup_date: user’s signup date; date
 status: user’s current status; string
-auth_id: unique user id from OAuth if available; string</p>
+auth_id: unique user id from OAuth if available; string
+coins: total number of coins the user has; int</p>
 <dl class="py attribute">
 <dt id="app.classes.User.accounts">
 <code class="sig-name descname">accounts</code><a class="headerlink" href="#app.classes.User.accounts" title="Permalink to this definition">¶</a></dt>
@@ -513,6 +671,16 @@ auth_id: unique user id from OAuth if available; string</p>
 <code class="sig-name descname">check_password</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">password</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.User.check_password" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the input password matches the actual password</p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.User.coin">
+<code class="sig-name descname">coin</code><a class="headerlink" href="#app.classes.User.coin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.User.coins">
+<code class="sig-name descname">coins</code><a class="headerlink" href="#app.classes.User.coins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="app.classes.User.email">
@@ -537,6 +705,11 @@ auth_id: unique user id from OAuth if available; string</p>
 <dl class="py attribute">
 <dt id="app.classes.User.last_name">
 <code class="sig-name descname">last_name</code><a class="headerlink" href="#app.classes.User.last_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.User.lottery_log">
+<code class="sig-name descname">lottery_log</code><a class="headerlink" href="#app.classes.User.lottery_log" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -578,6 +751,41 @@ auth_id: unique user id from OAuth if available; string</p>
 <dl class="py attribute">
 <dt id="app.classes.User.transaction">
 <code class="sig-name descname">transaction</code><a class="headerlink" href="#app.classes.User.transaction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="app.classes.UserLotteryLog">
+<em class="property">class </em><code class="sig-prename descclassname">app.classes.</code><code class="sig-name descname">UserLotteryLog</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.classes.UserLotteryLog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data model for user_lottery_log table.</p>
+<p>Columns include:
+lottery_log_id: auto increment primary key; int
+user_id: id of the user; int
+lottery_id: id of the lottery that the user entered; int</p>
+<dl class="py attribute">
+<dt id="app.classes.UserLotteryLog.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#app.classes.UserLotteryLog.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.UserLotteryLog.lottery">
+<code class="sig-name descname">lottery</code><a class="headerlink" href="#app.classes.UserLotteryLog.lottery" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.UserLotteryLog.lottery_id">
+<code class="sig-name descname">lottery_id</code><a class="headerlink" href="#app.classes.UserLotteryLog.lottery_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.UserLotteryLog.user">
+<code class="sig-name descname">user</code><a class="headerlink" href="#app.classes.UserLotteryLog.user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="app.classes.UserLotteryLog.user_id">
+<code class="sig-name descname">user_id</code><a class="headerlink" href="#app.classes.UserLotteryLog.user_id" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
