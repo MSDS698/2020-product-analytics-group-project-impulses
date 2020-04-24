@@ -1,0 +1,151 @@
+{
+    "override_accounts": [
+        {
+            "type": "depository",
+            "subtype": "checking",
+            "meta": {
+                "name": "Checking"
+            },
+            "transactions": [
+                {
+                    "date_transacted": "2019-10-29",
+                    "date_posted": "2019-10-29",
+                    "amount": 8.39,
+                    "description": "Purchase at Rincon Market"
+                },
+                {
+                    "date_transacted": "2019-10-28",
+                    "date_posted": "2019-10-28",
+                    "amount": 4.6,
+                    "description": "Purchase at Philz Coffee"
+                },
+                {
+                    "date_transacted": "2019-10-28",
+                    "date_posted": "2019-10-28",
+                    "amount": 2.65,
+                    "description": "Starbucks"
+                },
+                {
+                    "date_transacted": "2019-10-25",
+                    "date_posted": "2019-10-25",
+                    "amount": 1.66,
+                    "description": "Coffee at Specialties Cafe"
+                },
+                {
+                    "date_transacted": "2019-10-24",
+                    "date_posted": "2019-10-24",
+                    "amount": 6.2,
+                    "description": "Purchase at Peet's Coffee"
+                },
+                {
+                    "date_transacted": "2019-10-23",
+                    "date_posted": "2019-10-23",
+                    "amount": 5.33,
+                    "description": "Coffee at Sweet Joanna's Cafe"
+                },
+                {
+                    "date_transacted": "2019-10-22",
+                    "date_posted": "2019-10-22",
+                    "amount": 3,
+                    "description": "Purchase at Pressed Juicery"
+                },
+                {
+                    "date_transacted": "2019-10-21",
+                    "date_posted": "2019-10-21",
+                    "amount": 60,
+                    "description": "Clipper Card Reload"
+                },
+                {
+                    "date_transacted": "2019-10-21",
+                    "date_posted": "2019-10-21",
+                    "amount": 22.74,
+                    "description": "Purchase at Kaze"
+                },
+                {
+                    "date_transacted": "2019-10-21",
+                    "date_posted": "2019-10-21",
+                    "amount": 4.29,
+                    "description": "Purchase at Crispy Krunchy Chicken Restaurant"
+                },
+                {
+                    "date_transacted": "2019-10-21",
+                    "date_posted": "2019-10-21",
+                    "amount": 10,
+                    "description": "Square Purchase"
+                },
+                {
+                    "date_transacted": "2019-10-21",
+                    "date_posted": "2019-10-21",
+                    "amount": 4.8,
+                    "description": "Purchase at Super Duper Burger Resturant"
+                },
+                {
+                    "date_transacted": "2019-10-21",
+                    "date_posted": "2019-10-21",
+                    "amount": 16.7,
+                    "description": "Purchase at Azucar Bar and Lounge"
+                },
+                {
+                    "date_transacted": "2019-10-18",
+                    "date_posted": "2019-10-18",
+                    "amount": 2,
+                    "description": "Purchase at Rincon Market"
+                },
+                {
+                    "date_transacted": "2019-10-18",
+                    "date_posted": "2019-10-18",
+                    "amount": 20.94,
+                    "description": "Trader Joe's"
+                },
+                {
+                    "date_transacted": "2019-10-17",
+                    "date_posted": "2019-10-17",
+                    "amount": 10.1,
+                    "description": "Purchase at Parkside Cafe"
+                },
+                {
+                    "date_transacted": "2019-10-07",
+                    "date_posted": "2019-10-07",
+                    "amount": 2.87,
+                    "description": "Coffee at Specialty's Cafe"
+                },
+                {
+                    "date_transacted": "2019-10-07",
+                    "date_posted": "2019-10-07",
+                    "amount": 4.14,
+                    "description": "Philz's Coffee"
+                },
+                {
+                    "date_transacted": "2019-10-07",
+                    "date_posted": "2019-10-07",
+                    "amount": 10.33,
+                    "description": "Purchase at Sweet Joanna's Cafe"
+                },
+                {
+                    "date_transacted": "2019-10-02",
+                    "date_posted": "2019-10-02",
+                    "amount": 7.65,
+                    "description": "Peet's Coffee"
+                },
+                {
+                    "date_transacted": "2019-10-02",
+                    "date_posted": "2019-10-02",
+                    "amount": 5.1,
+                    "description": "Coffee at Panache Cafe"
+                },
+                {
+                    "date_transacted": "2019-10-01",
+                    "date_posted": "2019-10-01",
+                    "amount": 7.67,
+                    "description": "Purchase Lee's Deli"
+                },
+                {
+                    "date_transacted": "2019-10-01",
+                    "date_posted": "2019-10-01",
+                    "amount": 15,
+                    "description": "Peet's Coffee"
+                }
+            ]
+        }
+    ]
+}
