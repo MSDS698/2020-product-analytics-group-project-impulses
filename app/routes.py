@@ -299,7 +299,7 @@ def dashboard():
     signup_tz = pst.localize(classes.User.query.filter_by(id=user_id).
                              with_entities(classes.User.signup_date).first()[
                                  0])
-    days = (datetime.now(timezone.utc) - signup_tz).days
+    days = (datetime.now().astimezone(pst) - signup_tz).days
     num_total_suggestions = len(classes.Habits.query.
                                 filter_by(user_id=user_id).all()) * days
     saving_percent_plot = plotly_percent_saved(num_saved,
