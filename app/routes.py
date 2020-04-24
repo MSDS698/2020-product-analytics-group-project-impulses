@@ -12,6 +12,7 @@ import pytz
 import pandas as pd
 import twilio.rest
 from twilio.twiml.messaging_response import MessagingResponse
+from app.plotly import plotly_saving_history
 import time
 
 ENV_VARS = {
@@ -174,6 +175,8 @@ def create_habit():
                                time_minute=int(time_minute),
                                time_hour=int(time_hour),
                                time_day_of_week=time_day_of_week)
+
+        add_saving_coin(user=current_user)
         db.session.add(habit)
         db.session.commit()
         return redirect(url_for("dashboard"))
@@ -271,6 +274,23 @@ def dashboard():
     available_lottery_records = classes.Lottery.query.filter(
         classes.Lottery.start_date <= str(current_time),
         classes.Lottery.end_date >= str(current_time)).all()
+
+    # Dashboard tab
+    user_id = current_user.id
+    saving_date = classes.Coin.query.filter_by(user_id=user_id,
+                                               description='login') \
+        .with_entities(classes.Coin.log_date).all()
+
+    saving_coins = classes.Coin.query.filter_by(user_id=user_id,
+                                                description='login') \
+        .with_entities(classes.Coin.coin_amount).all()
+    saving_coins_sum = [saving_coins[0][0]]
+    for i, coin in enumerate(saving_coins[1:]):
+        print(i, coin)
+        saving_coins_sum.append(saving_coins_sum[i] + coin[0])
+
+    output = plotly_saving_history(saving_date, saving_coins_sum)
+
     return render_template("dashboard.html",
                            user=current_user,
                            form=classes.HabitForm(),
@@ -282,7 +302,8 @@ def dashboard():
                            plaid_products=ENV_VARS.get("PLAID_PRODUCTS",
                                                        "transactions"),
                            plaid_country_codes=ENV_VARS.
-                           get("PLAID_COUNTRY_CODES", "US")
+                           get("PLAID_COUNTRY_CODES", "US"),
+                           source=output
                            )
 
 
