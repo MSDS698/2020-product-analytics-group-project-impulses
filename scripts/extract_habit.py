@@ -1,4 +1,7 @@
 import ast
+import numpy as np
+import collections
+import matplotlib.pyplot as plt
 from app import classes
 
 
@@ -13,11 +16,11 @@ def parse_plaid_data(plaid_data):
     return data
 
 
-def get_habits(user_id, date, habit_name, thresh,
-               categories_file):
+def get_habits_transactions(user_id, date, habit_name, thresh,
+                            categories_file):
     """
-    Return habits number and total amount spent if above
-    the threshold for  a given month.
+    Return habits transactions if above the threshold and number
+    of time spent on habit.
     Otherwise, return None.
     :param user_id: user id
     :param date: beginning of the month to analyze
@@ -62,7 +65,42 @@ def get_habits(user_id, date, habit_name, thresh,
     ct = len(transactions)
     if ct < thresh:
         return None
-    else:
-        tot_amount = round(sum([float(x.trans_amount) for x in transactions]),
-                           2)
-        return ct, tot_amount
+    return transactions, ct
+
+
+def num_per_day(transactions, habit_name):
+    """
+    Return the number of time user spent on habit on each day of the week
+    :param transactions: list of transactions
+    :param habit_name: str
+    """
+    map_day = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday',
+               4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
+    num_per_day = collections.Counter([x.trans_date.weekday() for x in transactions])
+    sorted_num_per_day = sorted(num_per_day.items())
+    day = [map_day[x[0]] for x in sorted_num_per_day]
+    freq = [x[1] for x in sorted_num_per_day]
+    plt.bar(day, freq, align='center', alpha=0.5)
+    plt.ylabel('Purchased {}'.format(habit_name))
+
+    plt.show()
+
+
+def total_amount(transactions):
+    """
+    Return the total amount spent on the habit.
+    :param transactions: list of transactions
+    """
+    tot_amount = round(sum([float(x.trans_amount) for x in transactions]),
+                       2)
+    return tot_amount
+
+
+def average_amount(transactions):
+    """
+    Return the average spent on habit
+    :param transactions: list of transactions
+    """
+    avg_amount = round(np.mean([float(x.trans_amount) for x in transactions]),
+                       2)
+    return avg_amount
