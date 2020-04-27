@@ -76,7 +76,8 @@ def num_per_day(transactions, habit_name):
     """
     map_day = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday',
                4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
-    num_per_day = collections.Counter([x.trans_date.weekday() for x in transactions])
+    num_per_day = collections.Counter([x.trans_date.weekday()
+                                       for x in transactions])
     sorted_num_per_day = sorted(num_per_day.items())
     day = [map_day[x[0]] for x in sorted_num_per_day]
     freq = [x[1] for x in sorted_num_per_day]
