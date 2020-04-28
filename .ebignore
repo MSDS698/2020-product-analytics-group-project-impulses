@@ -2,3 +2,6 @@ deploy.sh
 deploy_master.sh
 pipeline_master.json
 pipeline_diane.json
+
+# cron scheduling
+.ebextension/cron-linux.config
