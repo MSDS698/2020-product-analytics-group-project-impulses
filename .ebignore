@@ -4,4 +4,4 @@ pipeline_master.json
 pipeline_diane.json
 
 # cron scheduling
-.ebextension/cron-linux.config
+.ebextensions/cron-linux.config
