@@ -8,7 +8,7 @@
 
 ## Deployment Resources
 
-Master branch url: http://impulses.us-west-2.elasticbeanstalk.com/
+Master branch url: http://impulses-master.us-west-2.elasticbeanstalk.com/
 
 Test branch url: http://impulse-test.us-west-2.elasticbeanstalk.com/
 
