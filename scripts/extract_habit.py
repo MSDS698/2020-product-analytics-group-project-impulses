@@ -1,7 +1,8 @@
 import ast
 import numpy as np
 import collections
-import matplotlib.pyplot as plt
+import plotly
+import plotly.graph_objects as go
 from app import classes
 
 
@@ -81,10 +82,12 @@ def num_per_day(transactions, habit_name):
     sorted_num_per_day = sorted(num_per_day.items())
     day = [map_day[x[0]] for x in sorted_num_per_day]
     freq = [x[1] for x in sorted_num_per_day]
-    plt.bar(day, freq, align='center', alpha=0.5)
-    plt.ylabel('Purchased {}'.format(habit_name))
-
-    plt.show()
+    fig = go.Figure(data=[go.Bar(x=day, y=freq)],
+                    layout=go.Layout(title='Purchased {}'.format(habit_name))
+                    )
+    output = plotly.offline.plot(fig, include_plotlyjs=False,
+                                 output_type='div')
+    return output
 
 
 def total_amount(transactions):
