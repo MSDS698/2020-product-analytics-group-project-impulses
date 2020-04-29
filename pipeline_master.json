@@ -1,6 +1,6 @@
 {
     "pipeline": {
-        "name": "Master_with_cron",
+        "name": "Master_worker",
         "roleArn": "arn:aws:iam::941468269564:role/service-role/AWSCodePipelineServiceRole-us-west-2-Impulses",
         "artifactStore": {
             "type": "S3",
@@ -20,7 +20,7 @@
                         },
                         "runOrder": 1,
                         "configuration": {
-                            "Branch": "cron_update_4",
+                            "Branch": "master",
                             "OAuthToken": "bf724a4b24ba9764aa85f8621d2a9841f906221b",
                             "Owner": "MSDS698",
                             "PollForSourceChanges": "true",
@@ -51,7 +51,7 @@
                         "runOrder": 1,
                         "configuration": {
                             "ApplicationName": "Impulses-Master",
-                            "EnvironmentName": "ImpulsesMaster-env"
+                            "EnvironmentName": "ImpulsesMaster-worker"
                         },
                         "outputArtifacts": [],
                         "inputArtifacts": [

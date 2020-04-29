@@ -12,7 +12,7 @@ import pytz
 import pandas as pd
 import twilio.rest
 from twilio.twiml.messaging_response import MessagingResponse
-from app.plotly import plotly_saving_history, plotly_percent_saved
+from app.plotly_dashboard import plotly_saving_history, plotly_percent_saved
 import time
 
 ENV_VARS = {
