@@ -103,8 +103,8 @@ class TestDataToDB(unittest.TestCase):
         accounts = methods.get_accounts(self.client, access_token)
         add_plaid_data.add_accounts(accounts, self.test_user,
                                     self.test_item, commit=True)
-        start_date = "2019-01-01"
-        end_date = "2020-04-01"
+        start_date = "2015-01-01"
+        end_date = "2020-05-01"
         transactions = methods.get_transactions(self.client,
                                                 start_date,
                                                 end_date,
