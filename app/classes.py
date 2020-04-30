@@ -265,11 +265,13 @@ class UserLotteryLog(db.Model):
     lottery_log_id: auto increment primary key; int
     user_id: id of the user; int
     lottery_id: id of the lottery that the user entered; int
+    entries: number of entries for the lottery; int
     """
     __tablename__ = "user_lottery_log"
     id = db.Column("lottery_log_id", db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
     lottery_id = db.Column(db.Integer, db.ForeignKey("lottery.lottery_id"))
+    entries = db.Column(db.Integer, nullable=False, default=1)
 
 
 class RegistrationForm(FlaskForm):

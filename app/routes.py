@@ -94,17 +94,25 @@ def enter_lottery(user, lottery):
     user has.
 
     A new coin transaction will be added to coin table and the coins column
-    in user table will also be updated. A new lottery log will be added to
-    user_lottery_log table.
+    in user table will also be updated. The user_lottery_log table will also
+    be updated.
     """
+    # check if the user has bought the lottery before
+    lottery_log = classes.UserLotteryLog.query.filter_by(
+        user=user, lottery=lottery).first()
+    if lottery_log:
+        lottery_log.entries += 1
+    else:  # the user buys the lottery for the first time
+        new_lottery_log = classes.UserLotteryLog(user=user, lottery=lottery)
+        db.session.add(new_lottery_log)
+
+    # update the user's coins
     tz = pytz.timezone("America/Los_Angeles")
     new_coin = classes.Coin(user=user, coin_amount=-lottery.cost,
                             log_date=datetime.now().astimezone(tz).date(),
                             description="lottery")
-    new_lottery_log = classes.UserLotteryLog(user=user, lottery=lottery)
     user.coins -= lottery.cost
     db.session.add(new_coin)
-    db.session.add(new_lottery_log)
     db.session.commit()
 
 
@@ -127,6 +135,8 @@ def lottery_drawing():
         participants = [p[0] for p in participants]
         if participants:
             lottery.winner_user_id = random.choice(participants)
+        else:
+            lottery.winner_user_id = -1
     db.session.commit()
 
 
