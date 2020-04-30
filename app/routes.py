@@ -24,7 +24,8 @@ ENV_VARS = {
     "PLAID_ENV": os.environ["PLAID_ENV"],
     "TWILIO_ACCOUNT_SID": os.environ["TWILIO_ACCOUNT_SID"],
     "TWILIO_AUTH_TOKEN": os.environ["TWILIO_AUTH_TOKEN"],
-    "SQLALCHEMY_DATABASE_URI": os.environ["SQLALCHEMY_DATABASE_URI"]
+    "SQLALCHEMY_DATABASE_URI": os.environ["SQLALCHEMY_DATABASE_URI"],
+    "VERIFICATION_SID": os.environ["VERIFICATION_SID"]
 }
 
 # setup plaid client
@@ -199,12 +200,59 @@ def register():
             flash('User already exists')
         else:
             # User information does not already exist in DB
+        vsid = start_verification(phone, "sms")
+        if vsid is not None:
+            return redirect(url_for('verify'))            
+
+        # User information does not already exist in DB
+        if user_count == 0:
             user = classes.User(first_name, last_name, email, phone, password)
             db.session.add(user)
             db.session.commit()
             return redirect(url_for("login"))
     return render_template("register.html", form=registration_form)
 
+@application.route('/verify', methods=('GET', 'POST'))
+def verify():
+    """Verify a user on registration with their phone number"""
+    if request.method == 'POST':
+        phone = db.session.get('phone')
+        code = request.form['code']
+        return check_verification(phone, code)
+    return render_template('verify.html')
+
+def start_verification(to, channel='sms'):
+    if channel not in ('sms', 'call'):
+        channel = 'sms'
+
+    service = ENV_VARS["VERIFICATION_SID"]
+
+    verification = client.verify \
+        .services(service) \
+        .verifications \
+        .create(to=to, channel=channel)
+    
+    return verification.sid
+
+
+def check_verification(phone, code):
+    service = ENV_VARS["VERIFICATION_SID"]
+    
+    try:
+        verification_check = client.verify \
+            .services(service) \
+            .verification_checks \
+            .create(to=phone, code=code)
+
+        if verification_check.status == "approved":
+            flash('Your phone number has been verified! Please login to continue.')
+            return redirect(url_for('login'))
+        else:
+            flash('The code you provided is incorrect. Please try again.')
+    except Exception as e:
+        flash("Error validating code: {}".format(e))
+
+    return redirect(url_for('verify'))
 
 @application.route('/create_habit', methods=["POST"])
 @login_required
