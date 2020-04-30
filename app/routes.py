@@ -383,6 +383,7 @@ def logout():
     logout_user()
     return redirect(url_for("index"))
 
+
 @application.route("/delete_plaid_account", methods=["POST"])
 def delete_plaid_account():
     account_id = request.form['accountId']
