@@ -129,7 +129,7 @@ def login():
             add_login_coin(user)
             return redirect(url_for("index"))
         else:
-            return "Not a valid user"
+            flash('Invalid username and password combination')
     return render_template("login.html", form=login_form)
 
 
@@ -155,6 +155,8 @@ def register():
             db.session.add(user)
             db.session.commit()
             return redirect(url_for("login"))
+        else:
+            flash('Error - User already exists')
     return render_template("register.html", form=registration_form)
 
 
