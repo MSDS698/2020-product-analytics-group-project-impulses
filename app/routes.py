@@ -1,4 +1,5 @@
 import os
+import random
 from datetime import datetime
 from app import application, classes, db
 from flask import redirect, render_template, url_for, request, flash
@@ -104,6 +105,28 @@ def enter_lottery(user, lottery):
     user.coins -= lottery.cost
     db.session.add(new_coin)
     db.session.add(new_lottery_log)
+    db.session.commit()
+
+
+# lottery drawing function
+def lottery_drawing():
+    """Draw the winner for lotteries that have ended.
+
+    First check which lotteries have ended without the winner drawn.
+    Then choose the winner and update the lottery table.
+    """
+    tz = pytz.timezone("America/Los_Angeles")
+    current_time = datetime.now().astimezone(tz)
+    lottery_to_draw = classes.Lottery.query.filter(
+        classes.Lottery.winner_user_id.is_(None),
+        classes.Lottery.end_date <= current_time).all()
+
+    for lottery in lottery_to_draw:
+        participants = db.session.query(
+            classes.UserLotteryLog.user_id).filter_by(lottery=lottery).all()
+        participants = [p[0] for p in participants]
+        if participants:
+            lottery.winner_user_id = random.choice(participants)
     db.session.commit()
 
 
@@ -242,6 +265,9 @@ def create_habit():
 @application.route("/dashboard", methods=["POST", "GET"])
 @login_required
 def dashboard():
+    # lottery drawing
+    lottery_drawing()
+
     # default values
     lottery_status = "Buy a lottery ticket before it ends!"
 
@@ -270,8 +296,8 @@ def dashboard():
     tz = pytz.timezone("America/Los_Angeles")
     current_time = datetime.now().astimezone(tz)
     available_lottery_records = classes.Lottery.query.filter(
-        classes.Lottery.start_date <= str(current_time),
-        classes.Lottery.end_date >= str(current_time)).all()
+        classes.Lottery.start_date <= current_time,
+        classes.Lottery.end_date >= current_time).all()
 
     # Dashboard tab
     # extract user's saving history from coins associated with "saving"
