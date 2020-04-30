@@ -157,6 +157,32 @@ def check_verification(phone, code):
             flash("Error validating code: {}".format(e))
 
     return redirect(url_for('verify'))
+@application.route('/habit_table_save_changes', methods=["POST"])
+@login_required
+def habit_table_save_changes():
+    if request.method == "POST":
+        user_id = current_user.id
+
+        habit_name = request.form.getlist("habit_name")
+        habit_category = request.form.getlist("habit_category")
+        time_hour_minute = request.form.getlist("time_hour_minute")
+        time_day_of_week = request.form.getlist("time_day_of_week")
+
+        # delete the user's habits
+        classes.Habits.query.filter_by(user_id=user_id).delete()
+
+        # add the latest habits back to db
+        for i in range(len(habit_name)):
+            habit = classes.Habits(user_id=user_id, habit_name=habit_name[i],
+                                   habit_category=habit_category[i],
+                                   time_minute=time_hour_minute[i][3:],
+                                   time_hour=time_hour_minute[i][:2],
+                                   time_day_of_week=time_day_of_week[i])
+            db.session.add(habit)
+            db.session.commit()
+
+        return redirect(url_for("dashboard"))
+    return redirect(url_for("dashboard"))
 
 
 @application.route('/create_habit', methods=["POST"])
@@ -321,7 +347,6 @@ def dashboard():
     return render_template("dashboard.html",
                            user=current_user,
                            coin_log=coin_log,
-                           form=classes.HabitForm(),
                            lottery_status=lottery_status,
                            available_lottery_records=available_lottery_records,
                            bought_lottery_records=bought_lottery_records,

@@ -241,7 +241,20 @@
         </div>
         <div class="tab-pane fade" id="habits-md" role="tabpanel" aria-labelledby="profile-tab-md">
             <div class="container">
-                <!-- <div class="table-wrapper">
+                <div class="row">
+                    <h2 class='card-title'>
+                                    {% if user.status == "verified" %}
+                                    <button id='new-habit' class='btn btn-primary' data-toggle="modal"
+                                        data-target="#habitFormModal" style="color:white"
+                                            onclick="gtag('event', 'click', {'event_category': 'button', 'event_label': 'create_habit'})"
+                                    >+ Add a new habit
+                                    </button>
+                                    {% elif user.status == "unverified" %}
+                                    <a href="start_verification" class="btn btn-primary" role="button">Verify phone # to add habits</a>
+                                    {% endif %}
+                                </h2>
+                    <div class="col-sm-8">
+                        <div class="table-wrapper">
                     <div class="table-title">
                         <div class="row">
                             <div class="col-sm-8"><h2>Habits Details</h2></div>
@@ -253,8 +266,8 @@
                             </div>
                         </div>
                     </div>
-                    <form id="habit" method="post"
-                                  action="{{url_for('dashboard')}}">
+                    <form id="habit" method="post" action="/habit_table_save_changes">
+<!--                                  action="{{url_for('dashboard')}}">-->
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -266,7 +279,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for habit in habits %}
+
+                            {% for habit in user.habits %}
                             <tr>
                                 <td><input style="width:100%" readonly
                                            name="habit_name"
@@ -287,36 +301,8 @@
                             {% endfor %}
                         </tbody>
                     </table>
-                        </form> -->
-                <div class="row">
-                    <div class="col-sm">
-                        <h2>Habits</h2> {% for habit in user.habits %}
-                        <div class='card w-75'>
-                            <div class='card-body'>
-                                <h3 class='card-title'>{{ habit.habit_name }}</h3>
-                                <h4 class='card-subtitle'>
-                                    {{ habit.time_day_of_week}} at {{ habit.time_hour}}:{{ habit.time_minute}}
-                                </h4>
-                            </div>
-                        </div>
-                        {% endfor %}
-                        <div class='card w-75'>
-                            <div class='card-body'>
-                                <h2 class='card-title'>
-                                    {% if user.status == "verified" %}
-                                    <button id='new-habit' class='btn btn-primary' data-toggle="modal"
-                                        data-target="#habitFormModal" style="color:white"
-                                            onclick="gtag('event', 'click', {'event_category': 'button', 'event_label': 'create_habit'})"
-                                    >+ Add a new habit
-                                    </button>
-                                    {% elif user.status == "unverified" %}
-                                    <a href="start_verification" class="btn btn-primary" role="button">Verify phone # to add habits</a>
-                                    {% endif %}
-                                </h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm">
+                        </form>
+                    <div class="col-sm-4">
                         <div>
                             <div class="card text-center">
                                 <div class="card-body">
@@ -476,52 +462,6 @@
         </div>
     </div>
 
-    <!--Habit Form Modal -->
-    <div class="modal fade" id="habitFormModal" tabindex="-1" role="dialog" aria-labelledby="habitFormModal"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="habitFormModal">Set Up your Habit</h3>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" class="content" action='/create_habit'>
-                        {{ form.csrf_token }}
-                        <div class="form-group">
-                            <label for="habit_name" class="col-form-label">Habit Name</label>
-                            {{ form.habit_name(class="form-control", type='text',placeholder='Habit Name') }}
-                        </div>
-                        <div class="form-group">
-                            <label for="habit_category" class="col-form-label">Category</label>
-                            {{ form.habit_category(class="form-control",placeholder="Habit Category") }}
-                        </div>
-                        <div class="form-group">
-                            <label for="time_day_of_week" class="col-form-label">Day of Week</label>
-                            {{ form.time_day_of_week(class="form-control") }}
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <label for="time_hour" class="col-form-label">Hour</label>
-                                {{ form.time_hour(class="form-control") }}
-                            </div>
-                            <div class="col">
-                                <label for="time_minute" class="col-form-label">Minute</label>
-                                {{ form.time_minute(class="form-control", placeholder='Minute') }}
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            {{form.submit(class="btn btn-primary")}}
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-    </div>
     <!--Insights Form Modal -->
     <div class="modal fade" id="insightsModal" tabindex="-1" role="dialog" aria-labelledby="insightsModal"
         aria-hidden="true">
