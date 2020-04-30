@@ -462,89 +462,101 @@
                                 style=" width:100%; height: 300px !important;">
                                 <div class="carousel-item active">
                                     <div class="jumbotron align-self-center">
-                                        <h1 class="display-4 align-self-center">We Found 1 potential savings
-                                            opportunity!</h1>
+                                        <h1 class="display-4 align-self-center">We Found {{insights | length}}
+                                            potential savings opportunity!</h1>
                                     </div>
                                 </div>
-                                <div class="carousel-item">
-                                    <h3>We took a look at your last 30 days of spending, and we found that you LIKE
-                                        coffee!</h3>
-                                    <div class="row justify-content-md-center">
-                                        <div class='col-md-3 align-self-center'>
-                                            <div class="card text-center mb-3">
-                                                <div class="card-body">
-                                                    <p class="card-text" style='font-size: xx-large'>10</p>
+
+                                {% for insight in insights %}
+
+                                    <div class="carousel-item">
+                                        <h3>We took a look at your last 30 days of spending, and we found that you LIKE
+                                            {{insight.habit_name}}!</h3>
+                                        <div class="row justify-content-md-center">
+                                            <div class='col-md-3 align-self-center'>
+                                                <div class="card text-center mb-3">
+                                                    <div class="card-body">
+                                                        <p class="card-text" style='font-size: xx-large'>{{insight.num}}</p>
+                                                    </div>
+                                                    <div class="card-footer bg-transparent"
+                                                        style="font-size: medium;">Number of {{insight.habit_name}}
+                                                        purchases in the past 30 days</div>
                                                 </div>
-                                                <div class="card-footer bg-transparent"
-                                                    style="font-size: medium;">Number of coffee purchases in the past 30
-                                                    days</div>
                                             </div>
-                                        </div>
-                                        <div class='col-md-3 align-self-center'>
-                                            <div class="card text-center mb-3">
-                                                <div class="card-body">
-                                                    <p class="card-text" style='font-size: xx-large'>$55</p>
+                                            <div class='col-md-3 align-self-center'>
+                                                <div class="card text-center mb-3">
+                                                    <div class="card-body">
+                                                        <p class="card-text" style='font-size: xx-large'>
+                                                            ${{insight.tot_amount}}</p>
+                                                    </div>
+                                                    <div class="card-footer bg-transparent"
+                                                        style="font-size: medium;">
+                                                        Amount spent on {{insight.habit_name}} in the past 30
+                                                        days</div>
                                                 </div>
-                                                <div class="card-footer bg-transparent"
-                                                    style="font-size: medium;">Amount spent on coffee in the past 30
-                                                    days</div>
                                             </div>
-                                        </div>
-                                        <div class='col-md-3 align-self-center'>
-                                            <div class="card text-center mb-3">
-                                                <div class="card-body">
-                                                    <p class="card-text" style='font-size: xx-large'>$5</p>
-                                                </div>
-                                                <div class="card-footer bg-transparent"
-                                                    style="font-size: medium;">Average cost of coffee purchase in the
-                                                    past 30 days</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="carousel-item">
-                                    <div class='row justify-content-md-center'>
-                                        <div class='col-md-6'>
-                                            <img src={{url_for('static',filename='weekly_purchase.svg')}}
-                                                class="img-fluid" height=100% width=100%>
-                                        </div>
-                                        <div class='col-md-4'>
-                                            <div class="card text-center mb-3">
-                                                <div class="card-body">
-                                                    <p class="card-text" style="font-size: large;">You typically buy
-                                                        coffee on weekdays, especially on Monday and Wednesday.</p>
+                                            <div class='col-md-3 align-self-center'>
+                                                <div class="card text-center mb-3">
+                                                    <div class="card-body">
+                                                        <p class="card-text" style='font-size: xx-large'>
+                                                            ${{insight.avg_amount}}</p>
+                                                    </div>
+                                                    <div class="card-footer bg-transparent"
+                                                        style="font-size: medium;">
+                                                        Average cost of {{insight.habit_name}} purchase in the
+                                                        past 30 days</div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="carousel-item">
-                                    <div class='row justify-content-md-center'>
-                                        <div class='col-md-4'>
-                                            <div class="card text-center mb-3">
-                                                <div class="card-body">
-                                                    <p class="card-text" style='font-size: xx-large'>$120</p>
+                                    <div class="carousel-item">
+                                        <div class='row justify-content-md-center'>
+                                            <div class='col-md-6'>
+                                                <div>
+                                                    {{ insight.graph | safe }}
                                                 </div>
-                                                <div class="card-footer bg-transparent"
-                                                    style="font-size: medium;">Approximate yearly saving by reducing
-                                                    coffee purchase to 8 per month</div>
                                             </div>
+<!--                                            <div class='col-md-4'>-->
+<!--                                                <div class="card text-center mb-3">-->
+<!--                                                    <div class="card-body">-->
+<!--                                                        <p class="card-text" style="font-size: large;">-->
+<!--                                                            You typically buy {{insight.habit_name}} on weekdays,-->
+<!--                                                            especially on Monday and Wednesday.</p>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
                                         </div>
-                                        <div class='col-md-4'>
-                                            <div class="card text-center mb-3">
-                                                <div class="card-body">
-                                                    <p class="card-text" style="font-size: large;">Impulses can help
-                                                        you meet this goal with Habits. Set up a Habit to remind you
-                                                        to save today!</p>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class='row justify-content-md-center'>
+                                            <div class='col-md-4'>
+                                                <div class="card text-center mb-3">
+                                                    <div class="card-body">
+                                                        <p class="card-text" style='font-size: xx-large'>${{insight.yearly_saving }}</p>
+                                                    </div>
+                                                    <div class="card-footer bg-transparent"
+                                                        style="font-size: medium;">Approximate yearly saving by reducing
+                                                        {{insight.habit_name}} purchase to
+                                                        {{insight.recommended}} per month</div>
                                                 </div>
-                                                <div class="card-footer bg-transparent">
-                                                    <a class="btn btn-primary btn-lg" data-toggle="modal" 
-                                                        data-target="#habitFormModal" data-dismiss="modal" aria-label="Close">Setup habit</a>
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <div class="card text-center mb-3">
+                                                    <div class="card-body">
+                                                        <p class="card-text" style="font-size: large;">Impulses can help
+                                                            you meet this goal with Habits. Set up a Habit to remind you
+                                                            to save today!</p>
+                                                    </div>
+                                                    <div class="card-footer bg-transparent">
+                                                        <a class="btn btn-primary btn-lg" data-toggle="modal"
+                                                            data-target="#habitFormModal" data-dismiss="modal" aria-label="Close">Setup habit</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+
+                                {% endfor %}
 
                                 <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
                                     data-slide="prev">

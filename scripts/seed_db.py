@@ -1,11 +1,14 @@
-from plaid_methods import methods, add_plaid_data
-from app import classes, db
 import os
 import sys
+
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+
+from plaid_methods import methods, add_plaid_data
+from app import classes, db
 from plaid.api import sandbox
 from plaid import Client
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 os.environ['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///../app/test.db'
 os.environ['PLAID_CLIENT_ID'] = '5e717f8b062e7500146bfedc'
 os.environ['PLAID_SECRET'] = '3a807e1be3a56c9c40378286eb6cb8'
