@@ -334,6 +334,7 @@
                                 <th>Check Box</th>
                                 <th>Name</th>
                                 <th>Category</th>
+                                <th>End Date</th>
                                 <th>Cost</th>
                             </tr>
                         </thead>
@@ -350,6 +351,7 @@
                                 </td>
                                 <td>{{available_lottery_record.lottery_name}}</td>
                                 <td>{{available_lottery_record.category}}</td>
+                                <td>{{available_lottery_record.end_date.strftime('%Y-%m-%d')}}</td>
                                 <td>{{available_lottery_record.cost}}</td>
                             </tr>
                         {% endfor %}
