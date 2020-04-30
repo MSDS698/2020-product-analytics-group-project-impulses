@@ -226,6 +226,7 @@
                     <div class="col-sm-6">
                         <div class="card">
                             <div class="card-body">
+<<<<<<< HEAD
                                 <h4 class="card-title" style="text-align:center">Savings History</h4>
                                 {% if total_saving_coins == 0 %}
                                 <h5 class="card-text" style="text-align:center">No Savings Yet!</h5>
@@ -236,6 +237,13 @@
                                         {{ source_bar|safe }}
                                     </div>
                                 {% endif %}
+=======
+                                <h5 class="card-title">Savings History</h5>
+                                <p class="card-text">You have earned {{total_saving_coins}} coins from making savings!</p>
+                                <div>
+                                    {{ source_bar|safe }}
+                                </div>
+>>>>>>> fix missing div problem
                             </div>
                         </div>
                     </div>
