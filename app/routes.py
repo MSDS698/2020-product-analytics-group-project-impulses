@@ -9,6 +9,7 @@ from plaid_methods.methods import get_accounts, get_transactions, \
     token_exchange
 from plaid_methods import add_plaid_data as plaid_to_db
 from plaid import Client
+from plaid.api import Item
 import pytz
 import pandas as pd
 import twilio.rest
@@ -382,6 +383,30 @@ def logout():
     logout_user()
     return redirect(url_for("index"))
 
+@application.route("/delete_plaid_account", methods=["POST"])
+def delete_plaid_account():
+    account_id = request.form['accountId']
+    # get account
+    account = classes.Accounts.query.get(account_id)
+    # get transactions associated with account
+    transactions = classes.Transaction.query.\
+        filter_by(account_id=account.id)
+
+    accounts_with_plaid_id = classes.Accounts.query.\
+        filter_by(plaid_id=account.plaid_id)\
+        .count()
+    # if only account associated with plaid id delete plaid id
+    if accounts_with_plaid_id == 1:
+        plaid_item = classes.PlaidItems.query.get(account.plaid_id)
+        Item(client).remove(plaid_item.access_token)
+        db.session.delete(plaid_item)
+
+    for transaction in transactions:
+        db.session.delete(transaction)
+    db.session.delete(account)
+    db.session.commit()
+
+    return redirect(url_for('dashboard'))
 
 @application.errorhandler(401)
 def re_route(e):
