@@ -44,7 +44,7 @@
                     '<option value="transportation">Transportation</option>' +
                     '<option value="lunch">Lunch</option>' +
                     '</select></td>' +
-                    '<td><input type="time" class="form-control" name="time_hour_minute"></td>' +
+                    '<td><input type="time" class="form-control without_ampm" name="time_hour_minute"></td>' +
                     '<td><select class="form-control" name="time_day_of_week">' +
                     '<option value="weekday">Weekday</option>' +
                     '<option value="weekend">Weekend</option>' +
@@ -251,13 +251,14 @@
                         <div class="table-wrapper">
                             <div class="table-title">
                                 <div class="row">
-                                    <div class="col-sm-8">
-                                        <h2>Habits Details</h2></div>
-                                    <div class="col-sm-2">
-                                        <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
+                                    <div class="col-xs-8">
+                                        <h2>Habits Details</h2>
                                     </div>
-                                    <div class="col-sm-2">
-                                        <button type="submit" form="habit" class="btn btn-success apply-changes">Apply Changes</button>
+                                    <div class="col-xs-2">
+                                        <button type="button" class="btn btn-info add-new float-right"><i class="fa fa-plus"></i> Add New</button>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <button type="submit" form="habit" class="btn btn-success apply-changes float-right">Apply Changes</button>
                                     </div>
                                 </div>
                             </div>
@@ -300,20 +301,21 @@
                                 </table>
                             </form>
                         </div>
-                        <div class="col-sm-4">
-                            <div>
-                                <div class="card text-center">
-                                    <div class="card-body">
-                                        <h2 class="card-title">Insights</h2>
-                                        <p class="card-text content">Impulses will analyze your transactions and find ways for you to save. Are you ready to save?</p>
-                                        <a class="btn btn-primary" data-toggle="modal"
+                    </div>
+                    <div class="col-sm-4">
+                        <div>
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h2 class="card-title">Insights</h2>
+                                    <p class="card-text content">Impulses will analyze your transactions and find ways for you to save. Are you ready to save?</p>
+                                    <a class="btn btn-primary" data-toggle="modal"
                                         data-target="#insightsModal" style="color:white"
                                        onclick="gtag('event', 'click', {'event_category': 'button', 'event_label': 'insight_button'})">Help Me Save!</a>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
