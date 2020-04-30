@@ -173,6 +173,8 @@ def habit_table_save_changes():
         time_hour_minute = request.form.getlist("time_hour_minute")
         time_day_of_week = request.form.getlist("time_day_of_week")
 
+        print(time_hour_minute[-1].split(":"))
+
         # delete the user's habits
         classes.Habits.query.filter_by(user_id=user_id).delete()
 
@@ -180,8 +182,8 @@ def habit_table_save_changes():
         for i in range(len(habit_name)):
             habit = classes.Habits(user_id=user_id, habit_name=habit_name[i],
                                    habit_category=habit_category[i],
-                                   time_minute=time_hour_minute[i][3:],
-                                   time_hour=time_hour_minute[i][:2],
+                                   time_minute=time_hour_minute[i].split(':')[1],
+                                   time_hour=time_hour_minute[i].split(':')[0],
                                    time_day_of_week=time_day_of_week[i])
             db.session.add(habit)
             db.session.commit()
