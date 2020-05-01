@@ -11,8 +11,8 @@ application_name=Impulses
 environment_name=impulse-diane
 # pipeline_name=Impulses_deploy 
 # Used to test process with our own credentials
-# jsonfile=file://pipeline_master.json
-jsonfile=file://pipeline_diane.json
+jsonfile=file://pipeline_master.json
+# jsonfile=file://pipeline_diane.json
 
 #### Initializing EBS ####
 #				User needs to have awsebcli installed
