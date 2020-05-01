@@ -243,7 +243,7 @@ def create_habit():
 @login_required
 def dashboard():
     # default values
-    lottery_status = "You haven't bought a lottery ticket yet"
+    lottery_status = "Buy a lottery ticket before it ends!"
 
     # get lottery
     if request.method == "POST":
