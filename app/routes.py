@@ -93,12 +93,13 @@ def register():
             user = classes.User(first_name, last_name, email, phone, password)
             db.session.add(user)
             db.session.commit()
-            session['phone']=phone
+            session['phone'] = phone
             vsid = start_verification("+1"+str(phone), "sms")
             if vsid is not None:
-                return redirect(url_for('verify'))  
+                return redirect(url_for('verify'))
             return redirect(url_for("login"))
     return render_template("register.html", form=registration_form)
+
 
 @application.route('/verify', methods=('GET', 'POST'))
 def verify():
@@ -106,15 +107,9 @@ def verify():
     if request.method == 'POST':
         phone = "+1"+str(session.get('phone'))
         code = request.form['code']
-        # print(code)
-        # service = ENV_VARS["VERIFICATION_SID"]
-        # verification_check = twilio_client.verify \
-        #                                     .services(service) \
-        #                                     .verification_checks \
-        #                                     .create(to=phone, code=code)
-        # print(verification_check.status)
         return check_verification(phone, code)
     return render_template('verify.html')
+
 
 def start_verification(to, channel='sms'):
     if channel not in ('sms', 'call'):
@@ -130,7 +125,7 @@ def start_verification(to, channel='sms'):
 
 def check_verification(phone, code):
     service = ENV_VARS["VERIFICATION_SID"]
-    
+
     try:
         verification_check = twilio_client.verify \
             .services(service) \
@@ -138,7 +133,8 @@ def check_verification(phone, code):
             .create(to=phone, code=code)
 
         if verification_check.status == "approved":
-            flash('Your phone number has been verified! Please login to continue.')
+            flash('Your phone number has been verified! \
+                Please login to continue.')
             return redirect(url_for('login'))
         else:
             flash('The code you provided is incorrect. Please try again.')
@@ -146,6 +142,7 @@ def check_verification(phone, code):
         flash("Error validating code: {}".format(e))
 
     return redirect(url_for('verify'))
+
 
 @application.route('/create_habit', methods=["POST"])
 @login_required
