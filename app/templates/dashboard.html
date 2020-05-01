@@ -344,7 +344,6 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Category</th>
-                                    <th>Cost</th>
                                     <th>Winner</th>
                                 </tr>
                             </thead>
@@ -353,7 +352,6 @@
                                 <tr>
                                     <td>{{bought_lottery_record.lottery.lottery_name}}</td>
                                     <td>{{bought_lottery_record.lottery.category}}</td>
-                                    <td>{{bought_lottery_record.lottery.cost}}</td>
                                     <td>
                                         {% if not bought_lottery_record.lottery.winner_user_id %} Hasn't Revealed {% elif bought_lottery_record.lottery.winner_user_id != user.id%} You Lost...... {% elif bought_lottery_record.lottery.winner_user_id == user.id%} You Won! {% endif %}
                                     </td>
