@@ -217,8 +217,7 @@ def verify():
         phone = "+1"+str(session.get('phone'))
         code = request.form['code']
         return check_verification(phone, code)
-    return render_template('verify.html')
-
+    return render_template('verify2.html')
 
 def start_verification(to, channel='sms'):
     if channel not in ('sms', 'call'):
