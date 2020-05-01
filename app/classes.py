@@ -281,11 +281,8 @@ class RegistrationForm(FlaskForm):
         DataRequired(message='Input Required')])
     email = StringField("Email Address:", validators=[
         DataRequired(message='Input Required')])
-    phone = StringField("Phone Number:",
-                        validators=[Length(min=10, max=10,
-                                           message="Please put in 10 digits "
-                                                   "valid phone number"
-                                           )])
+    phone = StringField("Phone Number:", validators=[
+        DataRequired(message='Input Required')])
     password = PasswordField("Create a Password:", validators=[
         DataRequired(message='Input Required')])
     submit = SubmitField("Submit")

@@ -129,7 +129,7 @@ def login():
             add_login_coin(user)
             return redirect(url_for("index"))
         else:
-            return "Not a valid user"
+            flash('Invalid username and password combination')
     return render_template("login.html", form=login_form)
 
 
@@ -149,8 +149,12 @@ def register():
         user_count = (classes.User.query.filter_by(email=email).count(
         ) + classes.User.query.filter_by(phone=phone).count())
 
-        # User information does not already exist in DB
-        if user_count == 0:
+        if len(phone) != 10:
+            flash('Error - Please enter a valid phone number')
+        elif user_count != 0:
+            flash('Error - User already exists')
+        else:
+            # User information does not already exist in DB
             user = classes.User(first_name, last_name, email, phone, password)
             db.session.add(user)
             db.session.commit()
