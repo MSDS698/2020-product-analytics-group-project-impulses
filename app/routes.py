@@ -191,9 +191,9 @@ def register():
         ) + classes.User.query.filter_by(phone=phone).count())
 
         if len(phone) != 10:
-            flash('Error - Please enter a valid phone number')
+            flash('Please enter a valid phone number')
         elif user_count != 0:
-            flash('Error - User already exists')
+            flash('User already exists')
         else:
             # User information does not already exist in DB
             user = classes.User(first_name, last_name, email, phone, password)
@@ -386,6 +386,21 @@ def re_route(e):
     return redirect(url_for("login"))
 
 
+@application.errorhandler(403)
+def re_route(e):
+    return redirect(url_for("index"))
+
+
+@application.errorhandler(404)
+def re_route(e):
+    return redirect(url_for("index"))
+
+
+@application.errorhandler(500)
+def re_route(e):
+    return redirect(url_for("index"))
+
+
 @application.route("/access_plaid_token", methods=["POST", "GET"])
 def access_plaid_token():
     try:
@@ -456,7 +471,7 @@ def send_message():
                 habit.time_hour == now.hour:
             body = f"Would you like to save $5 on {habit.habit_category} " + \
                    "today? Respond Y/N"
-            msg = twilio_client.messages.create(
+            twilio_client.messages.create(
                 body=body,
                 to=habit.user.phone,
                 from_="+16462573594")
