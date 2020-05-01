@@ -376,6 +376,11 @@ def logout():
     return redirect(url_for("index"))
 
 
+@application.errorhandler(401)
+def re_route(e):
+    return redirect(url_for("login"))
+
+
 @application.route("/access_plaid_token", methods=["POST", "GET"])
 def access_plaid_token():
     try:
