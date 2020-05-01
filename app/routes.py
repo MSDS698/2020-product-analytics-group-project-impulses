@@ -2,7 +2,7 @@ import os
 import random
 from datetime import datetime
 from app import application, classes, db
-from flask import redirect, render_template, url_for, request, flash
+from flask import redirect, render_template, url_for, request, flash, session
 from flask_login import current_user, login_user, login_required, logout_user
 from plaid.errors import ItemError
 from plaid_methods.methods import get_accounts, get_transactions, \
@@ -199,16 +199,13 @@ def register():
         elif user_count != 0:
             flash('User already exists')
         else:
-            # User information does not already exist in DB
-        vsid = start_verification(phone, "sms")
-        if vsid is not None:
-            return redirect(url_for('verify'))            
-
-        # User information does not already exist in DB
-        if user_count == 0:
             user = classes.User(first_name, last_name, email, phone, password)
             db.session.add(user)
             db.session.commit()
+            session['phone']=phone
+            vsid = start_verification("+1"+str(phone), "sms")
+            if vsid is not None:
+                return redirect(url_for('verify'))  
             return redirect(url_for("login"))
     return render_template("register.html", form=registration_form)
 
@@ -216,8 +213,15 @@ def register():
 def verify():
     """Verify a user on registration with their phone number"""
     if request.method == 'POST':
-        phone = db.session.get('phone')
+        phone = "+1"+str(session.get('phone'))
         code = request.form['code']
+        # print(code)
+        # service = ENV_VARS["VERIFICATION_SID"]
+        # verification_check = twilio_client.verify \
+        #                                     .services(service) \
+        #                                     .verification_checks \
+        #                                     .create(to=phone, code=code)
+        # print(verification_check.status)
         return check_verification(phone, code)
     return render_template('verify.html')
 
@@ -226,12 +230,10 @@ def start_verification(to, channel='sms'):
         channel = 'sms'
 
     service = ENV_VARS["VERIFICATION_SID"]
-
-    verification = client.verify \
+    verification = twilio_client.verify \
         .services(service) \
         .verifications \
         .create(to=to, channel=channel)
-    
     return verification.sid
 
 
@@ -239,7 +241,7 @@ def check_verification(phone, code):
     service = ENV_VARS["VERIFICATION_SID"]
     
     try:
-        verification_check = client.verify \
+        verification_check = twilio_client.verify \
             .services(service) \
             .verification_checks \
             .create(to=phone, code=code)
