@@ -217,7 +217,8 @@ def verify():
         phone = "+1"+str(session.get('phone'))
         code = request.form['code']
         return check_verification(phone, code)
-    return render_template('verify2.html')
+    return render_template('verify.html')
+
 
 def start_verification(to, channel='sms'):
     if channel not in ('sms', 'call'):
@@ -233,21 +234,24 @@ def start_verification(to, channel='sms'):
 
 def check_verification(phone, code):
     service = ENV_VARS["VERIFICATION_SID"]
+    if len(code) != 6:
+        flash("The code you provided should be 6 digits, \
+            Please try again.")
+    else:
+        try:
+            verification_check = twilio_client.verify \
+                .services(service) \
+                .verification_checks \
+                .create(to=phone, code=code)
 
-    try:
-        verification_check = twilio_client.verify \
-            .services(service) \
-            .verification_checks \
-            .create(to=phone, code=code)
-
-        if verification_check.status == "approved":
-            flash('Your phone number has been verified! \
-                Please login to continue.')
-            return redirect(url_for('login'))
-        else:
-            flash('The code you provided is incorrect. Please try again.')
-    except Exception as e:
-        flash("Error validating code: {}".format(e))
+            if verification_check.status == "approved":
+                flash('Your phone number has been verified! \
+                    Please login to continue.')
+                return redirect(url_for('login'))
+            else:
+                flash('The code you provided is incorrect. Please try again.')
+        except Exception as e:
+            flash("Error validating code: {}".format(e))
 
     return redirect(url_for('verify'))
 
