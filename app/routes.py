@@ -133,8 +133,16 @@ def lottery_drawing():
         participants = db.session.query(
             classes.UserLotteryLog.user_id).filter_by(lottery=lottery).all()
         participants = [p[0] for p in participants]
+
         if participants:
-            lottery.winner_user_id = random.choice(participants)
+            lottery.winner_user_id = winner = random.choice(participants)
+            # send message to the winner
+            body = f"Congratulations! You've won the lottery for " \
+                   + f"{lottery.lottery_name}!"
+            twilio_client.messages.create(
+                body=body,
+                to=classes.User.query.filter_by(id=winner).first().phone,
+                from_="+16462573594")
         else:
             lottery.winner_user_id = -1
     db.session.commit()
@@ -275,9 +283,6 @@ def create_habit():
 @application.route("/dashboard", methods=["POST", "GET"])
 @login_required
 def dashboard():
-    # lottery drawing
-    lottery_drawing()
-
     # default values
     lottery_status = "Buy a lottery ticket before it ends!"
 
@@ -455,6 +460,9 @@ def send_message():
                 body=body,
                 to=habit.user.phone,
                 from_="+16462573594")
+
+    # lottery drawing and send message to the winner
+    lottery_drawing()
 
     return redirect(url_for("index"))
 
