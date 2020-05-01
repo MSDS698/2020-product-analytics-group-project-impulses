@@ -123,11 +123,9 @@ def lottery_drawing():
     First check which lotteries have ended without the winner drawn.
     Then choose the winner and update the lottery table.
     """
-    tz = pytz.timezone("America/Los_Angeles")
-    current_time = datetime.now().astimezone(tz)
     lottery_to_draw = classes.Lottery.query.filter(
         classes.Lottery.winner_user_id.is_(None),
-        classes.Lottery.end_date <= current_time).all()
+        classes.Lottery.end_date <= datetime.now()).all()
 
     for lottery in lottery_to_draw:
         participants = db.session.query(
@@ -303,11 +301,9 @@ def dashboard():
         user=current_user).all()
 
     # get all the available lottery records
-    tz = pytz.timezone("America/Los_Angeles")
-    current_time = datetime.now().astimezone(tz)
     available_lottery_records = classes.Lottery.query.filter(
-        classes.Lottery.start_date <= current_time,
-        classes.Lottery.end_date >= current_time).all()
+        classes.Lottery.start_date <= datetime.now(),
+        classes.Lottery.end_date >= datetime.now()).all()
 
     # Dashboard tab
     # extract user's saving history from coins associated with "saving"
@@ -330,6 +326,7 @@ def dashboard():
                                                  description='login').all())
     # count number of total saving suggestions texts sent to user
     # total num = num of habits * days since user first signed up
+    tz = pytz.timezone("America/Los_Angeles")
     signup_tz = tz.localize(classes.User.query.filter_by(id=user_id).
                             with_entities(classes.User.signup_date).first()[
                                 0])
