@@ -308,13 +308,12 @@ def dashboard():
                                month=10,
                                day=1)
     insights_list = []
-    thresholds = [8, 1, 2]
+    thresholds = [8, 6, 2]
     for ind, habit_name in enumerate(['coffee', 'lunch', 'transportation']):
         insights = Insights(user_id, beginning_month, categories_file,
                             habit_name, thresholds[ind])
         if insights.transactions is not None:
             insights_list.append(insights)
-    print(len(insights_list))
     return render_template("dashboard.html",
                            user=current_user,
                            form=classes.HabitForm(),
@@ -332,12 +331,7 @@ def dashboard():
                            num_total_suggestions=num_total_suggestions,
                            num_saved=num_saved,
                            total_saving_coins=total_saving_coins,
-                           # name_saving='coffee',
                            insights=insights_list
-                           # num_purchased=len(transactions),
-                           # tot_cost=total_amount(transactions),
-                           # avg_cost=average_amount(transactions),
-                           # insights_plot=num_per_day(transactions, 'coffee')
                            )
 
 

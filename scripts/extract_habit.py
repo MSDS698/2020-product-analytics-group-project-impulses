@@ -109,6 +109,8 @@ class Insights:
                         layout=go.Layout(title='Purchased {}'.format(self.habit_name))
                         )
         output = plotly.offline.plot(fig, include_plotlyjs=False,
+                                     image_width='100%',
+                                     image_height='100%',
                                      output_type='div')
         return output
 
