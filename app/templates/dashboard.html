@@ -270,7 +270,7 @@
                                         </li>
                                         {% endfor %}
                                     </ul>
-                                    <form id='plaid-link-form' action={{url_for( 'access_plaid_token')}} method="post">
+                                    <form id='plaid-link-form' action={{url_for('access_plaid_token')}} method="post">
                                     </form>
                                     <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js" data-client-name="My App" data-form-id="plaid-link-form" data-key={{plaid_public_key}} data-product={{plaid_products}} data-env={{plaid_environment}}>
                                     </script>
@@ -340,24 +340,32 @@
                     <div class="col-sm">
                         <h3 class="text-center">Lottery Tickets You've Bought</h3>
                         <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Category</th>
-                                    <th>Winner</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for bought_lottery_record in bought_lottery_records %}
-                                <tr>
-                                    <td>{{bought_lottery_record.lottery.lottery_name}}</td>
-                                    <td>{{bought_lottery_record.lottery.category}}</td>
-                                    <td>
-                                        {% if not bought_lottery_record.lottery.winner_user_id %} Hasn't Revealed {% elif bought_lottery_record.lottery.winner_user_id != user.id%} You Lost...... {% elif bought_lottery_record.lottery.winner_user_id == user.id%} You Won! {% endif %}
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Entry</th>
+                                <th>Winner</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for bought_lottery_record in bought_lottery_records %}
+                            <tr>
+                                <td>{{bought_lottery_record.lottery.lottery_name}}</td>
+                                <td>{{bought_lottery_record.lottery.category}}</td>
+                                <td>{{bought_lottery_record.entries}}</td>
+                                <td>
+                                    {% if not bought_lottery_record.lottery.winner_user_id %}
+                                    Hasn't Revealed
+                                    {% elif bought_lottery_record.lottery.winner_user_id != user.id%}
+                                    You Lost......
+                                    {% elif bought_lottery_record.lottery.winner_user_id == user.id%}
+                                    You Won!
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
                         </table>
                     </div>
                 </div>
@@ -465,7 +473,7 @@
                                 <div class="carousel-item">
                                     <div class='row justify-content-md-center'>
                                         <div class='col-md-6'>
-                                            <img src={{url_for( 'static',filename='weekly_purchase.svg' )}} class="img-fluid" height=100% width=100%>
+                                            <img src={{url_for('static',filename='weekly_purchase.svg')}} class="img-fluid" height=100% width=100%>
                                         </div>
                                         <div class='col-md-4'>
                                             <div class="card text-center mb-3">
