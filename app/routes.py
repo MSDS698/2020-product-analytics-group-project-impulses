@@ -121,7 +121,8 @@ def lottery_drawing():
     """Draw the winner for lotteries that have ended.
 
     First check which lotteries have ended without the winner drawn.
-    Then choose the winner and update the lottery table.
+    Then choose the winner, send message to the winner, and update
+    the lottery table.
     """
     tz = pytz.timezone("America/Los_Angeles")
     current_time = datetime.now().astimezone(tz)
@@ -130,9 +131,10 @@ def lottery_drawing():
         classes.Lottery.end_date <= str(current_time)).all()
 
     for lottery in lottery_to_draw:
-        participants = db.session.query(
-            classes.UserLotteryLog.user_id).filter_by(lottery=lottery).all()
-        participants = [p[0] for p in participants]
+        participants = classes.UserLotteryLog.query.filter_by(
+            lottery=lottery).all()
+        participants = [p.user_id for p in participants
+                        for _ in range(p.entries)]
 
         if participants:
             lottery.winner_user_id = winner = random.choice(participants)
@@ -408,11 +410,11 @@ def access_plaid_token():
         # extract selected account information from response
         selected_accounts_data = [
             key for key in request.form.keys() if key.startswith('accounts')]
-        account_indicies = set([int(field[9])
-                                for field in selected_accounts_data])
+        account_indices = set([int(field[9])
+                               for field in selected_accounts_data])
         accounts = []
 
-        for idx in account_indicies:
+        for idx in account_indices:
             accounts.append(
                 {'account_id': request.form[f'accounts[{idx}][id]'],
                  'name': request.form[f'accounts[{idx}][name]'],
