@@ -40,7 +40,8 @@
 #
 #
 # class Habit():
-#     def __init__(self, habit_name, habit_category, minute, hour, day_of_week):
+#     def __init__(self, habit_name, habit_category, minute,
+#                  hour, day_of_week):
 #         self.habit_name = habit_name
 #         self.habit_category = habit_category
 #         self.minute = minute
