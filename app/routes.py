@@ -15,7 +15,7 @@ import pandas as pd
 import twilio.rest
 from twilio.twiml.messaging_response import MessagingResponse
 from app.plotly_dashboard import plotly_saving_history, plotly_percent_saved
-import time
+from scripts.extract_habit import Insights
 
 ENV_VARS = {
     "PLAID_CLIENT_ID": os.environ["PLAID_CLIENT_ID"],
@@ -346,7 +346,22 @@ def dashboard():
                                 filter_by(user_id=user_id).all()) * days
     saving_percent_plot = plotly_percent_saved(num_saved,
                                                num_total_suggestions)
+    # Retrieve spending habits for Insights
+    categories_file = os.path.join(os.getcwd(), 'scripts', 'categories.json')
 
+    # beginning_month = datetime(year=datetime.now().year,
+    #                            month=datetime.now().month,
+    #                            day=1)
+    beginning_month = datetime(year=2019,
+                               month=10,
+                               day=1)
+    insights_list = []
+    thresholds = [8, 6, 2]
+    for ind, habit_name in enumerate(['coffee', 'lunch', 'transportation']):
+        insights = Insights(user_id, beginning_month, categories_file,
+                            habit_name, thresholds[ind])
+        if insights.transactions is not None:
+            insights_list.append(insights)
     return render_template("dashboard.html",
                            user=current_user,
                            form=classes.HabitForm(),
@@ -363,7 +378,8 @@ def dashboard():
                            source_pie=saving_percent_plot,
                            num_total_suggestions=num_total_suggestions,
                            num_saved=num_saved,
-                           total_saving_coins=total_saving_coins
+                           total_saving_coins=total_saving_coins,
+                           insights=insights_list
                            )
 
 
