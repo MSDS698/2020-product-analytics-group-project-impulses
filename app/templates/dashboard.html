@@ -2,7 +2,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <script src="https://kit.fontawesome.com/0b8a02a0d6.js" crossorigin="anonymous"></script>
     <!-- font awesome from BootstrapCDN -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
@@ -11,10 +11,17 @@
     <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='dashboard/css/dashboard.css')}}">
 
     <!-- Bootstrap links -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 
     <!-- habit form -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
@@ -120,7 +127,8 @@
         </li>
         {% else %}
         <li class="nav-item">
-            <a class="nav-link" id="dashboard-tab-md" data-toggle="tab" href="#dashboard-md" role="tab" aria-controls="dashboard-md" aria-selected="false">Dashboard</a>
+            <a class="nav-link" id="dashboard-tab-md" data-toggle="tab" href="#dashboard-md" role="tab"
+                aria-controls="dashboard-md" aria-selected="false">Dashboard</a>
         </li>
         <li class="nav-item active">
             <a class="nav-link" id="habits-tab-md" data-toggle="tab" href="#habits-md" role="tab" aria-controls="habits-md" aria-selected="true">Habits</a>
@@ -265,8 +273,20 @@
                                     <p class='content'><b>Linked Accounts</b></p>
                                     <ul class="list-group">
                                         {% for account in user.accounts %}
-                                        <li class="list-group-item">
-                                            <p class="content"><b>Account Name:</b> {{ account.account_name }}</p>
+                                       
+                                        <li class="list-group-item align-middle">
+                                            <div class="row">
+                                            <div class="col-6 m-0 align-self-begin">
+                                                <p class="content m-0"><b>Account Name:</b> {{ account.account_name }}</p>
+                                            </div>
+                                            <div class="col-6 align-self-end text-right mb-3 mt-3">
+                                                <button type="button" data-toggle="modal"
+                                                    data-target="#deleteAccountModal" data-id={{account.id}}
+                                                    data-name={{account.account_name}}>
+                                                    <i class="far fa-trash-alt" style="font-size: 20px;"></i></button>
+
+                                            </div>
+                                        </div>
                                         </li>
                                         {% endfor %}
                                     </ul>
@@ -523,6 +543,43 @@
             </div>
         </div>
     </div>
+    <!-- -------Modal Delete Account ------------>
+    <div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog" aria-labelledby="deleteAccountModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteAccountModalLabel">Delete Account</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button> -->
+                    <form action={{url_for('delete_plaid_account')}} method="POST">
+                        <input type="hidden" name="accountId">
+                        <button type="submit" class="btn btn-primary">Delete Account</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
+
+<script>
+    $('#deleteAccountModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var account_id = button.data('id') // Extract info from data-* attributes
+        var account_name = button.data('name')
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('.modal-body').text('Are you sure you want to delete account ' + account_name + '?')
+        modal.find('.modal-footer input').val(account_id)
+    })
+</script>
 
 </html>
