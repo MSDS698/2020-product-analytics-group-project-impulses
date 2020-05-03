@@ -131,6 +131,6 @@ class Insights:
         Return the average spent on habit
         :param transactions: list of transactions
         """
-        avg_amount = round(np.mean([float(x.trans_amount) for x in transactions]),
-                           2)
+        avg_amount = round(np.mean([float(x.trans_amount)
+                                    for x in transactions]), 2)
         return avg_amount
