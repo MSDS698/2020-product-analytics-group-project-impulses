@@ -16,7 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-<!-- habit form -->
+    <!-- habit form -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -24,66 +24,66 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript">
-    $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip();
-        var actions = $("table td:last-child").html();
-        // Append table with add row form on add new button click
-        $(".add-new").click(function(){
-            var index = $("table tbody tr:last-child").index();
-            var row = '<tr>' +
-                '<td><input type="text" class="form-control" name="habit_name"></td>' +
-                '<td><select class="form-control" name="habit_category">' +
-                        '<option value="coffee">Coffee</option>' +
-                        '<option value="transportation">Transportation</option>' +
-                        '<option value="lunch">Lunch</option>' +
-                    '</select></td>' +
-                '<td><input type="time" class="form-control" name="time_hour_minute"></td>' +
-                '<td><select class="form-control" name="time_day_of_week">' +
-                        '<option value="weekday">Weekday</option>' +
-                        '<option value="weekend">Weekend</option>' +
-                        '<option value="everyday">Everyday</option>' +
-                    '</select></td>' +
-                '<td>' + actions + '</td>' +
-            '</tr>';
-            $("table").append(row);
-            $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
+        $(document).ready(function() {
             $('[data-toggle="tooltip"]').tooltip();
-        });
-        // Add row on add button click
-        $(document).on("click", ".add", function(){
-            var empty = false;
-            var input = $(this).parents("tr").find('input[type="text"]');
-            input.each(function(){
-                if(!$(this).val()){
-                    $(this).addClass("error");
-                    empty = true;
-                } else{
-                    $(this).removeClass("error");
+            var actions = $("table td:last-child").html();
+            // Append table with add row form on add new button click
+            $(".add-new").click(function() {
+                var index = $("table tbody tr:last-child").index();
+                var row = '<tr>' +
+                    '<td><input type="text" class="form-control" name="habit_name"></td>' +
+                    '<td><select class="form-control" name="habit_category">' +
+                    '<option value="coffee">Coffee</option>' +
+                    '<option value="transportation">Transportation</option>' +
+                    '<option value="lunch">Lunch</option>' +
+                    '</select></td>' +
+                    '<td><input type="time" class="form-control" name="time_hour_minute"></td>' +
+                    '<td><select class="form-control" name="time_day_of_week">' +
+                    '<option value="weekday">Weekday</option>' +
+                    '<option value="weekend">Weekend</option>' +
+                    '<option value="everyday">Everyday</option>' +
+                    '</select></td>' +
+                    '<td>' + actions + '</td>' +
+                    '</tr>';
+                $("table").append(row);
+                $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+            // Add row on add button click
+            $(document).on("click", ".add", function() {
+                var empty = false;
+                var input = $(this).parents("tr").find('input[type="text"]');
+                input.each(function() {
+                    if (!$(this).val()) {
+                        $(this).addClass("error");
+                        empty = true;
+                    } else {
+                        $(this).removeClass("error");
+                    }
+                });
+                $(this).parents("tr").find(".error").first().focus();
+                if (!empty) {
+                    input.each(function() {
+                        $(this).parent("td").html($(this).val());
+                    });
+                    $(this).parents("tr").find(".add, .edit").toggle();
+                    $(".add-new").removeAttr("disabled");
                 }
             });
-            $(this).parents("tr").find(".error").first().focus();
-            if(!empty){
-                input.each(function(){
-                    $(this).parent("td").html($(this).val());
+            // Edit row on edit button click
+            $(document).on("click", ".edit", function() {
+                $(this).parents("tr").find("td:not(:last-child)").each(function() {
+                    $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
                 });
                 $(this).parents("tr").find(".add, .edit").toggle();
-                $(".add-new").removeAttr("disabled");
-            }
-        });
-        // Edit row on edit button click
-        $(document).on("click", ".edit", function(){
-            $(this).parents("tr").find("td:not(:last-child)").each(function(){
-                $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
+                $(".add-new").attr("disabled", "disabled");
             });
-            $(this).parents("tr").find(".add, .edit").toggle();
-            $(".add-new").attr("disabled", "disabled");
+            // Delete row on delete button click
+            $(document).on("click", ".delete", function() {
+                $(this).parents("tr").remove();
+                $(".add-new").removeAttr("disabled");
+            });
         });
-        // Delete row on delete button click
-        $(document).on("click", ".delete", function(){
-            $(this).parents("tr").remove();
-            $(".add-new").removeAttr("disabled");
-        });
-    });
     </script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
@@ -113,65 +113,56 @@
     <ul class="nav nav-tabs nav-fill md-tabs" id="myTabMD" role="tablist">
         {% if not flag_habits_edit %}
         <li class="nav-item">
-            <a class="nav-link active" id="dashboard-tab-md" data-toggle="tab"
-               href="#dashboard-md" role="tab" aria-controls="dashboard-md" aria-selected="true">Dashboard</a>
+            <a class="nav-link active" id="dashboard-tab-md" data-toggle="tab" href="#dashboard-md" role="tab" aria-controls="dashboard-md" aria-selected="true">Dashboard</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="habits-tab-md" data-toggle="tab"
-               href="#habits-md" role="tab" aria-controls="habits-md" aria-selected="false">Habits</a>
+            <a class="nav-link" id="habits-tab-md" data-toggle="tab" href="#habits-md" role="tab" aria-controls="habits-md" aria-selected="false">Habits</a>
         </li>
         {% else %}
         <li class="nav-item">
             <a class="nav-link" id="dashboard-tab-md" data-toggle="tab" href="#dashboard-md" role="tab" aria-controls="dashboard-md" aria-selected="false">Dashboard</a>
         </li>
         <li class="nav-item active">
-            <a class="nav-link" id="habits-tab-md" data-toggle="tab"
-               href="#habits-md" role="tab" aria-controls="habits-md"
-               aria-selected="true">Habits</a>
+            <a class="nav-link" id="habits-tab-md" data-toggle="tab" href="#habits-md" role="tab" aria-controls="habits-md" aria-selected="true">Habits</a>
         </li>
         {% endif %}
         <li class="nav-item">
-            <a class="nav-link" id="lottery-tab-md" data-toggle="tab"
-               href="#lottery-md" role="tab" aria-controls="lottery-md"
-               aria-selected="false">Lottery</a>
+            <a class="nav-link" id="lottery-tab-md" data-toggle="tab" href="#lottery-md" role="tab" aria-controls="lottery-md" aria-selected="false">Lottery</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="account-tab-md" data-toggle="tab"
-               href="#account-md" role="tab" aria-controls="account-md" aria-selected="false">Account</a>
+            <a class="nav-link" id="account-tab-md" data-toggle="tab" href="#account-md" role="tab" aria-controls="account-md" aria-selected="false">Account</a>
         </li>
     </ul>
     <div class="tab-content card pt-12" id="myTabContentMD">
-        <div class="tab-pane fade show active" id="dashboard-md"
-             role="tabpanel" aria-labelledby="home-tab-md">
+        <div class="tab-pane fade show active" id="dashboard-md" role="tabpanel" aria-labelledby="home-tab-md">
             <div class="container">
                 <div class="row">
-                  <div class="col-sm-6">
-                    <div class="card">
-                      <div class="card-body">
-                        <h5 class="card-title">Total Savings</h5>
-                          <p class="card-text">Of the {{num_total_suggestions}} saving suggestions we sent you, you have made {{num_saved}} savings.</p>
-                         <div>
-                             {{ source_pie|safe }}
-                         </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="card">
-                      <div class="card-body">
-                        <h5 class="card-title">Savings History</h5>
-                          <p class="card-text">You have earned {{total_saving_coins}} coins from making savings!</p>
-                            <div>
-                            {{ source_bar|safe }}
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Savings</h5>
+                                <p class="card-text">Of the {{num_total_suggestions}} saving suggestions we sent you, you have made {{num_saved}} savings.</p>
+                                <div>
+                                    {{ source_pie|safe }}
+                                </div>
                             </div>
-                      </div>
+                        </div>
                     </div>
-                  </div>
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Savings History</h5>
+                                <p class="card-text">You have earned {{total_saving_coins}} coins from making savings!</p>
+                                <div>
+                                    {{ source_bar|safe }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="habits-md" role="tabpanel"
-             aria-labelledby="profile-tab-md">
+        <div class="tab-pane fade" id="habits-md" role="tabpanel" aria-labelledby="profile-tab-md">
             <div class="container">
                 <!-- <div class="table-wrapper">
                     <div class="table-title">
@@ -198,7 +189,6 @@
                             </tr>
                         </thead>
                         <tbody>
-
                             {% for habit in habits %}
                             <tr>
                                 <td><input style="width:100%" readonly
@@ -218,15 +208,12 @@
                                 </td>
                             </tr>
                             {% endfor %}
-
                         </tbody>
-
                     </table>
                         </form> -->
                 <div class="row">
                     <div class="col-sm">
-                        <h2>Habits</h2>
-                        {% for habit in user.habits %}
+                        <h2>Habits</h2> {% for habit in user.habits %}
                         <div class='card w-75'>
                             <div class='card-body'>
                                 <h3 class='card-title'>{{ habit.habit_name }}</h3>
@@ -250,10 +237,8 @@
                             <div class="card text-center">
                                 <div class="card-body">
                                     <h2 class="card-title">Insights</h2>
-                                    <p class="card-text content">Impulses will analyze your transactions and find ways
-                                        for you to save. Are you ready to save?</p>
-                                    <a class="btn btn-primary btn-lg" data-toggle="modal"
-                                        data-target="#insightsModal">Help Me Save!</a>
+                                    <p class="card-text content">Impulses will analyze your transactions and find ways for you to save. Are you ready to save?</p>
+                                    <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#insightsModal">Help Me Save!</a>
                                 </div>
                             </div>
                         </div>
@@ -261,8 +246,7 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="account-md" role="tabpanel"
-             aria-labelledby="contact-tab-md">
+        <div class="tab-pane fade" id="account-md" role="tabpanel" aria-labelledby="contact-tab-md">
             <div class="container">
                 <div class="row">
                     <div class="col-sm">
@@ -285,25 +269,18 @@
                                     </ul>
                                     <form id='plaid-link-form' action={{url_for('access_plaid_token')}} method="post">
                                     </form>
-                                    <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"
-                                        data-client-name="My App" data-form-id="plaid-link-form"
-                                        data-key={{plaid_public_key}} data-product={{plaid_products}}
-                                        data-env={{plaid_environment}}>
-                                        </script>
+                                    <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js" data-client-name="My App" data-form-id="plaid-link-form" data-key={{plaid_public_key}} data-product={{plaid_products}} data-env={{plaid_environment}}>
+                                    </script>
                                     <script>
                                         var button = document.getElementById('plaid-link-button');
                                         button.innerHTML = "Link an Account though Plaid"
                                         button.setAttribute('class', "btn btn-primary")
                                     </script>
-                                    {% with messages = get_flashed_messages() %}
-                                    {% if messages %}
+                                    {% with messages = get_flashed_messages() %} {% if messages %}
                                     <div class="alert alert-danger" role="alert">
-                                        {% for message in messages %}
-                                        {{ message }}
-                                        {% endfor %}
+                                        {% for message in messages %} {{ message }} {% endfor %}
                                     </div>
-                                    {% endif %}
-                                    {% endwith %}
+                                    {% endif %} {% endwith %}
                                 </div>
                             </div>
                         </div>
@@ -312,63 +289,59 @@
                 <div class="col-sm"></div>
             </div>
         </div>
-        <div class="tab-pane fade" id="lottery-md" role="tabpanel"
-             aria-labelledby="contact-tab-md">
+        <div class="tab-pane fade" id="lottery-md" role="tabpanel" aria-labelledby="contact-tab-md">
             <div class="container">
                 <div class="row">
-                    <div class="col-sm"></div>
-                    <div class="col-sm">
-                        <h2>{{lottery_status}}</h2>
+                    <div class="col-8 mx-auto">
+                        <div class="text-center">
+                            <h2>{{lottery_status}}</h2>
+                        </div>
                     </div>
-                    <div class="col-sm"></div>
                 </div>
                 <div class="row">
                     <div class="col-sm">
-                        <h2>Available Lottery Tickets</h2>
-                    <form id="lottery" method="post"
-                                  action="{{url_for('dashboard')}}">
+                        <h3 class="text-center">Available Lottery Tickets</h3>
+                        <form id="lottery" method="post" action="{{url_for('dashboard')}}">
 
-                        <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Check Box</th>
-                                <th>Name</th>
-                                <th>Category</th>
-                                <th>Cost</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for available_lottery_record in available_lottery_records %}
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                      <input class="form-check-input"
-                                             type="checkbox"
-                                             value="{{available_lottery_record.id}}"
-                                             name="lottery_check" >
-                                    </div>
-                                </td>
-                                <td>{{available_lottery_record.lottery_name}}</td>
-                                <td>{{available_lottery_record.category}}</td>
-                                <td>{{available_lottery_record.cost}}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                        </table>
-                        <button type="submit" name="lottery_submit"
-                                    form="lottery"
-                                class="btn btn-success" value="buy">Buy
-                                lottery tickets</button>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Check Box</th>
+                                        <th>Name</th>
+                                        <th>Category</th>
+                                        <th>End Date</th>
+                                        <th>Cost</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for available_lottery_record in available_lottery_records %}
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="{{available_lottery_record.id}}" name="lottery_check">
+                                            </div>
+                                        </td>
+                                        <td>{{available_lottery_record.lottery_name}}</td>
+                                        <td>{{available_lottery_record.category}}</td>
+                                        <td>{{available_lottery_record.end_date.strftime('%Y-%m-%d')}}</td>
+                                        <td>{{available_lottery_record.cost}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="text-center">
+                                <button type="submit" name="lottery_submit" form="lottery" class="btn btn-success" value="buy">Buy lottery tickets</button>
+                            </div>
                         </form>
-                        </div>
+                    </div>
                     <div class="col-sm">
-                        <h2>Lottery Tickets You've Bought</h2>
+                        <h3 class="text-center">Lottery Tickets You've Bought</h3>
                         <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>Name</th>
                                 <th>Category</th>
-                                <th>Cost</th>
+                                <th>Entry</th>
                                 <th>Winner</th>
                             </tr>
                         </thead>
@@ -377,7 +350,7 @@
                             <tr>
                                 <td>{{bought_lottery_record.lottery.lottery_name}}</td>
                                 <td>{{bought_lottery_record.lottery.category}}</td>
-                                <td>{{bought_lottery_record.lottery.cost}}</td>
+                                <td>{{bought_lottery_record.entries}}</td>
                                 <td>
                                     {% if not bought_lottery_record.lottery.winner_user_id %}
                                     Hasn't Revealed
@@ -398,8 +371,7 @@
     </div>
 
     <!--Habit Form Modal -->
-    <div class="modal fade" id="habitFormModal" tabindex="-1" role="dialog" aria-labelledby="habitFormModal"
-        aria-hidden="true">
+    <div class="modal fade" id="habitFormModal" tabindex="-1" role="dialog" aria-labelledby="habitFormModal" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -444,8 +416,7 @@
         </div>
     </div>
     <!--Insights Form Modal -->
-    <div class="modal fade" id="insightsModal" tabindex="-1" role="dialog" aria-labelledby="insightsModal"
-        aria-hidden="true">
+    <div class="modal fade" id="insightsModal" tabindex="-1" role="dialog" aria-labelledby="insightsModal" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -456,102 +427,88 @@
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid p-">
-                        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel"
-                            data-interval="false">
-                            <div class="carousel-inner align-self-center"
-                                style=" width:100%; height: 300px !important;">
+                        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="false">
+                            <div class="carousel-inner align-self-center" style=" width:100%; height: 300px !important;">
                                 <div class="carousel-item active">
                                     <div class="jumbotron align-self-center">
-                                        <h1 class="display-4 align-self-center">We Found {{insights | length}}
-                                            potential savings opportunity!</h1>
+                                        <h1 class="display-4 align-self-center">We Found 1 potential savings
+                                            opportunity!</h1>
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <h3>We took a look at your last 30 days of spending, and we found that you LIKE
+                                        coffee!</h3>
+                                    <div class="row justify-content-md-center">
+                                        <div class='col-md-3 align-self-center'>
+                                            <div class="card text-center mb-3">
+                                                <div class="card-body">
+                                                    <p class="card-text" style='font-size: xx-large'>10</p>
+                                                </div>
+                                                <div class="card-footer bg-transparent" style="font-size: medium;">Number of coffee purchases in the past 30 days
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class='col-md-3 align-self-center'>
+                                            <div class="card text-center mb-3">
+                                                <div class="card-body">
+                                                    <p class="card-text" style='font-size: xx-large'>$55</p>
+                                                </div>
+                                                <div class="card-footer bg-transparent" style="font-size: medium;">Amount spent on coffee in the past 30 days
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class='col-md-3 align-self-center'>
+                                            <div class="card text-center mb-3">
+                                                <div class="card-body">
+                                                    <p class="card-text" style='font-size: xx-large'>$5</p>
+                                                </div>
+                                                <div class="card-footer bg-transparent" style="font-size: medium;">Average cost of coffee purchase in the past 30 days</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <div class='row justify-content-md-center'>
+                                        <div class='col-md-6'>
+                                            <img src={{url_for('static',filename='weekly_purchase.svg')}} class="img-fluid" height=100% width=100%>
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <div class="card text-center mb-3">
+                                                <div class="card-body">
+                                                    <p class="card-text" style="font-size: large;">You typically buy coffee on weekdays, especially on Monday and Wednesday.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <div class='row justify-content-md-center'>
+                                        <div class='col-md-4'>
+                                            <div class="card text-center mb-3">
+                                                <div class="card-body">
+                                                    <p class="card-text" style='font-size: xx-large'>$120</p>
+                                                </div>
+                                                <div class="card-footer bg-transparent" style="font-size: medium;">Approximate yearly saving by reducing coffee purchase to 8 per month</div>
+                                            </div>
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <div class="card text-center mb-3">
+                                                <div class="card-body">
+                                                    <p class="card-text" style="font-size: large;">Impulses can help you meet this goal with Habits. Set up a Habit to remind you to save today!</p>
+                                                </div>
+                                                <div class="card-footer bg-transparent">
+                                                    <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#habitFormModal" data-dismiss="modal" aria-label="Close">Setup habit</a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                {% for insight in insights %}
-
-                                    <div class="carousel-item">
-                                        <h3>We took a look at your last 30 days of spending, and we found that you LIKE
-                                            {{insight.habit_name}}!</h3>
-                                        <div class="row justify-content-md-center">
-                                            <div class='col-md-3 align-self-center'>
-                                                <div class="card text-center mb-3">
-                                                    <div class="card-body">
-                                                        <p class="card-text" style='font-size: xx-large'>{{insight.num}}</p>
-                                                    </div>
-                                                    <div class="card-footer bg-transparent"
-                                                        style="font-size: medium;">Number of {{insight.habit_name}}
-                                                        purchases in the past 30 days</div>
-                                                </div>
-                                            </div>
-                                            <div class='col-md-3 align-self-center'>
-                                                <div class="card text-center mb-3">
-                                                    <div class="card-body">
-                                                        <p class="card-text" style='font-size: xx-large'>
-                                                            ${{insight.tot_amount}}</p>
-                                                    </div>
-                                                    <div class="card-footer bg-transparent"
-                                                        style="font-size: medium;">
-                                                        Amount spent on {{insight.habit_name}} in the past 30
-                                                        days</div>
-                                                </div>
-                                            </div>
-                                            <div class='col-md-3 align-self-center'>
-                                                <div class="card text-center mb-3">
-                                                    <div class="card-body">
-                                                        <p class="card-text" style='font-size: xx-large'>
-                                                            ${{insight.avg_amount}}</p>
-                                                    </div>
-                                                    <div class="card-footer bg-transparent"
-                                                        style="font-size: medium;">
-                                                        Average cost of {{insight.habit_name}} purchase in the
-                                                        past 30 days</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <div class='row justify-content-md-center'>
-                                                {{insight.graph | safe}}
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <div class='row justify-content-md-center'>
-                                            <div class='col-md-4'>
-                                                <div class="card text-center mb-3">
-                                                    <div class="card-body">
-                                                        <p class="card-text" style='font-size: xx-large'>${{insight.yearly_saving }}</p>
-                                                    </div>
-                                                    <div class="card-footer bg-transparent"
-                                                        style="font-size: medium;">Approximate yearly saving by reducing
-                                                        {{insight.habit_name}} purchase to
-                                                        {{insight.recommended}} per month</div>
-                                                </div>
-                                            </div>
-                                            <div class='col-md-4'>
-                                                <div class="card text-center mb-3">
-                                                    <div class="card-body">
-                                                        <p class="card-text" style="font-size: large;">Impulses can help
-                                                            you meet this goal with Habits. Set up a Habit to remind you
-                                                            to save today!</p>
-                                                    </div>
-                                                    <div class="card-footer bg-transparent">
-                                                        <a class="btn btn-primary btn-lg" data-toggle="modal"
-                                                            data-target="#habitFormModal" data-dismiss="modal" aria-label="Close">Setup habit</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                {% endfor %}
-
-                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
-                                    data-slide="prev">
+                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="sr-only">Previous</span>
                                 </a>
-                                <a class="carousel-control-next" href="#carouselExampleControls" role="button"
-                                    data-slide="next">
+                                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="sr-only">Next</span>
                                 </a>
@@ -562,8 +519,7 @@
                 </div>
             </div>
         </div>
-
+    </div>
 </body>
-
 
 </html>
