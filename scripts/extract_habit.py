@@ -35,7 +35,7 @@ class Insights:
             self.recommended = int(round(self.num * 0.8))
             self.yearly_saving = round((self.num - self.recommended) * 12 *
                                        self.avg_amount, 2)
-            self.graph = self.num_per_day(self.transactions)
+            self.graph = self.num_per_day_graph(self.transactions)
 
     @staticmethod
     def parse_plaid_data(plaid_data):
@@ -94,7 +94,7 @@ class Insights:
             return None
         return transactions
 
-    def num_per_day(self, transactions):
+    def num_per_day_graph(self, transactions):
         """
         Return the number of time user spent on habit on each day of the week
         :param transactions: list of transactions
@@ -108,7 +108,7 @@ class Insights:
         freq = [x[1] for x in sorted_num_per_day]
         matplotlib.use('Agg')
         fig = plt.figure(figsize=(6, 3))
-        plt.bar(day, freq, align='center', alpha=0.5)
+        plt.bar(day, freq, align='center', alpha=0.5, color='#1E90FF')
         plt.ylabel('Purchased {}'.format(self.habit_name))
         plt.xticks(ticks=np.arange(len(day)), labels=day)
         output = mpld3.fig_to_html(fig)
