@@ -1,8 +1,9 @@
 import ast
 import numpy as np
 import collections
-import plotly
-import plotly.graph_objects as go
+import matplotlib
+import matplotlib.pyplot as plt
+import mpld3
 from app import classes
 
 
@@ -105,13 +106,13 @@ class Insights:
         sorted_num_per_day = sorted(num_per_day.items())
         day = [map_day[x[0]] for x in sorted_num_per_day]
         freq = [x[1] for x in sorted_num_per_day]
-        fig = go.Figure(data=[go.Bar(x=day, y=freq)],
-                        layout=go.Layout(title='Purchased {}'.format(self.habit_name))
-                        )
-        output = plotly.offline.plot(fig, include_plotlyjs=False,
-                                     image_width='100%',
-                                     image_height='100%',
-                                     output_type='div')
+        matplotlib.use('Agg')
+        fig = plt.figure(figsize=(6, 3))
+        plt.bar(day, freq, align='center', alpha=0.5)
+        plt.ylabel('Purchased {}'.format(self.habit_name))
+        plt.xticks(ticks=np.arange(len(day)), labels=day)
+        output = mpld3.fig_to_html(fig)
+        plt.close()
         return output
 
     @staticmethod
