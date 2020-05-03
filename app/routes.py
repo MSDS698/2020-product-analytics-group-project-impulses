@@ -409,6 +409,7 @@ def delete_plaid_account():
 
     return redirect(url_for('dashboard'))
 
+
 @application.errorhandler(401)
 def re_route(e):
     return redirect(url_for("login"))
