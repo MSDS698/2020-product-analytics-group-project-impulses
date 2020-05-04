@@ -93,7 +93,8 @@ h6 {
   height: auto;
   padding-top: 8rem;
   padding-bottom: 8rem;
-  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 100%), url("../img/bg-masthead.jpg");
+  background-image: linear-gradient(90deg, rgba(255, 0, 0, 0.1) 0%, rgba(255,
+  255, 255, 0.8) 100%), url("../img/background2.jpg");
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
