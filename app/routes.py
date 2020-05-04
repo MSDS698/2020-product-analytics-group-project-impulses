@@ -364,7 +364,7 @@ def dashboard():
             insights_list.append(insights)
 
     coin_log = classes.Coin.query.filter_by(user=current_user).order_by(
-        classes.Coin.id.desc()).limit(10).all()
+        classes.Coin.id.desc()).limit(6).all()
 
     return render_template("dashboard.html",
                            user=current_user,
