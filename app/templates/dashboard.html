@@ -136,9 +136,42 @@
     </div>
 
     <div class="jumbotron text-center">
-        <h1>Welcome {{user.first_name}}! You have {{user.coins}} coins.</h1>
+        <h1>Welcome {{user.first_name}}! You have
+            <a class="coin-link" id="user-coins" href="#" data-toggle="popover"
+               data-trigger="focus">{{user.coins}} coins.</a>
+        </h1>
         <p>Let Impulses use Machine Learning to help you save money today!</p>
     </div>
+
+    <div class="coin-popover" id="coin-content" style="display: none">
+        <ol class="list-group">
+            {% for log in coin_log %}
+            <li class="list-group-item">
+                <a style="text-align: left; color: gray">{{log.log_date}}</a>
+                <br/>
+                {% if log.description == 'login' %}
+                You earned {{log.coin_amount}} coins through login.
+                {% elif log.description == 'saving' %}
+                You earned {{log.coin_amount}} coins through saving.
+                {% else %}
+                You spent {{-log.coin_amount}} coins on a lottery ticket.
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ol>
+    </div>
+
+    <script>
+    $('#user-coins').popover({html: true,
+        placement: "auto",
+        content: function() {
+            return $('#coin-content').html();
+            }
+    })
+    $('.popover-dismiss').popover({
+        trigger: 'focus'
+    })
+    </script>
 
     <ul class="nav nav-tabs nav-fill md-tabs" id="myTabMD" role="tablist">
         {% if not flag_habits_edit %}

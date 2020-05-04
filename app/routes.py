@@ -362,8 +362,13 @@ def dashboard():
                             habit_name, thresholds[ind])
         if insights.transactions is not None:
             insights_list.append(insights)
+
+    coin_log = classes.Coin.query.filter_by(user=current_user).order_by(
+        classes.Coin.id.desc()).limit(10).all()
+
     return render_template("dashboard.html",
                            user=current_user,
+                           coin_log=coin_log,
                            form=classes.HabitForm(),
                            lottery_status=lottery_status,
                            available_lottery_records=available_lottery_records,
