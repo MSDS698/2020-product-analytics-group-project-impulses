@@ -19,14 +19,16 @@ def add_login_coin(user):
     tz = pytz.timezone("America/Los_Angeles")
     if login_coin_date is None:  # first time login
         coin_amount = 10
+        description = "registration"
     elif (datetime.now().astimezone(tz).date() - login_coin_date).days > 0:
         # daily login
         coin_amount = 2
+        description = "login"
     else:
         return
     new_coin = classes.Coin(user=user, coin_amount=coin_amount,
                             log_date=datetime.now().astimezone(tz).date(),
-                            description="login")
+                            description=description)
     user.coins += coin_amount
     db.session.add(new_coin)
     db.session.commit()
