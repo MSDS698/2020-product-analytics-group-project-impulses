@@ -2,145 +2,134 @@
 <html lang="en">
 
 <head>
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <title>Impulses</title>
-
-  <!-- Bootstrap Core CSS -->
-  <link href="{{url_for('static', filename='home/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-
-  <!-- Custom Fonts -->
-  <link href="{{url_for('static', filename='home/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-  <link href="{{url_for('static', filename='home/vendor/simple-line-icons/css/simple-line-icons.css') }}" rel="stylesheet">
-
-  <!-- Custom CSS -->
-  <link href="{{url_for('static', filename='home/css/stylish-portfolio.css') }}" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Impulses</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
+    <!-- Third party plugin CSS-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="../static/home/css/styles.css" rel="stylesheet" />
 </head>
 
 <body id="page-top">
-  <!-- Header -->
-  <header class="masthead d-flex">
-    <div class="container text-center my-auto">
-      <h1 class="mb-1">Impulses</h1>
-      <h3 class="mb-5">
-        <em>A personal finance app that identifies nonessential spending habits.</em>
-      </h3>
-      <a class="btn btn-primary btn-xl js-scroll-trigger" href="/login">Log In</a>
-    </div>
-    <div class="overlay"></div>
-  </header>
-
-  <!-- About -->
-  <section class="content-section bg-light" id="about">
-    <div class="container text-center">
-      <div class="row">
-        <div class="col-lg-10 mx-auto">
-          <h2>About</h2>
-          <p class="lead mb-5">Impulses allows the users to set up custom rule-based reminders to save rather than spend money on that purchase.
-            It will send the user a text at a time specified by the user to suggest saving that money rather than spending it.
-            Users are able to make the deposit of the savings via a simple yes/no response to the text message and the “coffee money” would be automatically drawn from the user’s account and deposited into a savings/investment account.</p>
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">Impulses
+                </a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto my-2 my-lg-0">
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#team">Team</a></li>
+                </ul>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </nav>
+    <!-- Masthead-->
+    <header class="masthead">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center justify-content-center text-center">
+                <div class="col-lg-10 align-self-end">
+                    <h1 class="text-uppercase text-white font-weight-bold">Impulses</h1>
+                    <hr class="divider my-4" />
+                </div>
+                <div class="col-lg-8 align-self-baseline">
+                    <p class="text-white-75 font-weight-light mb-5">A personal finance app that identifies nonessential spending habits.</p>
+                    <a class="btn btn-primary btn-xl js-scroll-trigger" href="/login">Log In or Sign UP</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- About-->
+    <section class="page-section bg-primary" id="about">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h2 class="text-white mt-0">About</h2>
+                    <hr class="divider light my-4" />
+                    <p class="text-white-50 mb-4">Impulses allows the users to set up custom rule-based reminders to save rather than spend money on that purchase. It will send the user a text at a time specified by the user to suggest saving that money rather than spending it. Users are able to make the deposit of the savings via a simple yes/no response to the text message and the “coffee money” would be automatically drawn from the user’s account and deposited into a savings/investment account.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- Team -->
-  <section class="content-section bg-primary text-white text-center" id="services">
-    <div class="container">
-      <div class="content-section-heading">
-        <h2 class="mb-5">Team</h2>
-      </div>
-      <div class="row">
-        <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
-          <img src="https://www.usfca.edu/sites/default/files/styles/rte_150x150/public/arts_and_sciences/lea_genuit.jpg?itok=HSI39JCy" alt="Avatar" class="service-icon rounded-circle mx-auto mb-3" style="width:150px;height:150px;">
-          <h4>
+    <!-- Team-->
+    <section class="page-section bg-dark text-white text-center" id="team">
+        <div class="container">
+            <div class="content-section-heading">
+                <h2 class="mb-5">Team</h2>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+                    <img src="https://www.usfca.edu/sites/default/files/styles/rte_150x150/public/arts_and_sciences/lea_genuit.jpg?itok=HSI39JCy" alt="Avatar" class="service-icon rounded-circle mx-auto mb-3" style="width:150px;height:150px;">
+                    <h4>
             <strong>Lea Genuit</strong>
           </h4>
-        </div>
-        <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
-          <img src="https://www.usfca.edu/sites/default/files/styles/rte_150x150/public/images/headshots/kevin_loftis.jpg?itok=wRNo1wOh" alt="Avatar" class="service-icon rounded-circle mx-auto mb-3" style="width:150px;height:150px;">
-          <h4>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+                    <img src="https://www.usfca.edu/sites/default/files/styles/rte_150x150/public/images/headshots/kevin_loftis.jpg?itok=wRNo1wOh" alt="Avatar" class="service-icon rounded-circle mx-auto mb-3" style="width:150px;height:150px;">
+                    <h4>
             <strong>Kevin Loftis</strong>
           </h4>
-        </div>
-        <div class="col-lg-3 col-md-6 mb-5 mb-md-0">
-          <img src="https://www.usfca.edu/sites/default/files/styles/rte_150x150/public/images/headshots/esme_luo.jpg?itok=BAdA8pay" alt="Avatar" class="service-icon rounded-circle mx-auto mb-3" style="width:150px;height:150px;">
-          <h4>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-5 mb-md-0">
+                    <img src="https://www.usfca.edu/sites/default/files/styles/rte_150x150/public/images/headshots/esme_luo.jpg?itok=BAdA8pay" alt="Avatar" class="service-icon rounded-circle mx-auto mb-3" style="width:150px;height:150px;">
+                    <h4>
             <strong>Esme Luo</strong>
           </h4>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <img src="https://www.usfca.edu/sites/default/files/styles/rte_150x150/public/images/headshots/esther_liu.jpg?itok=RTaqh78K" alt="Avatar" class="service-icon rounded-circle mx-auto mb-3" style="width:150px;height:150px;">
-          <h4>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <img src="https://www.usfca.edu/sites/default/files/styles/rte_150x150/public/images/headshots/esther_liu.jpg?itok=RTaqh78K" alt="Avatar" class="service-icon rounded-circle mx-auto mb-3" style="width:150px;height:150px;">
+                    <h4>
             <strong>Esther Liu</strong>
           </h4>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <img src="https://ca.slack-edge.com/T0GQ64ARG-UKWGPARD0-2235bda0088e-512" alt="Avatar" class="service-icon rounded-circle mx-auto mb-3" style="width:150px;height:150px;">
-          <h4>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <img src="https://ca.slack-edge.com/T0GQ64ARG-UKWGPARD0-2235bda0088e-512" alt="Avatar" class="service-icon rounded-circle mx-auto mb-3" style="width:150px;height:150px;">
+                    <h4>
             <strong>Xu Liu</strong>
           </h4>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <img src="https://ca.slack-edge.com/T0GQ64ARG-UKWG63JRG-c2d339a11b26-512" alt="Avatar" class="service-icon rounded-circle mx-auto mb-3" style="width:150px;height:150px;">
-          <h4>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <img src="https://ca.slack-edge.com/T0GQ64ARG-UKWG63JRG-c2d339a11b26-512" alt="Avatar" class="service-icon rounded-circle mx-auto mb-3" style="width:150px;height:150px;">
+                    <h4>
             <strong>Andrew Young</strong>
           </h4>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <img src="https://www.usfca.edu/sites/default/files/styles/rte_150x150/public/arts_and_sciences/zhentao_hou.jpg?itok=cYYLvoAp" alt="Avatar" class="service-icon rounded-circle mx-auto mb-3" style="width:150px;height:150px;">
-          <h4>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <img src="https://www.usfca.edu/sites/default/files/styles/rte_150x150/public/arts_and_sciences/zhentao_hou.jpg?itok=cYYLvoAp" alt="Avatar" class="service-icon rounded-circle mx-auto mb-3" style="width:150px;height:150px;">
+                    <h4>
             <strong>Zhentao Hou</strong>
           </h4>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer text-center">
-    <div class="container">
-      <ul class="list-inline mb-5">
-        <li class="list-inline-item">
-          <a class="social-link rounded-circle text-white mr-3" href="#">
-            <i class="icon-social-facebook"></i>
-          </a>
-        </li>
-        <li class="list-inline-item">
-          <a class="social-link rounded-circle text-white mr-3" href="#">
-            <i class="icon-social-twitter"></i>
-          </a>
-        </li>
-        <li class="list-inline-item">
-          <a class="social-link rounded-circle text-white" href="#">
-            <i class="icon-social-github"></i>
-          </a>
-        </li>
-      </ul>
-      <p class="text-muted small mb-0">Copyright &copy; Impulses 2020</p>
-    </div>
-  </footer>
-
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
-
-  <!-- Bootstrap core JavaScript -->
-  <script src="{{url_for('static', filename='home/vendor/jquery/jquery.min.js') }}"></script>
-  <script src="{{url_for('static', filename='home/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
-  <!-- Plugin JavaScript -->
-  <script src="{{url_for('static', filename='home/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
-
-  <!-- Custom scripts for this template -->
-  <script src="{{url_for('static', filename='home/js/stylish-portfolio.min.js') }}"></script>
-
+    </section>
+    <!-- Footer-->
+    <footer class="bg-light py-5">
+        <div class="container">
+            <div class="small text-center text-muted">Copyright © 2020 - Impulses
+            </div>
+        </div>
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <!-- Third party plugin JS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="../static/home/js/scripts.js"></script>
 </body>
 
 </html>
