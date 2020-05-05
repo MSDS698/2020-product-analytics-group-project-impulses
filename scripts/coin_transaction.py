@@ -1,10 +1,15 @@
+"""
+Helper functions for coin transactions, including add_login_coin,
+add_saving_coin, enter_lottery, and lottery_drawing.
+"""
+
 import random
 import pytz
 from datetime import datetime
 from app import classes, db
 
 
-# helper function to update user coins when logging in
+# update user coins when logging in
 def add_login_coin(user):
     """Update user coins when logging in.
 
@@ -15,8 +20,11 @@ def add_login_coin(user):
     table and the coins column in user table will also be updated.
     """
     login_coin_date = db.session.query(db.func.max(classes.Coin.log_date)) \
-        .filter_by(user=user, description="login").scalar()
+        .filter(classes.Coin.user == user,
+                classes.Coin.description.in_(["login", "registration"])) \
+        .scalar()
     tz = pytz.timezone("America/Los_Angeles")
+
     if login_coin_date is None:  # first time login
         coin_amount = 10
         description = "registration"
@@ -26,6 +34,7 @@ def add_login_coin(user):
         description = "login"
     else:
         return
+
     new_coin = classes.Coin(user=user, coin_amount=coin_amount,
                             log_date=datetime.now().astimezone(tz).date(),
                             description=description)

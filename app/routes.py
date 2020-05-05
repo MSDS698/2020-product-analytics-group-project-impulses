@@ -214,11 +214,13 @@ def dashboard():
 
     # using the login coins now for demo, since we don't have enough data for
     # the saving coins yet
-    saving_date = classes.Coin.query.filter_by(user_id=user_id,
-                                               description='login') \
+    saving_date = classes.Coin.query.filter(
+        classes.Coin.user_id == user_id,
+        classes.Coin.description.in_(['login', 'registration'])) \
         .with_entities(classes.Coin.log_date).all()
-    saving_coins = classes.Coin.query.filter_by(user_id=user_id,
-                                                description='login') \
+    saving_coins = classes.Coin.query.filter(
+        classes.Coin.user_id == user_id,
+        classes.Coin.description.in_(['login', 'registration'])) \
         .with_entities(classes.Coin.coin_amount).all()
     savings_bar_plot, total_saving_coins = \
         plotly_saving_history(saving_date, saving_coins)
