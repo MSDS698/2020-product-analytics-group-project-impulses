@@ -285,7 +285,9 @@
                                                 <input style="width:100%" readonly name="habit_category" value="{{habit.habit_category}}">
                                             </td>
                                             <td>
-                                                <input style="width:100%" readonly name="time_hour_minute" value="{{habit.time_hour}}:{{habit.time_minute}}">
+                                                <input style="width:100%"
+                                                       readonly
+                                                       name="time_hour_minute" value="{{habit.time_hour}}:{{'%02d' | format(habit.time_minute)}}">
                                             </td>
                                             <td>
                                                 <input style="width:100%" readonly name="time_day_of_week" value="{{habit.time_day_of_week}}">
