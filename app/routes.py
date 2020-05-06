@@ -16,7 +16,7 @@ from twilio.twiml.messaging_response import MessagingResponse
 from scripts.coin_transaction import add_login_coin, add_saving_coin, \
     enter_lottery, lottery_drawing
 from app.plotly_dashboard import plotly_saving_history, plotly_percent_saved
-from Scripts.extract_habit import Insights
+from scripts.extract_habit import Insights
 
 ENV_VARS = {
     "PLAID_CLIENT_ID": os.environ["PLAID_CLIENT_ID"],
@@ -278,7 +278,7 @@ def dashboard():
     saving_percent_plot = plotly_percent_saved(num_saved,
                                                num_total_suggestions)
     # Retrieve spending habits for Insights
-    categories_file = os.path.join(os.getcwd(), 'Scripts', 'categories.json')
+    categories_file = os.path.join(os.getcwd(), 'scripts', 'categories.json')
 
     beginning_month = datetime(year=datetime.now().year,
                                month=datetime.now().month,
