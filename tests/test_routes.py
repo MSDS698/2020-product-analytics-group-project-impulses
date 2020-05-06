@@ -76,7 +76,7 @@ class TestRoutes(unittest.TestCase):
                 'password': 'password'}
         with self.app as c:
             response = self.app.post('/register', data=data)
-            self.assertTrue(response.location.endswith('verify'))
+            self.assertTrue(response.location.endswith('login'))
 
     def test_email_exists_register(self):
         test_user = classes.User('First', 'Last', 'test@test.com',

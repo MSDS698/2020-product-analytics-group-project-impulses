@@ -63,7 +63,10 @@ def login():
         if user is not None and user.check_password(password):
             login_user(user)
             add_login_coin(user)
-            return redirect(url_for("index"))
+            if user.status == "unverified":
+                return redirect(url_for("start_verification"))
+            elif user.status == "verified":
+                return redirect(url_for("index"))
         else:
             flash('Invalid username and password combination')
     return render_template("login.html", form=login_form)
@@ -93,42 +96,45 @@ def register():
             user = classes.User(first_name, last_name, email, phone, password)
             db.session.add(user)
             db.session.commit()
-            session['phone'] = phone
-            return redirect(url_for('verify'))
+            return redirect(url_for("login"))
 
     return render_template("register.html", form=registration_form)
 
 
-@application.route('/verify', methods=('GET', 'POST'))
-def verify():
-    """Verify a user on registration with their phone number"""
-    vsid = start_verification("+1"+str(session.get('phone')), "sms")
-    if vsid is None:
-        flash('Your phone number cannot be verified \
-        Please change it later.')
-        return redirect(url_for("login"))
-    else:
-        if request.method == 'POST':
-            phone = "+1"+str(session.get('phone'))
-            code = request.form['code']
-            return check_verification(phone, code)
-    return render_template('verify.html')
-
-
-def start_verification(to, channel='sms'):
-    if channel not in ('sms', 'call'):
-        channel = 'sms'
+@application.route('/start_verification', methods=('GET', 'POST'))
+@login_required
+def start_verification():
+    """Start a phone number verification"""
 
     service = ENV_VARS["VERIFICATION_SID"]
-    verification = twilio_client.verify \
-        .services(service) \
-        .verifications \
-        .create(to=to, channel=channel)
-    return verification.sid
+    try:
+        verification = twilio_client.verify \
+            .services(service) \
+            .verifications \
+            .create(to="+1"+str(current_user.phone), channel="sms")
+
+    except Exception as e:
+        flash("oops! We can't verify this phone number, please use a \
+            valid phone number! returning to homepage in 3 seconds")
+        # flash("Error validating code: {}".format(e))
+        return render_template('message.html', validator=True)
+    return redirect(url_for('verify'))
+
+
+@application.route('/verify', methods=('GET', 'POST'))
+@login_required
+def verify():
+    """Verify a user on registration with their phone number"""
+    phone = "+1"+str(current_user.phone)
+    if request.method == 'POST':
+        code = request.form['code']
+        return check_verification(phone, code)
+    return render_template('verify.html')
 
 
 def check_verification(phone, code):
     service = ENV_VARS["VERIFICATION_SID"]
+
     if len(code) != 6:
         flash("The code you provided should be 6 digits, \
             Please try again.")
@@ -140,13 +146,12 @@ def check_verification(phone, code):
                 .create(to=phone, code=code)
 
             if verification_check.status == "approved":
-                user_phone = session.get('phone')
+                user_phone = current_user.phone
                 user = classes.User.query.filter_by(phone=user_phone).first()
                 user.status = "verified"
                 db.session.commit()
-                flash('Your phone number has been verified! \
-                    Please login to continue.')
-                return redirect(url_for('login'))
+                flash('Your phone number has been verified!')
+                return render_template('message.html', validator=False)
             else:
                 flash('The code you provided is incorrect. Please try again.')
         except Exception as e:
@@ -159,7 +164,6 @@ def check_verification(phone, code):
 @login_required
 def create_habit():
     # add a new habit
-
     habit_form = classes.HabitForm()
     if habit_form.validate_on_submit():
         habit_name = habit_form.habit_name.data
