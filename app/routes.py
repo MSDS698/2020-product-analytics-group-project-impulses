@@ -25,7 +25,8 @@ ENV_VARS = {
     "PLAID_ENV": os.environ["PLAID_ENV"],
     "TWILIO_ACCOUNT_SID": os.environ["TWILIO_ACCOUNT_SID"],
     "TWILIO_AUTH_TOKEN": os.environ["TWILIO_AUTH_TOKEN"],
-    "SQLALCHEMY_DATABASE_URI": os.environ["SQLALCHEMY_DATABASE_URI"]
+    "SQLALCHEMY_DATABASE_URI": os.environ["SQLALCHEMY_DATABASE_URI"],
+    "VERIFICATION_SID": os.environ["VERIFICATION_SID"]
 }
 
 # setup plaid client
@@ -62,7 +63,12 @@ def login():
         if user is not None and user.check_password(password):
             login_user(user)
             add_login_coin(user)
-            return redirect(url_for("index"))
+            if user.status == "unverified":
+                flash('Verify your phone number in habits tab to \
+                    receive notifications!')
+                return render_template("message.html", validator=True)
+            elif user.status == "verified":
+                return redirect(url_for("index"))
         else:
             flash('Invalid username and password combination')
     return render_template("login.html", form=login_form)
@@ -95,6 +101,65 @@ def register():
             db.session.commit()
             return redirect(url_for("login"))
     return render_template("register.html", form=registration_form)
+
+
+@application.route('/start_verification', methods=('GET', 'POST'))
+@login_required
+def start_verification():
+    """Start a phone number verification"""
+
+    service = ENV_VARS["VERIFICATION_SID"]
+    try:
+        verification = twilio_client.verify \
+            .services(service) \
+            .verifications \
+            .create(to="+1"+str(current_user.phone), channel="sms")
+
+    except Exception as e:
+        flash("oops! We can't verify this phone number, please use a \
+            valid phone number! returning to homepage in 3 seconds")
+        # flash("Error validating code: {}".format(e))
+        return render_template('message.html', validator=True)
+    return redirect(url_for('verify'))
+
+
+@application.route('/verify', methods=('GET', 'POST'))
+@login_required
+def verify():
+    """Verify a user on registration with their phone number"""
+    phone = "+1"+str(current_user.phone)
+    if request.method == 'POST':
+        code = request.form['code']
+        return check_verification(phone, code)
+    return render_template('verify.html')
+
+
+def check_verification(phone, code):
+    service = ENV_VARS["VERIFICATION_SID"]
+
+    if len(code) != 6:
+        flash("The code you provided should be 6 digits, \
+            Please try again.")
+    else:
+        try:
+            verification_check = twilio_client.verify \
+                .services(service) \
+                .verification_checks \
+                .create(to=phone, code=code)
+
+            if verification_check.status == "approved":
+                user_phone = current_user.phone
+                user = classes.User.query.filter_by(phone=user_phone).first()
+                user.status = "verified"
+                db.session.commit()
+                flash('Your phone number has been verified!')
+                return render_template('message.html', validator=False)
+            else:
+                flash('The code you provided is incorrect. Please try again.')
+        except Exception as e:
+            flash("Error validating code: {}".format(e))
+
+    return redirect(url_for('verify'))
 
 
 @application.route('/create_habit', methods=["POST"])

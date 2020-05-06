@@ -303,8 +303,12 @@
                         <div class='card w-75'>
                             <div class='card-body'>
                                 <h2 class='card-title'>
+                                    {% if user.status == "verified" %}
                                     <button id='new-habit' class='btn btn-outline-dark btn-lg' data-toggle="modal"
                                         data-target="#habitFormModal">+</button> Add a new habit
+                                    {% elif user.status == "unverified" %}
+                                    <a href="start_verification" class="btn btn-primary btn-lg" role="button">Verify your number to a new habit</a>
+                                    {% endif %}
                                 </h2>
                             </div>
                         </div>
