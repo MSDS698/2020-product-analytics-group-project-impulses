@@ -72,11 +72,11 @@ class TestRoutes(unittest.TestCase):
         data = {'first_name': 'First',
                 'last_name': 'Last',
                 'email': 'test@test.com',
-                'phone': '1234567890',
+                'phone': '4158192258',
                 'password': 'password'}
         with self.app as c:
             response = self.app.post('/register', data=data)
-            self.assertTrue(response.location.endswith('login'))
+            self.assertTrue(response.location.endswith('verify'))
 
     def test_email_exists_register(self):
         test_user = classes.User('First', 'Last', 'test@test.com',
@@ -86,7 +86,7 @@ class TestRoutes(unittest.TestCase):
         data = {'first_name': 'First',
                 'last_name': 'Last',
                 'email': 'test@test.com',
-                'phone': '1234567890',
+                'phone': '4158192258',
                 'password': 'password'}
         with self.app as c:
             response = self.app.post('/register', data=data)

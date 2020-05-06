@@ -94,20 +94,24 @@ def register():
             db.session.add(user)
             db.session.commit()
             session['phone'] = phone
-            vsid = start_verification("+1"+str(phone), "sms")
-            if vsid is not None:
-                return redirect(url_for('verify'))
-            return redirect(url_for("login"))
+            return redirect(url_for('verify'))
+
     return render_template("register.html", form=registration_form)
 
 
 @application.route('/verify', methods=('GET', 'POST'))
 def verify():
     """Verify a user on registration with their phone number"""
-    if request.method == 'POST':
-        phone = "+1"+str(session.get('phone'))
-        code = request.form['code']
-        return check_verification(phone, code)
+    vsid = start_verification("+1"+str(session.get('phone')), "sms")
+    if vsid is None:
+        flash('Your phone number cannot be recognized \
+        Please change it later.')
+        return redirect(url_for("login"))
+    else:
+        if request.method == 'POST':
+            phone = "+1"+str(session.get('phone'))
+            code = request.form['code']
+            return check_verification(phone, code)
     return render_template('verify.html')
 
 
@@ -136,6 +140,11 @@ def check_verification(phone, code):
                 .create(to=phone, code=code)
 
             if verification_check.status == "approved":
+                user_phone = session.get('phone')
+                user = classes.User.query.filter_by(phone=user_phone).first()
+                user.status = "verified"
+                db.session.commit()
+
                 flash('Your phone number has been verified! \
                     Please login to continue.')
                 return redirect(url_for('login'))
@@ -151,6 +160,7 @@ def check_verification(phone, code):
 @login_required
 def create_habit():
     # add a new habit
+
     habit_form = classes.HabitForm()
     if habit_form.validate_on_submit():
         habit_name = habit_form.habit_name.data
@@ -159,11 +169,11 @@ def create_habit():
         time_hour = habit_form.time_hour.data
         time_day_of_week = habit_form.time_day_of_week.data
         habit = classes.Habits(user=current_user,
-                               habit_name=habit_name,
-                               habit_category=habit_category,
-                               time_minute=int(time_minute),
-                               time_hour=int(time_hour),
-                               time_day_of_week=time_day_of_week)
+                            habit_name=habit_name,
+                            habit_category=habit_category,
+                            time_minute=int(time_minute),
+                            time_hour=int(time_hour),
+                            time_day_of_week=time_day_of_week)
 
         db.session.add(habit)
         db.session.commit()
