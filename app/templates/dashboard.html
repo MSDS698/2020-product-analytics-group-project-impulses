@@ -2,7 +2,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <script src="https://kit.fontawesome.com/0b8a02a0d6.js" crossorigin="anonymous"></script>
     <!-- font awesome from BootstrapCDN -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
@@ -11,10 +11,17 @@
     <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='dashboard/css/dashboard.css')}}">
 
     <!-- Bootstrap links -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 
     <!-- habit form -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
@@ -24,11 +31,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
             var actions = $("table td:last-child").html();
             // Append table with add row form on add new button click
-            $(".add-new").click(function() {
+            $(".add-new").click(function () {
                 var index = $("table tbody tr:last-child").index();
                 var row = '<tr>' +
                     '<td><input type="text" class="form-control" name="habit_name"></td>' +
@@ -50,10 +57,10 @@
                 $('[data-toggle="tooltip"]').tooltip();
             });
             // Add row on add button click
-            $(document).on("click", ".add", function() {
+            $(document).on("click", ".add", function () {
                 var empty = false;
                 var input = $(this).parents("tr").find('input[type="text"]');
-                input.each(function() {
+                input.each(function () {
                     if (!$(this).val()) {
                         $(this).addClass("error");
                         empty = true;
@@ -63,7 +70,7 @@
                 });
                 $(this).parents("tr").find(".error").first().focus();
                 if (!empty) {
-                    input.each(function() {
+                    input.each(function () {
                         $(this).parent("td").html($(this).val());
                     });
                     $(this).parents("tr").find(".add, .edit").toggle();
@@ -71,21 +78,55 @@
                 }
             });
             // Edit row on edit button click
-            $(document).on("click", ".edit", function() {
-                $(this).parents("tr").find("td:not(:last-child)").each(function() {
+            $(document).on("click", ".edit", function () {
+                $(this).parents("tr").find("td:not(:last-child)").each(function () {
                     $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
                 });
                 $(this).parents("tr").find(".add, .edit").toggle();
                 $(".add-new").attr("disabled", "disabled");
             });
             // Delete row on delete button click
-            $(document).on("click", ".delete", function() {
+            $(document).on("click", ".delete", function () {
                 $(this).parents("tr").remove();
                 $(".add-new").removeAttr("disabled");
             });
         });
     </script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <style>
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            height: 100px;
+            width: 100px;
+            background-size: 100%, 100%;
+            border-radius: 50%;
+            background-image: none;
+        }
+
+        .carousel-control-next-icon:after {
+            content: '>';
+            font-size: 55px;
+            color: dimgray;
+        }
+
+        .carousel-control-prev-icon:after {
+            content: '<';
+            font-size: 55px;
+            color:dimgray;
+        }
+    </style>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165709810-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-165709810-1');
+    </script>
+
 
 </head>
 
@@ -106,31 +147,65 @@
     </div>
 
     <div class="jumbotron text-center">
-        <h1>Welcome {{user.first_name}}! You have {{user.coins}} coins.</h1>
-        <p>Let Impulses use Machine Learning to help you save money today!</p>
+        <h1>Welcome {{user.first_name}}! You have
+            <a class="coin-link" id="user-coins" href="#" data-toggle="popover"
+               data-trigger="hover focus">{{user.coins}} coins.</a>
+        </h1>
+        <h3>Let Impulses use Machine Learning to help you save money today!</h3>
     </div>
+
+    <div class="coin-popover" id="coin-content" style="display: none">
+        <ol class="list-group">
+            {% for log in coin_log %}
+            <li class="list-group-item">
+                <a style="text-align: left; color: gray">{{log.log_date}}</a>
+                <br/>
+                {% if log.coin_amount > 0 %}
+                You earned {{ log.coin_amount }} coins by {{log.description}}.
+                {% else %}
+                You spent {{ -log.coin_amount }} coins on {{log.description}}.
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ol>
+    </div>
+
+    <script>
+    $('#user-coins').popover({html: true,
+        placement: "auto",
+        content: function() {
+            return $('#coin-content').html();
+            }
+    })
+    </script>
 
     <ul class="nav nav-tabs nav-fill md-tabs" id="myTabMD" role="tablist">
         {% if not flag_habits_edit %}
         <li class="nav-item">
-            <a class="nav-link active" id="dashboard-tab-md" data-toggle="tab" href="#dashboard-md" role="tab" aria-controls="dashboard-md" aria-selected="true">Dashboard</a>
+            <a class="nav-link active" id="dashboard-tab-md" data-toggle="tab" href="#dashboard-md" role="tab"
+                aria-controls="dashboard-md" aria-selected="true">Dashboard</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="habits-tab-md" data-toggle="tab" href="#habits-md" role="tab" aria-controls="habits-md" aria-selected="false">Habits</a>
+            <a class="nav-link" id="habits-tab-md" data-toggle="tab" href="#habits-md" role="tab"
+                aria-controls="habits-md" aria-selected="false">Habits</a>
         </li>
         {% else %}
         <li class="nav-item">
-            <a class="nav-link" id="dashboard-tab-md" data-toggle="tab" href="#dashboard-md" role="tab" aria-controls="dashboard-md" aria-selected="false">Dashboard</a>
+            <a class="nav-link" id="dashboard-tab-md" data-toggle="tab" href="#dashboard-md" role="tab"
+                aria-controls="dashboard-md" aria-selected="false">Dashboard</a>
         </li>
         <li class="nav-item active">
-            <a class="nav-link" id="habits-tab-md" data-toggle="tab" href="#habits-md" role="tab" aria-controls="habits-md" aria-selected="true">Habits</a>
+            <a class="nav-link" id="habits-tab-md" data-toggle="tab" href="#habits-md" role="tab"
+                aria-controls="habits-md" aria-selected="true">Habits</a>
         </li>
         {% endif %}
         <li class="nav-item">
-            <a class="nav-link" id="lottery-tab-md" data-toggle="tab" href="#lottery-md" role="tab" aria-controls="lottery-md" aria-selected="false">Lottery</a>
+            <a class="nav-link" id="lottery-tab-md" data-toggle="tab" href="#lottery-md" role="tab"
+                aria-controls="lottery-md" aria-selected="false">Lottery</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="account-tab-md" data-toggle="tab" href="#account-md" role="tab" aria-controls="account-md" aria-selected="false">Account</a>
+            <a class="nav-link" id="account-tab-md" data-toggle="tab" href="#account-md" role="tab"
+                aria-controls="account-md" aria-selected="false">Account</a>
         </li>
     </ul>
     <div class="tab-content card pt-12" id="myTabContentMD">
@@ -141,7 +216,8 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Total Savings</h5>
-                                <p class="card-text">Of the {{num_total_suggestions}} saving suggestions we sent you, you have made {{num_saved}} savings.</p>
+                                <p class="card-text">Of the {{num_total_suggestions}} saving suggestions we sent you,
+                                    you have made {{num_saved}} savings.</p>
                                 <div>
                                     {{ source_pie|safe }}
                                 </div>
@@ -152,7 +228,8 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Savings History</h5>
-                                <p class="card-text">You have earned {{total_saving_coins}} coins from making savings!</p>
+                                <p class="card-text">You have earned {{total_saving_coins}} coins from making savings!
+                                </p>
                                 <div>
                                     {{ source_bar|safe }}
                                 </div>
@@ -189,7 +266,6 @@
                             </tr>
                         </thead>
                         <tbody>
-
                             {% for habit in habits %}
                             <tr>
                                 <td><input style="width:100%" readonly
@@ -209,9 +285,7 @@
                                 </td>
                             </tr>
                             {% endfor %}
-
                         </tbody>
-
                     </table>
                         </form> -->
                 <div class="row">
@@ -240,8 +314,10 @@
                             <div class="card text-center">
                                 <div class="card-body">
                                     <h2 class="card-title">Insights</h2>
-                                    <p class="card-text content">Impulses will analyze your transactions and find ways for you to save. Are you ready to save?</p>
-                                    <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#insightsModal">Help Me Save!</a>
+                                    <p class="card-text content">Impulses will analyze your transactions and find ways
+                                        for you to save. Are you ready to save?</p>
+                                    <a class="btn btn-primary btn-lg" data-toggle="modal"
+                                        data-target="#insightsModal">Help Me Save!</a>
                                 </div>
                             </div>
                         </div>
@@ -265,15 +341,30 @@
                                     <p class='content'><b>Linked Accounts</b></p>
                                     <ul class="list-group">
                                         {% for account in user.accounts %}
-                                        <li class="list-group-item">
-                                            <p class="content"><b>Account Name:</b> {{ account.account_name }}</p>
+                                       
+                                        <li class="list-group-item align-middle">
+                                            <div class="row">
+                                            <div class="col-6 m-0 align-self-begin">
+                                                <p class="content m-0"><b>Account Name:</b> {{ account.account_name }}</p>
+                                            </div>
+                                            <div class="col-6 align-self-end text-right mb-3 mt-3">
+                                                <button type="button" data-toggle="modal"
+                                                    data-target="#deleteAccountModal" data-id={{account.id}}
+                                                    data-name={{account.account_name}}>
+                                                    <i class="far fa-trash-alt" style="font-size: 20px;"></i></button>
+
+                                            </div>
+                                        </div>
                                         </li>
                                         {% endfor %}
                                     </ul>
                                     <form id='plaid-link-form' action={{url_for('access_plaid_token')}} method="post">
                                     </form>
-                                    <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js" data-client-name="My App" data-form-id="plaid-link-form" data-key={{plaid_public_key}} data-product={{plaid_products}} data-env={{plaid_environment}}>
-                                    </script>
+                                    <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"
+                                        data-client-name="My App" data-form-id="plaid-link-form"
+                                        data-key={{plaid_public_key}} data-product={{plaid_products}}
+                                        data-env={{plaid_environment}}>
+                                        </script>
                                     <script>
                                         var button = document.getElementById('plaid-link-button');
                                         button.innerHTML = "Link an Account though Plaid"
@@ -321,7 +412,8 @@
                                     <tr>
                                         <td>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="{{available_lottery_record.id}}" name="lottery_check">
+                                                <input class="form-check-input" type="checkbox"
+                                                    value="{{available_lottery_record.id}}" name="lottery_check">
                                             </div>
                                         </td>
                                         <td>{{available_lottery_record.lottery_name}}</td>
@@ -333,39 +425,40 @@
                                 </tbody>
                             </table>
                             <div class="text-center">
-                                <button type="submit" name="lottery_submit" form="lottery" class="btn btn-success" value="buy">Buy lottery tickets</button>
+                                <button type="submit" name="lottery_submit" form="lottery" class="btn btn-success"
+                                    value="buy">Buy lottery tickets</button>
                             </div>
                         </form>
                     </div>
                     <div class="col-sm">
                         <h3 class="text-center">Lottery Tickets You've Bought</h3>
                         <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Category</th>
-                                <th>Entry</th>
-                                <th>Winner</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for bought_lottery_record in bought_lottery_records %}
-                            <tr>
-                                <td>{{bought_lottery_record.lottery.lottery_name}}</td>
-                                <td>{{bought_lottery_record.lottery.category}}</td>
-                                <td>{{bought_lottery_record.entries}}</td>
-                                <td>
-                                    {% if not bought_lottery_record.lottery.winner_user_id %}
-                                    Hasn't Revealed
-                                    {% elif bought_lottery_record.lottery.winner_user_id != user.id%}
-                                    You Lost......
-                                    {% elif bought_lottery_record.lottery.winner_user_id == user.id%}
-                                    You Won!
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Entry</th>
+                                    <th>Winner</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for bought_lottery_record in bought_lottery_records %}
+                                <tr>
+                                    <td>{{bought_lottery_record.lottery.lottery_name}}</td>
+                                    <td>{{bought_lottery_record.lottery.category}}</td>
+                                    <td>{{bought_lottery_record.entries}}</td>
+                                    <td>
+                                        {% if not bought_lottery_record.lottery.winner_user_id %}
+                                        Hasn't Revealed
+                                        {% elif bought_lottery_record.lottery.winner_user_id != user.id%}
+                                        You Lost......
+                                        {% elif bought_lottery_record.lottery.winner_user_id == user.id%}
+                                        You Won!
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -374,7 +467,8 @@
     </div>
 
     <!--Habit Form Modal -->
-    <div class="modal fade" id="habitFormModal" tabindex="-1" role="dialog" aria-labelledby="habitFormModal" aria-hidden="true">
+    <div class="modal fade" id="habitFormModal" tabindex="-1" role="dialog" aria-labelledby="habitFormModal"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -419,7 +513,8 @@
         </div>
     </div>
     <!--Insights Form Modal -->
-    <div class="modal fade" id="insightsModal" tabindex="-1" role="dialog" aria-labelledby="insightsModal" aria-hidden="true">
+    <div class="modal fade" id="insightsModal" tabindex="-1" role="dialog" aria-labelledby="insightsModal"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -430,58 +525,60 @@
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid p-">
-                        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="false">
-                            <div class="carousel-inner align-self-center" style=" width:100%; height: 300px !important;">
+                        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel"
+                            data-interval="false">
+                            <div class="carousel-inner align-self-center"
+                                style=" width:100%; height: 300px !important;">
                                 <div class="carousel-item active">
                                     <div class="jumbotron align-self-center">
-                                        <h1 class="display-4 align-self-center">We Found 1 potential savings
-                                            opportunity!</h1>
+                                        <h1 class="display-4 align-self-center">We Found {{insights | length}}
+                                            potential savings opportunity!</h1>
                                     </div>
                                 </div>
+
+                                {% for insight in insights %}
+
                                 <div class="carousel-item">
                                     <h3>We took a look at your last 30 days of spending, and we found that you LIKE
-                                        coffee!</h3>
+                                        {{insight.habit_name}}!</h3>
                                     <div class="row justify-content-md-center">
                                         <div class='col-md-3 align-self-center'>
                                             <div class="card text-center mb-3">
                                                 <div class="card-body">
-                                                    <p class="card-text" style='font-size: xx-large'>10</p>
+                                                    <p class="card-text" style='font-size: xx-large'>{{insight.num}}</p>
                                                 </div>
-                                                <div class="card-footer bg-transparent" style="font-size: medium;">Number of coffee purchases in the past 30 days
-                                                </div>
+                                                <div class="card-footer bg-transparent" style="font-size: medium;">
+                                                    Number of {{insight.habit_name}}
+                                                    purchases in the past 30 days</div>
                                             </div>
                                         </div>
                                         <div class='col-md-3 align-self-center'>
                                             <div class="card text-center mb-3">
                                                 <div class="card-body">
-                                                    <p class="card-text" style='font-size: xx-large'>$55</p>
+                                                    <p class="card-text" style='font-size: xx-large'>
+                                                        ${{'%.2f' % insight.tot_amount}}</p>
                                                 </div>
-                                                <div class="card-footer bg-transparent" style="font-size: medium;">Amount spent on coffee in the past 30 days
-                                                </div>
+                                                <div class="card-footer bg-transparent" style="font-size: medium;">
+                                                    Amount spent on {{ insight.habit_name }} in the past 30
+                                                    days</div>
                                             </div>
                                         </div>
                                         <div class='col-md-3 align-self-center'>
                                             <div class="card text-center mb-3">
                                                 <div class="card-body">
-                                                    <p class="card-text" style='font-size: xx-large'>$5</p>
+                                                    <p class="card-text" style='font-size: xx-large'>
+                                                        ${{ '%.2f' % insight.avg_amount }}</p>
                                                 </div>
-                                                <div class="card-footer bg-transparent" style="font-size: medium;">Average cost of coffee purchase in the past 30 days</div>
+                                                <div class="card-footer bg-transparent" style="font-size: medium;">
+                                                    Average cost of {{insight.habit_name}} purchase in the
+                                                    past 30 days</div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="carousel-item">
                                     <div class='row justify-content-md-center'>
-                                        <div class='col-md-6'>
-                                            <img src={{url_for('static',filename='weekly_purchase.svg')}} class="img-fluid" height=100% width=100%>
-                                        </div>
-                                        <div class='col-md-4'>
-                                            <div class="card text-center mb-3">
-                                                <div class="card-body">
-                                                    <p class="card-text" style="font-size: large;">You typically buy coffee on weekdays, especially on Monday and Wednesday.</p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        {{insight.graph | safe}}
                                     </div>
                                 </div>
                                 <div class="carousel-item">
@@ -489,29 +586,41 @@
                                         <div class='col-md-4'>
                                             <div class="card text-center mb-3">
                                                 <div class="card-body">
-                                                    <p class="card-text" style='font-size: xx-large'>$120</p>
+                                                    <p class="card-text" style='font-size: xx-large'>
+                                                        ${{insight.yearly_saving }}</p>
                                                 </div>
-                                                <div class="card-footer bg-transparent" style="font-size: medium;">Approximate yearly saving by reducing coffee purchase to 8 per month</div>
+                                                <div class="card-footer bg-transparent" style="font-size: medium;">
+                                                    Approximate yearly saving by reducing
+                                                    {{insight.habit_name}} purchase to
+                                                    {{insight.recommended}} per month</div>
                                             </div>
                                         </div>
                                         <div class='col-md-4'>
                                             <div class="card text-center mb-3">
                                                 <div class="card-body">
-                                                    <p class="card-text" style="font-size: large;">Impulses can help you meet this goal with Habits. Set up a Habit to remind you to save today!</p>
+                                                    <p class="card-text" style="font-size: large;">Impulses can help
+                                                        you meet this goal with Habits. Set up a Habit to remind you
+                                                        to save today!</p>
                                                 </div>
                                                 <div class="card-footer bg-transparent">
-                                                    <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#habitFormModal" data-dismiss="modal" aria-label="Close">Setup habit</a>
+                                                    <a class="btn btn-primary btn-lg" data-toggle="modal"
+                                                        data-target="#habitFormModal" data-dismiss="modal"
+                                                        aria-label="Close">Setup habit</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                {% endfor %}
+
+                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
+                                    data-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="sr-only">Previous</span>
                                 </a>
-                                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                <a class="carousel-control-next" href="#carouselExampleControls" role="button"
+                                    data-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="sr-only">Next</span>
                                 </a>
@@ -523,6 +632,43 @@
             </div>
         </div>
     </div>
+    <!-- -------Modal Delete Account ------------>
+    <div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog" aria-labelledby="deleteAccountModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteAccountModalLabel">Delete Account</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button> -->
+                    <form action={{url_for('delete_plaid_account')}} method="POST">
+                        <input type="hidden" name="accountId">
+                        <button type="submit" class="btn btn-primary">Delete Account</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
+
+<script>
+    $('#deleteAccountModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var account_id = button.data('id') // Extract info from data-* attributes
+        var account_name = button.data('name')
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('.modal-body').text('Are you sure you want to delete account ' + account_name + '?')
+        modal.find('.modal-footer input').val(account_id)
+    })
+</script>
 
 </html>

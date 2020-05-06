@@ -48,7 +48,7 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String, nullable=False)
     signup_date = db.Column(db.DateTime, nullable=False,
                             default=datetime.now())
-    status = db.Column(db.String, nullable=False, default="active")
+    status = db.Column(db.String, nullable=False, default="unverified")
     auth_id = db.Column(db.String, default=None)
     coins = db.Column(db.Integer, nullable=False, default=0)
 
