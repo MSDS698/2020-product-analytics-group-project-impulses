@@ -104,7 +104,7 @@ def verify():
     """Verify a user on registration with their phone number"""
     vsid = start_verification("+1"+str(session.get('phone')), "sms")
     if vsid is None:
-        flash('Your phone number cannot be recognized \
+        flash('Your phone number cannot be verified \
         Please change it later.')
         return redirect(url_for("login"))
     else:
@@ -144,7 +144,6 @@ def check_verification(phone, code):
                 user = classes.User.query.filter_by(phone=user_phone).first()
                 user.status = "verified"
                 db.session.commit()
-
                 flash('Your phone number has been verified! \
                     Please login to continue.')
                 return redirect(url_for('login'))
@@ -169,11 +168,11 @@ def create_habit():
         time_hour = habit_form.time_hour.data
         time_day_of_week = habit_form.time_day_of_week.data
         habit = classes.Habits(user=current_user,
-                            habit_name=habit_name,
-                            habit_category=habit_category,
-                            time_minute=int(time_minute),
-                            time_hour=int(time_hour),
-                            time_day_of_week=time_day_of_week)
+                               habit_name=habit_name,
+                               habit_category=habit_category,
+                               time_minute=int(time_minute),
+                               time_hour=int(time_hour),
+                               time_day_of_week=time_day_of_week)
 
         db.session.add(habit)
         db.session.commit()
