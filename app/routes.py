@@ -64,7 +64,8 @@ def login():
             login_user(user)
             add_login_coin(user)
             if user.status == "unverified":
-                return redirect(url_for("start_verification"))
+                flash('Verify your phone number in habits tab to receive notifications!')
+                return render_template("message.html", validator=True)
             elif user.status == "verified":
                 return redirect(url_for("index"))
         else:
