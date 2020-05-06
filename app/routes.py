@@ -183,8 +183,7 @@ def habit_table_save_changes():
         for i in range(len(habit_name)):
             habit = classes.Habits(user_id=user_id, habit_name=habit_name[i],
                                    habit_category=habit_category[i],
-                                   time_minute=time_hour_minute[i]
-                                   .split(':')[1],
+                                   time_minute=time_hour_minute[i].split(':')[1],
                                    time_hour=time_hour_minute[i].split(':')[0],
                                    time_day_of_week=time_day_of_week[i])
             db.session.add(habit)
