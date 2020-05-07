@@ -152,7 +152,7 @@ def check_verification(phone, code):
                 flash('Your phone number has been verified!')
                 return render_template('message.html', validator=False)
             else:
-                flash('The code you provided is incorrect. Please try again.')
+                flash('The code you provided is incorrect, please try again.')
         except Exception as e:
             flash("Error validating code: {}".format(e))
 
