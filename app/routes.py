@@ -254,11 +254,11 @@ def dashboard():
     # the saving coins yet
     saving_date = classes.Coin.query.filter(
         classes.Coin.user_id == user_id,
-        classes.Coin.description.in_(['login', 'registration'])) \
+        classes.Coin.description.in_(['saving'])) \
         .with_entities(classes.Coin.log_date).all()
     saving_coins = classes.Coin.query.filter(
         classes.Coin.user_id == user_id,
-        classes.Coin.description.in_(['login', 'registration'])) \
+        classes.Coin.description.in_(['saving'])) \
         .with_entities(classes.Coin.coin_amount).all()
     savings_bar_plot, total_saving_coins = \
         plotly_saving_history(saving_date, saving_coins)
@@ -266,7 +266,7 @@ def dashboard():
     # count how many times user has responded "Y" to save
     # here, description should be "saving" as well in the future
     num_saved = len(classes.Coin.query.filter_by(user_id=user_id,
-                                                 description='login').all())
+                                                 description='saving').all())
     # count number of total saving suggestions texts sent to user
     # total num = num of habits * days since user first signed up
     signup_tz = tz.localize(classes.User.query.filter_by(id=user_id).
