@@ -29,6 +29,9 @@ jobs:
         PLAID_CLIENT_ID: ${{ secrets.PLAID_CLIENT_ID }}
         PLAID_PUBLIC_KEY: ${{ secrets.PLAID_PUBLIC_KEY }}
         PLAID_SECRET: ${{ secrets.PLAID_SECRET_SANDBOX }}
+        TWILIO_ID: ${{secrets.TWILIO_ACCOUNT_SID}}
+        TWILIO_TOKEN: ${{secrets.TWILIO_AUTH_TOKEN}}
+        TWILIO_VERIFY_SID: ${{secrets.VERIFICATION_SID}}
         PLAID_ENV: sandbox
         SQLALCHEMY_DATABASE_URI: sqlite://
       run: |
