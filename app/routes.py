@@ -117,8 +117,7 @@ def start_verification():
 
     except Exception as e:
         flash("oops! We can't verify this phone number, please use a \
-            valid phone number! returning to homepage in 3 seconds")
-        # flash("Error validating code: {}".format(e))
+            valid phone number! Returning to homepage in 3 seconds")
         return render_template('message.html', validator=True)
     return redirect(url_for('verify'))
 
@@ -139,7 +138,7 @@ def check_verification(phone, code):
 
     if len(code) != 6:
         flash("The code you provided should be 6 digits, \
-            Please try again.")
+            please try again.")
     else:
         try:
             verification_check = twilio_client.verify \
@@ -148,9 +147,7 @@ def check_verification(phone, code):
                 .create(to=phone, code=code)
 
             if verification_check.status == "approved":
-                user_phone = current_user.phone
-                user = classes.User.query.filter_by(phone=user_phone).first()
-                user.status = "verified"
+                current_user.status = "verified"
                 db.session.commit()
                 flash('Your phone number has been verified!')
                 return render_template('message.html', validator=False)
