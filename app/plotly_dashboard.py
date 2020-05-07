@@ -10,13 +10,16 @@ tz = pytz.timezone("America/Los_Angeles")
 
 def select_past_week(saving_date):
     this_week_cnt = 0
-    last_ween_cnt = 0
+    last_week_cnt = 0
     for dates in saving_date:
         if (datetime.now().astimezone(tz).date() - dates[0]).days <= 7:
             this_week_cnt += 1
         elif (datetime.now().astimezone(tz).date() - dates[0]).days <= 14:
-            last_ween_cnt += 1
-    percentage = round((this_week_cnt - last_ween_cnt) / last_ween_cnt * 100)
+            last_week_cnt += 1
+    if last_week_cnt == 0:
+        percentage = 0
+    else:
+        percentage = round((this_week_cnt - last_ween_cnt) / last_ween_cnt * 100)
     return percentage, this_week_cnt * 10
 
 
