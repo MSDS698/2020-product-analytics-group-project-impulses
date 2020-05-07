@@ -12,8 +12,8 @@ def plotly_saving_history(saving_date, saving_coins):
     df.columns = ['coins', 'date']
     fig = px.line(df, x="date", y="coins")
     fig.update_layout(xaxis_title=None,
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)')
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)')
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='LightGrey')
     output = plotly.offline.plot(fig, include_plotlyjs=False,
                                  output_type='div')
