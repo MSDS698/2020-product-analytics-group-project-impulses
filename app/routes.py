@@ -15,7 +15,8 @@ import twilio.rest
 from twilio.twiml.messaging_response import MessagingResponse
 from scripts.coin_transaction import add_login_coin, add_saving_coin, \
     enter_lottery, lottery_drawing
-from app.plotly_dashboard import plotly_saving_history, plotly_percent_saved
+from app.plotly_dashboard import plotly_saving_history, plotly_percent_saved,\
+    select_past_week
 from scripts.extract_habit import Insights
 
 ENV_VARS = {
@@ -260,8 +261,8 @@ def dashboard():
         classes.Coin.user_id == user_id,
         classes.Coin.description.in_(['saving'])) \
         .with_entities(classes.Coin.coin_amount).all()
-    savings_bar_plot, total_saving_coins = \
-        plotly_saving_history(saving_date, saving_coins)
+    savings_bar_plot = plotly_saving_history(saving_date, saving_coins)
+    saving_percent, total_saving_coins = select_past_week(saving_date)
 
     # count how many times user has responded "Y" to save
     # here, description should be "saving" as well in the future
@@ -311,7 +312,8 @@ def dashboard():
                            num_total_suggestions=num_total_suggestions,
                            num_saved=num_saved,
                            total_saving_coins=total_saving_coins,
-                           insights=insights_list
+                           insights=insights_list,
+                           saving_percent=saving_percent
                            )
 
 
