@@ -303,8 +303,12 @@
                         <div class='card w-75'>
                             <div class='card-body'>
                                 <h2 class='card-title'>
-                                    <button id='new-habit' class='btn btn-outline-dark btn-lg' data-toggle="modal"
-                                        data-target="#habitFormModal">+</button> Add a new habit
+                                    {% if user.status == "verified" %}
+                                    <button id='new-habit' class='btn btn-primary' data-toggle="modal"
+                                        data-target="#habitFormModal" style="color:white">+ Add a new habit</button> 
+                                    {% elif user.status == "unverified" %}
+                                    <a href="start_verification" class="btn btn-primary" role="button">Verify phone # to add habits</a>
+                                    {% endif %}
                                 </h2>
                             </div>
                         </div>
@@ -316,8 +320,8 @@
                                     <h2 class="card-title">Insights</h2>
                                     <p class="card-text content">Impulses will analyze your transactions and find ways
                                         for you to save. Are you ready to save?</p>
-                                    <a class="btn btn-primary btn-lg" data-toggle="modal"
-                                        data-target="#insightsModal">Help Me Save!</a>
+                                    <a class="btn btn-primary" data-toggle="modal"
+                                        data-target="#insightsModal" style="color:white">Help Me Save!</a>
                                 </div>
                             </div>
                         </div>
@@ -368,7 +372,7 @@
                                     <script>
                                         var button = document.getElementById('plaid-link-button');
                                         button.innerHTML = "Link an Account though Plaid"
-                                        button.setAttribute('class', "btn btn-primary")
+                                        button.setAttribute('class', "btn btn-primary", "btn-lg")
                                     </script>
                                     {% with messages = get_flashed_messages() %} {% if messages %}
                                     <div class="alert alert-danger" role="alert">
@@ -425,7 +429,7 @@
                                 </tbody>
                             </table>
                             <div class="text-center">
-                                <button type="submit" name="lottery_submit" form="lottery" class="btn btn-success"
+                                <button type="submit" name="lottery_submit" form="lottery" class="btn btn-primary"
                                     value="buy">Buy lottery tickets</button>
                             </div>
                         </form>

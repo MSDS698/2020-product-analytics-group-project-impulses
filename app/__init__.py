@@ -18,6 +18,3 @@ bootstrap = Bootstrap(application)
 
 from app import routes
 from app import classes
-
-if __name__ == '__main__':
-    application.debug = True 
