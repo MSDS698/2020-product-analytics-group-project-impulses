@@ -168,8 +168,6 @@ def habit_table_save_changes():
         time_hour_minute = request.form.getlist("time_hour_minute")
         time_day_of_week = request.form.getlist("time_day_of_week")
 
-        print(time_hour_minute[-1].split(":"))
-
         # delete the user's habits
         classes.Habits.query.filter_by(user_id=user_id).delete()
 
@@ -184,7 +182,6 @@ def habit_table_save_changes():
             db.session.add(habit)
             db.session.commit()
 
-        return redirect(url_for("dashboard"))
     return redirect(url_for("dashboard"))
 
 
