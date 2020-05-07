@@ -5,7 +5,7 @@ import pandas as pd
 
 
 def plotly_saving_history(saving_date, saving_coins):
-    if len(saving_coins) != 0: 
+    if len(saving_coins) != 0:
         saving_coins_sum = [saving_coins[0][0]]
         for i, coin in enumerate(saving_coins[1:]):
             saving_coins_sum.append(saving_coins_sum[i] + coin[0])
