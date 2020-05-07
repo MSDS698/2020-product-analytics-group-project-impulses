@@ -305,7 +305,10 @@
                                 <h2 class='card-title'>
                                     {% if user.status == "verified" %}
                                     <button id='new-habit' class='btn btn-primary' data-toggle="modal"
-                                        data-target="#habitFormModal" style="color:white">+ Add a new habit</button> 
+                                        data-target="#habitFormModal" style="color:white"
+                                            onclick="gtag('event', 'click', {'event_category': 'button', 'event_label': 'create_habit'})"
+                                    >+ Add a new habit
+                                    </button>
                                     {% elif user.status == "unverified" %}
                                     <a href="start_verification" class="btn btn-primary" role="button">Verify phone # to add habits</a>
                                     {% endif %}
@@ -321,7 +324,9 @@
                                     <p class="card-text content">Impulses will analyze your transactions and find ways
                                         for you to save. Are you ready to save?</p>
                                     <a class="btn btn-primary" data-toggle="modal"
-                                        data-target="#insightsModal" style="color:white">Help Me Save!</a>
+                                        data-target="#insightsModal" style="color:white"
+                                       onclick="gtag('event', 'click', {'event_category': 'button', 'event_label': 'insight_button'})"
+                                    >Help Me Save!</a>
                                 </div>
                             </div>
                         </div>
@@ -430,7 +435,8 @@
                             </table>
                             <div class="text-center">
                                 <button type="submit" name="lottery_submit" form="lottery" class="btn btn-primary"
-                                    value="buy">Buy lottery tickets</button>
+                                    value="buy" onclick="gtag('event', 'click', {'event_category': 'button', 'event_label': 'buy_lottery'})"
+                                >Buy lottery tickets</button>
                             </div>
                         </form>
                     </div>
