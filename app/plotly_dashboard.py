@@ -41,7 +41,8 @@ def plotly_saving_history(saving_date, saving_coins):
         df = pd.DataFrame(saving_dict.items())
         df.columns = ['date', 'coins']
 
-        fig = go.Figure(data=go.Scatter(x=df.date, y=df.coins,line=dict(color='#327AB7', width=4)))
+        fig = go.Figure(data=go.Scatter(x=df.date, y=df.coins,
+                                        line=dict(color='#327AB7', width=4)))
 
         fig.update_layout(
             xaxis_range=[datetime.now().astimezone(TZ) - timedelta(days=7),
@@ -63,7 +64,7 @@ def plotly_percent_saved(num_saved, num_total_suggestions):
 
     # pull is given as a fraction of the pie radius
     fig = go.Figure(data=[go.Pie(labels=labels, values=values, pull=[0.2, 0])])
-    fig.update_traces(marker=dict(colors=['#327AB7','grey']))
+    fig.update_traces(marker=dict(colors=['#327AB7', 'grey']))
     output = plotly.offline.plot(fig, include_plotlyjs=False,
                                  output_type='div')
     return output
