@@ -157,6 +157,8 @@ def check_verification(phone, code):
             flash("Error validating code: {}".format(e))
 
     return redirect(url_for('verify'))
+
+
 @application.route('/habit_table_save_changes', methods=["POST"])
 @login_required
 def habit_table_save_changes():

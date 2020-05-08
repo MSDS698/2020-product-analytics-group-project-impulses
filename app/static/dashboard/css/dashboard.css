@@ -143,6 +143,7 @@ body {
     line-height: 13px;
 }
 .table-title .add-new i {
+    border-radius: 50px;
     margin-right: 4px;
 }
 table.table {

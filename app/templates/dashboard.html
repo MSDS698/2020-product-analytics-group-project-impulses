@@ -236,18 +236,8 @@
         <div class="tab-pane fade" id="habits-md" role="tabpanel" aria-labelledby="profile-tab-md">
             <div class="container">
                 <div class="row">
-                    <h2 class='card-title'>
-                                    {% if user.status == "verified" %}
-                                    <button id='new-habit' class='btn btn-primary' data-toggle="modal"
-                                        data-target="#habitFormModal" style="color:white"
-                                            onclick="gtag('event', 'click', {'event_category': 'button', 'event_label': 'create_habit'})"
-                                    >+ Add a new habit
-                                    </button>
-                                    {% elif user.status == "unverified" %}
-                                    <a href="start_verification" class="btn btn-primary" role="button">Verify phone # to add habits</a>
-                                    {% endif %}
-                                </h2>
                     <div class="col-sm-8">
+                        {% if user.status == "verified" %}
                         <div class="table-wrapper">
                             <div class="table-title">
                                 <div class="row">
@@ -303,10 +293,17 @@
                                 </table>
                             </form>
                         </div>
+                        {% elif user.status == "unverified" %}
+                        <div class="card text-center" style="border: none; margin-top: 10%;">
+                            <div class="card-body">
+                                <a href="start_verification" class="btn btn-primary card-text content" role="button">Verify phone # to add habits</a>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                     <div class="col-sm-4">
                         <div>
-                            <div class="card text-center">
+                            <div class="card text-center" style="border: none;">
                                 <div class="card-body">
                                     <h2 class="card-title">Insights</h2>
                                     <p class="card-text content">Impulses will analyze your transactions and find ways for you to save. Are you ready to save?</p>
