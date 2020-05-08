@@ -213,9 +213,11 @@
                                 <h4 class="card-title" style="text-align:center">Total Savings</h4>
                                 <h5 class="card-text" style="text-align:center">Of the {{num_total_suggestions}} saving suggestions we sent you,
                                     you have made {{num_saved}} savings.</h5>
+                                {% if num_saved !=0 %}
                                 <div>
                                     {{ source_pie|safe }}
                                 </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -223,11 +225,15 @@
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title" style="text-align:center">Savings History</h4>
+                                {% if saving_percent == 0 %}
+                                <h5 class="card-text" style="text-align:center">No Savings Yet!</h5>
+                                {% else %}
                                 <h5 class="card-text" style="text-align:center">You have earned {{total_saving_coins}} coins from making savings in the past week!</h5>
                                 <h5 class="card-text" style="text-align:center">{{saving_percent}}% {% if saving_percent>0 %} increase {% else %} decrease {% endif %} from last week </h5>
                                     <div>
                                         {{ source_bar|safe }}
                                     </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
