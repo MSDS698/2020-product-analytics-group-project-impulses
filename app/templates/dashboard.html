@@ -268,22 +268,23 @@
 
                                         {% for habit in user.habits %}
                                         <tr>
-                                            <td>
-                                                <input style="width:100%" readonly name="habit_name" value="{{habit.habit_name}}">
+                                            <td height="10">
+                                                <input style="height: 100%; width:100%; font-size: 1.5rem; border: 0; vertical-align: middle;" class="habit-input" readonly name="habit_name" value="{{habit.habit_name}}">
                                             </td>
-                                            <td>
-                                                <input style="width:100%" readonly name="habit_category" value="{{habit.habit_category}}">
+                                            <td height="10">
+                                                <input style="height: 100%; width:100%; font-size: 1.5rem; border: 0;" class="habit-input" readonly name="habit_category" value="{{habit.habit_category}}">
                                             </td>
-                                            <td>
-                                                <input style="width:100%"
+                                            <td height="10">
+                                                <input style="height: 100%; width:100%; font-size: 1.5rem; border: 0;"
+                                                       class="habit-input"
                                                        readonly
                                                        name="time_hour_minute" type="time" value="{{'%02d' | format(habit.time_hour)}}:{{'%02d' | format(habit.time_minute)}}">
                                             </td>
-                                            <td>
-                                                <input style="width:100%" readonly name="time_day_of_week" value="{{habit.time_day_of_week}}">
+                                            <td height="10">
+                                                <input style="height: 100%; width:100%; font-size: 1.5rem; border: 0;" class="habit-input" readonly name="time_day_of_week" value="{{habit.time_day_of_week}}">
                                             </td>
-                                            <td>
-                                                <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                                            <td height="10">
+                                                <a class="delete" title="Delete" data-toggle="tooltip"><i style="height: 100%;" class="material-icons">&#xE872;</i></a>
                                             </td>
                                         </tr>
                                         {% endfor %}
