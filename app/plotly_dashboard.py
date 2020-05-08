@@ -19,7 +19,7 @@ def select_past_week(saving_date):
     if last_week_cnt == 0:
         percentage = 0
     else:
-        percentage = round((this_week_cnt - last_week_cnt) / 
+        percentage = round((this_week_cnt - last_week_cnt) /
                            last_week_cnt * 100)
     return percentage, this_week_cnt * 10
 
