@@ -312,9 +312,7 @@ def dashboard():
     # Retrieve spending habits for Insights
     categories_file = os.path.join(os.getcwd(), 'scripts', 'categories.json')
 
-    beginning_month = datetime(year=datetime.now().year,
-                               month=datetime.now().month,
-                               day=1)
+    beginning_month = datetime(year=2019, month=10, day=1)
     insights_list = []
     thresholds = [8, 6, 2]
     for ind, habit_name in enumerate(['coffee', 'lunch', 'transportation']):
