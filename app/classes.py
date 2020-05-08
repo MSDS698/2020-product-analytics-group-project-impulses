@@ -34,10 +34,11 @@ class User(db.Model, UserMixin):
     email: user's email address; string; unique
     phone: user's phone number; string; unique
     password_hash: user's hashed password; string
-    signup_date: user's signup date; date
+    signup_date: user's signup date; datetime
     status: user's current status; string
     auth_id: unique user id from OAuth if available; string
     coins: total number of coins the user has; int
+    saving_suggestions: number of habit notifications sent to the user; int
     """
     __tablename__ = "user"
     id = db.Column("user_id", db.Integer, primary_key=True)
@@ -51,6 +52,7 @@ class User(db.Model, UserMixin):
     status = db.Column(db.String, nullable=False, default="unverified")
     auth_id = db.Column(db.String, default=None)
     coins = db.Column(db.Integer, nullable=False, default=0)
+    saving_suggestions = db.Column(db.Integer, nullable=False, default=0)
 
     # relationships
     plaid_items = db.relationship("PlaidItems", backref="user")

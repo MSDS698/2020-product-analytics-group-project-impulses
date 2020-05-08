@@ -212,7 +212,7 @@
                             <div class="card-body">
                                 <h4 class="card-title" style="text-align:center">Total Savings</h4>
                                 {% if num_saved !=0 %}
-                                    <h5 class="card-text" style="text-align:center">Of the {{num_total_suggestions}} saving suggestions we sent you,
+                                    <h5 class="card-text" style="text-align:center">Of the {{num_suggestions}} saving suggestions we sent you,
                                         you have made {{num_saved}} savings.</h5>
                                     <div>
                                         {{ source_pie|safe }}
@@ -464,7 +464,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
     <!--Insights Form Modal -->

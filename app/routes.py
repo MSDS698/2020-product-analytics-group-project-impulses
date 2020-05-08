@@ -270,16 +270,9 @@ def dashboard():
     # count how many times user has responded "Y" to save
     num_saved = len(classes.Coin.query.filter_by(user_id=user_id,
                                                  description='saving').all())
-    # count number of total saving suggestions texts sent to user
-    # total num = num of habits * days since user first signed up
-    signup_tz = tz.localize(classes.User.query.filter_by(id=user_id).
-                            with_entities(classes.User.signup_date).first()[
-                                0])
-    days = (datetime.now().astimezone(tz) - signup_tz).days + 1
-    num_total_suggestions = len(classes.Habits.query.
-                                filter_by(user_id=user_id).all()) * days
-    saving_percent_plot = plotly_percent_saved(num_saved,
-                                               num_total_suggestions)
+    saving_percent_plot = plotly_percent_saved(
+        num_saved, current_user.saving_suggestions)
+
     # Retrieve spending habits for Insights
     categories_file = os.path.join(os.getcwd(), 'scripts', 'categories.json')
 
@@ -292,6 +285,7 @@ def dashboard():
         if insights.transactions is not None:
             insights_list.append(insights)
 
+    # coin transaction history
     coin_log = classes.Coin.query.filter_by(user=current_user).order_by(
         classes.Coin.id.desc()).limit(6).all()
 
@@ -309,7 +303,7 @@ def dashboard():
                            get("PLAID_COUNTRY_CODES", "US"),
                            source_bar=savings_bar_plot,
                            source_pie=saving_percent_plot,
-                           num_total_suggestions=num_total_suggestions,
+                           num_suggestions=current_user.saving_suggestions,
                            num_saved=num_saved,
                            total_saving_coins=total_saving_coins,
                            insights=insights_list,
