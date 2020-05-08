@@ -36,83 +36,98 @@
 <dl class="py function">
 <dt id="app.routes.access_plaid_token">
 <code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">access_plaid_token</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.access_plaid_token" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt id="app.routes.add_login_coin">
-<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">add_login_coin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.add_login_coin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update user coins when logging in.</p>
-<p>When the user is logged in for the first time, 10 coins will be added
-as a sign-up bonus. For regular user login, 2 coins are rewarded daily.</p>
-<p>If any changes occur, a new coin transaction will be added to coin
-table and the coins column in user table will also be updated.</p>
+<dd><p>Access user’s plaid token to link bank account</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="app.routes.add_saving_coin">
-<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">add_saving_coin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.add_saving_coin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update user coins when replying “yes” to saving texts.</p>
-<p>When the user replies “yes” to saving text messages, 10 coins will be
-added. A new coin transaction will be added to coin table and the coins
-column in user table will also be updated.</p>
+<dt id="app.routes.check_verification">
+<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">check_verification</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">phone</span></em>, <em class="sig-param"><span class="n">code</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.check_verification" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if user’s verification code is correct</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="app.routes.create_habit">
 <code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">create_habit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.create_habit" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Add a new habit</p>
+</dd></dl>
 
 <dl class="py function">
 <dt id="app.routes.dashboard">
 <code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">dashboard</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.dashboard" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Main dashboard page for all four tabs</p>
+</dd></dl>
 
 <dl class="py function">
-<dt id="app.routes.enter_lottery">
-<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">enter_lottery</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user</span></em>, <em class="sig-param"><span class="n">lottery</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.enter_lottery" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update user coins when buying an entry to a lottery.</p>
-<p>When the user buys an entry to a lottery, coins corresponding to the
-lottery cost will be deducted from the total number of coins that the
-user has.</p>
-<p>A new coin transaction will be added to coin table and the coins column
-in user table will also be updated. A new lottery log will be added to
-user_lottery_log table.</p>
+<dt id="app.routes.delete_plaid_account">
+<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">delete_plaid_account</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.delete_plaid_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete user’s linked plaid account from db</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="app.routes.find_insights">
 <code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">find_insights</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.find_insights" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Find spending insights in the month of October</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="app.routes.habit_table_save_changes">
+<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">habit_table_save_changes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.habit_table_save_changes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save user’s changes on the habits table when deleting a habit</p>
+</dd></dl>
 
 <dl class="py function">
 <dt id="app.routes.index">
 <code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">index</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.index" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Home page before user login</p>
+</dd></dl>
 
 <dl class="py function">
 <dt id="app.routes.login">
 <code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">login</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.login" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Login page</p>
+</dd></dl>
 
 <dl class="py function">
 <dt id="app.routes.logout">
 <code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">logout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.logout" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Logout page</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="app.routes.re_route">
+<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">re_route</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">e</span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.re_route" title="Permalink to this definition">¶</a></dt>
+<dd><p>Error handler - 500</p>
+</dd></dl>
 
 <dl class="py function">
 <dt id="app.routes.receive_message">
 <code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">receive_message</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.receive_message" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Receive user’s reply to habit messages and add saving coins</p>
+</dd></dl>
 
 <dl class="py function">
 <dt id="app.routes.register">
 <code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">register</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.register" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Register page</p>
+</dd></dl>
 
 <dl class="py function">
 <dt id="app.routes.send_message">
 <code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">send_message</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.send_message" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>send message to user’s phone number based on habit time</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="app.routes.start_verification">
+<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">start_verification</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.start_verification" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start a phone number verification</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="app.routes.verify">
+<code class="sig-prename descclassname">app.routes.</code><code class="sig-name descname">verify</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.routes.verify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify a user on registration with their phone number</p>
+</dd></dl>
 
 <span class="target" id="module-app.classes"></span><p>SQLAlchemy Object Relational Mapper (ORM) and Flask-WTForms</p>
 <p>Including:
@@ -458,7 +473,7 @@ access_token: token that is associated to user account information</p>
 
 <dl class="py attribute">
 <dt id="app.classes.RegistrationForm.phone">
-<code class="sig-name descname">phone</code><em class="property"> = &lt;UnboundField(StringField, ('Phone Number:',), {'validators': [&lt;wtforms.validators.Length object&gt;]})&gt;</em><a class="headerlink" href="#app.classes.RegistrationForm.phone" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">phone</code><em class="property"> = &lt;UnboundField(StringField, ('Phone Number:',), {'validators': [&lt;wtforms.validators.DataRequired object&gt;]})&gt;</em><a class="headerlink" href="#app.classes.RegistrationForm.phone" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -762,7 +777,13 @@ coins: total number of coins the user has; int</p>
 <p>Columns include:
 lottery_log_id: auto increment primary key; int
 user_id: id of the user; int
-lottery_id: id of the lottery that the user entered; int</p>
+lottery_id: id of the lottery that the user entered; int
+entries: number of entries for the lottery; int</p>
+<dl class="py attribute">
+<dt id="app.classes.UserLotteryLog.entries">
+<code class="sig-name descname">entries</code><a class="headerlink" href="#app.classes.UserLotteryLog.entries" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt id="app.classes.UserLotteryLog.id">
 <code class="sig-name descname">id</code><a class="headerlink" href="#app.classes.UserLotteryLog.id" title="Permalink to this definition">¶</a></dt>

@@ -47,6 +47,7 @@ twilio_client = twilio.rest.Client(
 @application.route("/index")
 @application.route("/")
 def index():
+    """Home page before user login"""
     if current_user.is_authenticated:
         return redirect(url_for("dashboard"))
     return render_template("home.html")
@@ -54,6 +55,7 @@ def index():
 
 @application.route("/login", methods=["GET", "POST"])
 def login():
+    """Login page"""
     if current_user.is_authenticated:
         return redirect(url_for("index"))
     login_form = classes.LogInForm()
@@ -77,6 +79,7 @@ def login():
 
 @application.route("/register", methods=["POST", "GET"])
 def register():
+    """Register page"""
     registration_form = classes.RegistrationForm()
     if current_user.is_authenticated:
         return redirect(url_for("dashboard"))
@@ -135,6 +138,7 @@ def verify():
 
 
 def check_verification(phone, code):
+    """Check if user's verification code is correct"""
     service = ENV_VARS["VERIFICATION_SID"]
 
     if len(code) != 6:
@@ -163,6 +167,7 @@ def check_verification(phone, code):
 @application.route('/habit_table_save_changes', methods=["POST"])
 @login_required
 def habit_table_save_changes():
+    """Save user's changes on the habits table when deleting a habit"""
     if request.method == "POST":
         user_id = current_user.id
 
@@ -191,7 +196,7 @@ def habit_table_save_changes():
 @application.route('/create_habit', methods=["POST"])
 @login_required
 def create_habit():
-    # add a new habit
+    """Add a new habit"""
     habit_form = classes.HabitForm()
     if habit_form.validate_on_submit():
         habit_name = habit_form.habit_name.data
@@ -216,6 +221,7 @@ def create_habit():
 @application.route("/dashboard", methods=["POST", "GET"])
 @login_required
 def dashboard():
+    """Main dashboard page for all four tabs"""
     # default values
     lottery_status = "Buy a lottery ticket before it ends!"
 
@@ -317,6 +323,7 @@ def dashboard():
 @application.route('/find_insights')
 @login_required
 def find_insights():
+    """Find spending insights in the month of October"""
     # time.sleep(3)
     insights_start_date = '2019-10-01'
     insights_end_date = '2019-11-01'
@@ -327,12 +334,14 @@ def find_insights():
 
 @application.route("/logout")
 def logout():
+    """Logout page"""
     logout_user()
     return redirect(url_for("index"))
 
 
 @application.route("/delete_plaid_account", methods=["POST"])
 def delete_plaid_account():
+    """Delete user's linked plaid account from db"""
     account_id = request.form['accountId']
     # get account
     account = classes.Accounts.query.get(account_id)
@@ -359,26 +368,31 @@ def delete_plaid_account():
 
 @application.errorhandler(401)
 def re_route(e):
+    """Error handler - 401"""
     return redirect(url_for("login"))
 
 
 @application.errorhandler(403)
 def re_route(e):
+    """Error handler - 403"""
     return redirect(url_for("index"))
 
 
 @application.errorhandler(404)
 def re_route(e):
+    """Error handler - 404"""
     return redirect(url_for("index"))
 
 
 @application.errorhandler(500)
 def re_route(e):
+    """Error handler - 500"""
     return redirect(url_for("index"))
 
 
 @application.route("/access_plaid_token", methods=["POST", "GET"])
 def access_plaid_token():
+    """Access user's plaid token to link bank account"""
     try:
         public_token = request.form["public_token"]
         # extract selected account information from response
@@ -433,6 +447,7 @@ def access_plaid_token():
 
 @application.route("/send_message", methods=['GET', 'POST'])
 def send_message():
+    """send message to user's phone number based on habit time"""
     dow_dict = {'weekday': [0, 1, 2, 3, 4],
                 'weekend': [5, 6],
                 'everyday': [0, 1, 2, 3, 4, 5, 6]}
@@ -460,6 +475,7 @@ def send_message():
 
 @application.route("/receive_message", methods=["POST"])
 def receive_message():
+    """Receive user's reply to habit messages and add saving coins"""
     dow_dict = {'weekday': [0, 1, 2, 3, 4],
                 'weekend': [5, 6],
                 'everyday': [0, 1, 2, 3, 4, 5, 6]}
