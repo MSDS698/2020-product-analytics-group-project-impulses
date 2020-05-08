@@ -33,11 +33,14 @@ def plotly_saving_history(saving_date, saving_coins):
 
         saving_dict = dict(saving_coins_sum)
         base = datetime.today().date()
+        first_date = saving_coins_sum[0][0]
         latest_date = saving_coins_sum[-1][0]
-        date_list = [(base - timedelta(days=x)) for x in
-                     range((base - latest_date).days, -1, -1)]
+        date_list = [(base - timedelta(days=x)) for x in range(0, 7)]
         for dates in date_list:
-            saving_dict[dates] = saving_dict[latest_date]
+            if dates > latest_date:
+                saving_dict[dates] = saving_dict[latest_date]
+            elif dates < first_date:
+                saving_dict[dates] = 0
         df = pd.DataFrame(saving_dict.items())
         df.columns = ['date', 'coins']
 
