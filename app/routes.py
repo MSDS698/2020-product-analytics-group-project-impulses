@@ -251,8 +251,6 @@ def dashboard():
     # extract user's saving history from coins associated with "saving"
     user_id = current_user.id
 
-    # using the login coins now for demo, since we don't have enough data for
-    # the saving coins yet
     saving_date = classes.Coin.query.filter(
         classes.Coin.user_id == user_id,
         classes.Coin.description.in_(['saving'])) \
@@ -265,7 +263,6 @@ def dashboard():
     saving_percent, total_saving_coins = select_past_week(saving_date)
 
     # count how many times user has responded "Y" to save
-    # here, description should be "saving" as well in the future
     num_saved = len(classes.Coin.query.filter_by(user_id=user_id,
                                                  description='saving').all())
     # count number of total saving suggestions texts sent to user
@@ -273,7 +270,7 @@ def dashboard():
     signup_tz = tz.localize(classes.User.query.filter_by(id=user_id).
                             with_entities(classes.User.signup_date).first()[
                                 0])
-    days = (datetime.now().astimezone(tz) - signup_tz).days
+    days = (datetime.now().astimezone(tz) - signup_tz).days + 1
     num_total_suggestions = len(classes.Habits.query.
                                 filter_by(user_id=user_id).all()) * days
     saving_percent_plot = plotly_percent_saved(num_saved,

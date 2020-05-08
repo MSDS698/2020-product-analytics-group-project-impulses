@@ -5,16 +5,16 @@ import pandas as pd
 from datetime import datetime, timedelta
 import pytz
 
-tz = pytz.timezone("America/Los_Angeles")
+TZ = pytz.timezone("America/Los_Angeles")
 
 
 def select_past_week(saving_date):
     this_week_cnt = 0
     last_week_cnt = 0
     for dates in saving_date:
-        if (datetime.now().astimezone(tz).date() - dates[0]).days <= 7:
+        if (datetime.now().astimezone(TZ).date() - dates[0]).days <= 7:
             this_week_cnt += 1
-        elif (datetime.now().astimezone(tz).date() - dates[0]).days <= 14:
+        elif (datetime.now().astimezone(TZ).date() - dates[0]).days <= 14:
             last_week_cnt += 1
     if last_week_cnt == 0:
         percentage = 0
@@ -43,8 +43,8 @@ def plotly_saving_history(saving_date, saving_coins):
 
         fig = px.line(df, x="date", y="coins")
         fig.update_layout(
-            xaxis_range=[datetime.now().astimezone(tz) - timedelta(days=7),
-                         datetime.now().astimezone(tz)])
+            xaxis_range=[datetime.now().astimezone(TZ) - timedelta(days=7),
+                         datetime.now().astimezone(TZ)])
         fig.update_layout(xaxis_title=None,
                           paper_bgcolor='rgba(0,0,0,0)',
                           plot_bgcolor='rgba(0,0,0,0)')
