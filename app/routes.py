@@ -451,12 +451,14 @@ def send_message():
         if now.weekday() in dow_dict[habit.time_day_of_week] and \
                 habit.time_minute == now.minute and \
                 habit.time_hour == now.hour:
+            habit.user.saving_suggestions += 1  # add 1 user saving suggestion
             body = f"Would you like to save $5 on {habit.habit_category} " + \
                    "today? Respond Y/N"
             twilio_client.messages.create(
                 body=body,
                 to=habit.user.phone,
                 from_="+16462573594")
+    db.session.commit()
 
     # lottery drawing and send message to the winner
     lottery_drawing()
