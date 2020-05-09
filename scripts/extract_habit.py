@@ -91,7 +91,7 @@ class Insights:
         transactions = classes.Transaction.query.filter_by(
             user_id=self.user_id)\
             .filter((classes.Transaction.trans_date >= self.date) &
-                    (classes.Transaction.trans_date < end_date)
+                    (classes.Transaction.trans_date < end_date) &
                     (classes.Transaction.category_id.in_(id_list))).all()
         ct = len(transactions)
         if ct < self.thresh:
