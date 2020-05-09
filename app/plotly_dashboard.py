@@ -40,8 +40,8 @@ def plotly_saving_history(saving_date, saving_coins):
                 saving_dict[dates] = saving_dict[latest_date]
             elif dates < first_date:
                 saving_dict[dates] = 0
-        df = pd.DataFrame(saving_dict.items())
-        df.columns = ['date', 'coins']
+        df = pd.DataFrame(saving_dict.items(), columns=['date', 'coins']) \
+            .sort_values('date')
 
         fig = go.Figure(data=go.Scatter(x=df.date, y=df.coins,
                                         line=dict(color='#327AB7', width=4)))
