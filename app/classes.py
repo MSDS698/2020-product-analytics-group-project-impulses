@@ -10,6 +10,7 @@ WTForms -
 RegistrationForm, LogInForm, and HabitForm
 """
 
+import pytz
 from flask_login import UserMixin
 from flask_wtf import FlaskForm
 
@@ -22,6 +23,7 @@ from datetime import datetime
 from app import db, login_manager, application
 
 migrate = Migrate(application, db)
+TZ = pytz.timezone("America/Los_Angeles")
 
 
 class User(db.Model, UserMixin):
@@ -48,7 +50,7 @@ class User(db.Model, UserMixin):
     phone = db.Column(db.String(10), unique=True, nullable=False)
     password_hash = db.Column(db.String, nullable=False)
     signup_date = db.Column(db.DateTime, nullable=False,
-                            default=datetime.now())
+                            default=datetime.now().astimezone(TZ))
     status = db.Column(db.String, nullable=False, default="unverified")
     auth_id = db.Column(db.String, default=None)
     coins = db.Column(db.Integer, nullable=False, default=0)
