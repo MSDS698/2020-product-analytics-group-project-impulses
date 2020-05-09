@@ -4,6 +4,7 @@ import collections
 import matplotlib
 import matplotlib.pyplot as plt
 import mpld3
+from datetime import datetime
 from app import classes
 
 
@@ -85,9 +86,12 @@ class Insights:
             return None
         # Get the transactions from that user, for the specified month and
         # for the expenses from the category ids
+        end_date = datetime(year=self.date.year, month=self.date.month + 1,
+                            day=1)
         transactions = classes.Transaction.query.filter_by(
             user_id=self.user_id)\
             .filter((classes.Transaction.trans_date >= self.date) &
+                    (classes.Transaction.trans_date < end_date)
                     (classes.Transaction.category_id.in_(id_list))).all()
         ct = len(transactions)
         if ct < self.thresh:
@@ -99,18 +103,22 @@ class Insights:
         Return the number of time user spent on habit on each day of the week
         :param transactions: list of transactions
         """
-        map_day = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday',
-                   4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
+        map_day = {0: 'Mon', 1: 'Tues', 2: 'Wed', 3: 'Thurs',
+                   4: 'Fri', 5: 'Sat', 6: 'Sun'}
         num_per_day = collections.Counter([x.trans_date.weekday()
                                            for x in transactions])
+        for x in map_day.keys():
+            if x not in num_per_day.keys():
+                num_per_day[x] = 0
         sorted_num_per_day = sorted(num_per_day.items())
         day = [map_day[x[0]] for x in sorted_num_per_day]
         freq = [x[1] for x in sorted_num_per_day]
         matplotlib.use('Agg')
         fig = plt.figure(figsize=(6, 3))
-        plt.bar(day, freq, align='center', alpha=0.5, color='#1E90FF')
+        plt.bar(day, freq, align='center', alpha=0.5, color='#327AB7')
         plt.ylabel('Purchased {}'.format(self.habit_name))
         plt.xticks(ticks=np.arange(len(day)), labels=day)
+        plt.title('Daily spending during the week')
         output = mpld3.fig_to_html(fig)
         plt.close()
         return output
