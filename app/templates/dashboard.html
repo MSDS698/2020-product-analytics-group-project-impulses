@@ -208,7 +208,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6">
-                        <div class="card">
+                        <div class="card border-0">
                             <div class="card-body">
                                 <h4 class="card-title" style="text-align:center">Total Savings</h4>
                                 {% if num_saved !=0 %}
@@ -224,7 +224,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="card">
+                        <div class="card border-0">
                             <div class="card-body">
                                 <h4 class="card-title" style="text-align:center">Savings History</h4>
                                 {% if total_saving_coins == 0 %}
@@ -262,7 +262,6 @@
                                 </div>
                             </div>
                             <form id="habit" method="post" action="/habit_table_save_changes">
-                                <!--                                  action="{{url_for('dashboard')}}">-->
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
