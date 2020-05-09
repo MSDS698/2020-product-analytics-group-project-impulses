@@ -73,7 +73,6 @@ def get_accounts(client: plaid.Client, access_token: str) -> List[dict]:
     :param [access_token]:  access token to use to retrieve transactions
     :type [access_token]: [string]
     """
-
     try:
         response = client.Accounts.get(access_token)
     except APIError as e:
@@ -82,14 +81,14 @@ def get_accounts(client: plaid.Client, access_token: str) -> List[dict]:
 
 
 def token_exchange(client: plaid.Client, public_token: str) -> dict:
-    '''
+    """
     Returns account information
         :param [client]: plaid client object that encapsulates plaid keys
         :type [client]: [plaid.Client]
 
         :param [public_token]:  public token recieved from Plaid Link
         :type [public_token]: [string]
-    '''
+    """
     try:
         response = client.Item.public_token.exchange(public_token)
     except PlaidError as e:
