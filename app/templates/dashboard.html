@@ -50,7 +50,7 @@
                     '<option value="weekend">Weekend</option>' +
                     '<option value="everyday">Everyday</option>' +
                     '</select></td>' +
-                    '<td>' + actions + '</td>' +
+                    '<td><a class="delete" title="Delete" data-toggle="tooltip"><i style="height: 100%;" class="material-icons">&#xE872;</i></a></td>' +
                     '</tr>';
                 $("table").append(row);
                 $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
