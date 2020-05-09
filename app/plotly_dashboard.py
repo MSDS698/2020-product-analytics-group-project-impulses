@@ -31,7 +31,7 @@ def plotly_saving_history(saving_date, saving_coins):
                 (saving_date[i + 1][0], saving_coins_sum[i][1] + coin[0]))
 
         saving_dict = dict(saving_coins_sum)
-        base = datetime.today().date()
+        base = datetime.now().astimezone(TZ).date()
         first_date = saving_coins_sum[0][0]
         latest_date = saving_coins_sum[-1][0]
         date_list = [(base - timedelta(days=x)) for x in range(0, 7)]
