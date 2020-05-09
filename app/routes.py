@@ -177,6 +177,7 @@ def habit_table_save_changes():
 
         # delete the user's habits
         classes.Habits.query.filter_by(user_id=user_id).delete()
+        db.session.commit()
 
         # add the latest habits back to db
         for i in range(len(habit_name)):
