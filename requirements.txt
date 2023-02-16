@@ -58,6 +58,6 @@ twilio==6.38.0
 urllib3==1.26.5
 visitor==0.1.3
 wcwidth==0.1.9
-Werkzeug==1.0.1
+Werkzeug==2.2.3
 WTForms==2.2.1
 zipp==3.1.0
